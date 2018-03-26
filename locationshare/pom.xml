@@ -1,0 +1,87 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.amazonaws</groupId>
+  <artifactId>samples</artifactId>
+  <packaging>war</packaging>
+  <version>1.0.0</version>
+
+  <properties>
+      <maven.test.failure.ignore>true</maven.test.failure.ignore>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <spring-cloud-version>2.0.0.M4</spring-cloud-version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-aws</artifactId>
+            <version>${spring-cloud-version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+
+  <dependencies>
+    <!-- json mapper-->
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-lgpl</artifactId>
+      <version>1.9.6</version>
+    </dependency>
+
+    <!-- amazon aws -->
+    <dependency>
+        <groupId>com.amazonaws</groupId>
+        <artifactId>aws-java-sdk</artifactId>
+        <version>1.11.301</version>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.amazonaws</groupId>
+        <artifactId>amazon-kinesis-client</artifactId>
+        <version>1.2.1</version>
+        <scope>compile</scope>
+    </dependency>
+
+    <!-- spring framework start -->
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-aws</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-aws-autoconfigure</artifactId>
+        <version>${spring-cloud-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-aws-context</artifactId>
+        <version>${spring-cloud-version}</version>
+    </dependency>
+    <!-- spring framework end -->
+
+  </dependencies>
+
+  <repositories>
+    <repository>
+        <id>spring-milestones</id>
+        <name>Spring Milestones</name>
+        <url>https://repo.spring.io/libs-milestone</url>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+    <repository>
+        <id>io.spring.repo.maven.release</id>
+        <url>http://repo.spring.io/release/</url>
+        <snapshots><enabled>false</enabled></snapshots>
+    </repository>
+  </repositories>
+
+  <build>
+    <finalName>locationsharesystem</finalName>
+  </build>
+</project>
