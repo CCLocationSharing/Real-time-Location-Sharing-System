@@ -1,0 +1,42 @@
+#TABLE DESIGN
+
+1.
+	USR
+		String userId, String userName
+
+		key         attribute
+
+		NOT BLANK   NOT BLANK
+
+2.
+	LIB
+		String libId, String libName
+
+		key        attribute
+
+		NOT BLANK  NOT BLANK
+
+3.
+	TAB
+		String tabId, int size, String libId
+
+		key		   attribute attribute
+
+		NOT BLANK  NOT EMPTY NOT BLANK
+
+4.
+	RESERVATION
+		String id, String tabId, String userId, long startTime, long endTime, long currTime
+
+		autokey    attribute ......
+
+				   NOT BLANK     NOT BLANK      NOT EMPTY       NOT EMPTY     NOT EMPTY
+
+5.
+	OBSERVATION
+		String id, String tabId, String userId, long startTime, long endTime, long currTime, boolean isExpired
+
+		auto key  attribute ......
+
+				   NOT BLANK     NOT BLANK      NOT EMPTY
+

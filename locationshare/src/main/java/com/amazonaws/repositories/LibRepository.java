@@ -4,15 +4,15 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import com.amazonaws.entities.LibItem;
 
-public interface LibRepository extends CrudRepository<LibItem, Integer> {
+public interface LibRepository extends CrudRepository<LibItem, String> {
 
-	LibItem findById(Integer libId);
+	LibItem findByLibId(String libId);
 
-	LibItem findByName(String libName);
+	LibItem findBLibName(String libName);
 
-	List<LibItem> findAllById(List<Integer> ids); 
+	List<LibItem> findAllByLibId(List<String> libIds); 
 
-	List<LibItem> findAllByName(List<String> names);
+	List<LibItem> findAllByLibName(List<String> libNames);
 
 	List<LibItem> findAll(); 
 

@@ -1,25 +1,24 @@
-package com.amazonaws.entities
+package com.amazonaws.entities;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.NotBlank;
 
 @DynamoDBTable(tabelName = "LIB")
 public class LibItem {
 
-	@NotEmpty
-	private int libId;
+	@NotBlank
+	private String libId;
 	@NotBlank
 	private String libName;
 
 	@DynamoDBHashKey(attributeName = "libId")
-	public int getLibId() {
+	public String getLibId() {
 		return libId;
 	}
-	public void setLibId(int libId) {
+	public void setLibId(String libId) {
 		this.libId = libId;
 	}
 

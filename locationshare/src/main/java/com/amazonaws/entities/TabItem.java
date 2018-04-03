@@ -1,25 +1,27 @@
-package com.amazonaws.entities
+package com.amazonaws.entities;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @DynamoDBTable(tabelName = "TAB")
 public class TabItem {
 
-	@NotEmpty
-	private int tabId;
+	@NotBlank
+	private String tabId;
 	@NotEmpty
 	private int size;
-	@NotEmpty
-	private int libId;
+	@NotBlank
+	private String libId;
 
 	@DynamoDBHashKey(attributeName = "tabId")
-	public int getTabId() {
+	public String getTabId() {
 		return tabId;
 	}
-	public void setTabId(int tabId) {
+	public void setTabId(String tabId) {
 		this.tabId = tabId;
 	}
 
@@ -32,10 +34,10 @@ public class TabItem {
 	}
 
 	@DynamoDBAttribute(attributeName = "libId")
-	public int getLibId() {
+	public String getLibId() {
 		return libId;
 	}
-	public void setLibId(int libId) {
+	public void setLibId(String libId) {
 		this.libId = libId;
 	}
 	

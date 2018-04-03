@@ -4,10 +4,10 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import com.amazonaws.entities.UserItem;
 
-public interface UserRepository extends CrudRepository<UserItem, Integer> {
+public interface UserRepository extends CrudRepository<UserItem, String> {
 
-	UserItem findById(Integer userId);
+	UserItem findById(String userId);
 
-	List<UserItem> findAllById(List<Integer> ids); 
+	List<UserItem> findAllById(List<String> userIds); 
 
 }
