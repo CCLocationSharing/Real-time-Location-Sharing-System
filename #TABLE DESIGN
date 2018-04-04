@@ -15,13 +15,13 @@
 	TAB
 		String libId 	hashkey		NOT BLANK
 		String tabId	rangekey	NOT BLANK
-		int size		attribute	
+		int size	attribute	
 
 4.
 	RESERVATION
 		String tabId		hashkey 	NOT BLANK
 		long startTime		rangekey	NOT NULL
-		int periods			attribute	min = 1, max = min(remaining, 4)
+		int periods		attribute	min = 1, max = min(remaining, 4)
 		String userId		attribute	NOT BLANK
 		String producedTime	attribute
 5.
