@@ -21,7 +21,7 @@
 	RESERVATION
 		String tabId		hashkey 	NOT BLANK
 		long startTime		rangekey	NOT NULL
-		int periods		attribute	min = 1, max = min(remaining, 4)
+		long endTime		attribute
 		String userId		attribute	NOT BLANK
 		String producedTime	attribute
 5.

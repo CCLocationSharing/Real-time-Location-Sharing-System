@@ -16,7 +16,7 @@ public class ReservationItem {
 	private String tabId;
 	@NotNull
 	private long startTime;
-	private int periods;
+	private long endTime;
 	@NotBlank
 	private String userId;
 	private long producedTime;
@@ -37,12 +37,12 @@ public class ReservationItem {
 		this.startTime = startTime;
 	}
 
-	@DynamoDBAttribute(attributeName = "periods")
-	public int getPeriods() {
-		return periods;
+	@DynamoDBAttribute(attributeName = "endTime")
+	public long getEndTime() {
+		return endTime;
 	}
-	public void setPeriods(int periods) {
-		this.periods = periods;
+	public void setEndTime(long endTime) {
+		this.endTime = endTime;
 	}
 
 	@DynamoDBAttribute(attributeName = "userId")

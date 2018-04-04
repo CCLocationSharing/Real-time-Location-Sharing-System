@@ -1,6 +1,7 @@
 package com.amazonaws.repositories;
 
 import java.util.List;
+import java.util.Map;
 import com.amazonaws.entities.ReservationItem;
 import org.springframework.data.repository.CrudRepository;
 
@@ -8,17 +9,17 @@ public interface ReservationRepository extends CrudRepository<ReservationItem, S
 
 	List<ReservationItem> findByTabId(String tabId, long currTime);
 
-	List<Integer[]> findAvailablePeriods(String tabId, long currTime);
+	List<Integer> findAvailablePeriods(String tabId, long currTime);
 
-	boolean isReservedByTimeRange(String tabId, long start, long end);
+	boolean isAvailableByTimeRange(String tabId, long start, long end);
 
 	Map<String, List<ReservationItem>> findAllByTabId(List<String> tabIds);
 
-	save(ReservationItem reservationItem);
+	void save(ReservationItem reservationItem);
 
-	saveAll(List<ReservationItem> reservationItems);
+	void saveAll(List<ReservationItem> reservationItems);
 
-	//cancel();
+	void delete(ReservationItem reservationItem);
 
-	//cancelAll();
+	void deleteAll(List<ReservationItem> reservationItems);
 }
