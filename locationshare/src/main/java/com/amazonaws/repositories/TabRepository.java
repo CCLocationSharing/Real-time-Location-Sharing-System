@@ -1,15 +1,18 @@
 package com.amazonaws.repositories;
 
 import java.util.List;
-import org.springframework.data.repository.CrudRepository;
+import java.util.Map;
 import com.amazonaws.entities.TabItem;
+import org.springframework.data.repository.CrudRepository;
 
 public interface TabRepository extends CrudRepository<TabItem, String> {
 
-	TabItem findById(String tabId);
+	TabItem findByLibIdAndTabId(String libId, String tabId);
 
-	List<TabItem> findAllById(List<String> tabIds);
+	List<TabItem> findAllByLibIdAndTabId(List<String[]> combos);
 
 	List<TabItem> findByLibId(String libId);
+
+	Map<String, List<TabItem>> findAllByLibId(List<String> libIds);
 
 }

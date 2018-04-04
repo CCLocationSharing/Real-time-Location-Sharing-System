@@ -11,7 +11,6 @@ public class UserItem {
 
 	@NotBlank
 	private String userId;
-	@NotEmpty
 	private String userName;
 	@NotEmpty
 	private String password;
@@ -23,7 +22,6 @@ public class UserItem {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	
 
 	@DynamoDBAttribute(attributeName = "userName")
 	public String getUserName() {

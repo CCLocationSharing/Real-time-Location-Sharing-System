@@ -1,30 +1,24 @@
 package com.amazonaws.repositories;
 
 import java.util.List;
-import org.springframework.data.repository.CrudRepository;
 import com.amazonaws.entities.ReservationItem;
+import org.springframework.data.repository.CrudRepository;
 
 public interface ReservationRepository extends CrudRepository<ReservationItem, String> {
 
-	ReservationItem findById(String id);
+	List<ReservationItem> findByTabId(String tabId, long currTime);
 
-	List<ReservationItem> findAllById(List<String> ids);
+	List<Integer[]> findAvailablePeriods(String tabId, long currTime);
 
-	List<ReservationItem> findByTabId(String tabId);
+	boolean isReservedByTimeRange(String tabId, long start, long end);
 
-	List<ReservationItem> findAllByTabId(List<String> tabIds);
+	Map<String, List<ReservationItem>> findAllByTabId(List<String> tabIds);
 
-	List<ReservationItem> findByUserId(String userId);
+	save(ReservationItem reservationItem);
 
-	List<ReservationItem> findAllByUserId(List<String> userIds);
+	saveAll(List<ReservationItem> reservationItems);
 
-	List<ReservationItem> findByTimeRange(long start, long end);
+	//cancel();
 
-	List<ReservationItem> findByAfterCurrent(long current);
-
-	List<ReservationItem> findAll();
-
-	ReservationItem save(ReservationItem reservationItem);
-
-	List<ReservationItem> saveAll(List<ReservationItem> reservationItems);
+	//cancelAll();
 }
