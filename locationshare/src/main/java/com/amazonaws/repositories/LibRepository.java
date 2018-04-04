@@ -8,7 +8,7 @@ public interface LibRepository extends CrudRepository<LibItem, String> {
 
 	LibItem findByLibId(String libId);
 
-	LibItem findBLibName(String libName);
+	LibItem findByLibName(String libName);
 
 	List<LibItem> findAllByLibId(List<String> libIds); 
 

@@ -22,7 +22,7 @@ public class LibItem {
 		this.libId = libId;
 	}
 
-	@DynamoDBAttribute(attributeName = "libName")
+	@DynamoDBRangeKey(attributeName = "libName")
 	public String getLibName() {
 		return libName;
 	}

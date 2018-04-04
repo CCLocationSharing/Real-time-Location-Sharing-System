@@ -11,8 +11,10 @@ public class UserItem {
 
 	@NotBlank
 	private String userId;
-	@NotBlank
+	@NotEmpty
 	private String userName;
+	@NotEmpty
+	private String password;
 
 	@DynamoDBHashKey(attributeName = "userId")
 	public String getUserId() {
@@ -29,6 +31,14 @@ public class UserItem {
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	@DynamoDBAttribute(attributeName = "password")
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 }

@@ -2,35 +2,30 @@
 
 1.
 	USR
-		String userId, String userName
-
-		key         attribute
-
-		NOT BLANK   NOT BLANK
+		String userId	hashkey		NOT BLANK
+		String userName attribute 	NOT EMPTY
+		String password	attribute	NOT EMPTY
 
 2.
 	LIB
-		String libId, String libName
-
-		key        attribute
-
-		NOT BLANK  NOT BLANK
+		String libId	hashkey		NOT BLANK
+		String libName	rangekey	NOT BLANK
 
 3.
 	TAB
-		String tabId, int size, String libId
-
-		key		   attribute attribute
-
-		NOT BLANK  NOT EMPTY NOT BLANK
+		String tabId	hashkey		NOT BLANK
+		String libId 	rangekey	NOT BLANK
+		int size		attribute	NOT NULL
 
 4.
 	RESERVATION
-		String id, String tabId, String userId, long startTime, long endTime, long currTime
-
-		autokey    attribute ......
-
-				   NOT BLANK     NOT BLANK      NOT EMPTY       NOT EMPTY     NOT EMPTY
+		String id 		hashkey		NOT BLANK
+			id = tabId + "#" + str(startTime) + "#" + str(endTime)
+		String tabId 	attribute	NOT BLANK
+		String userId 	attribute 	NOT BLANK
+		long startTime 	attribute	NOT NULL
+		long endTime 	attribute	NOT NULL
+		long currTime	attribute 	NOT NULL
 
 5.
 	OBSERVATION

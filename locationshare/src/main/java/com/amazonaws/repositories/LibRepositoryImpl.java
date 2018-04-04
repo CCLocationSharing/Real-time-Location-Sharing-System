@@ -15,12 +15,12 @@ public class LibRepositoryImpl implements LibRepository {
 		if(libitem != null) {
 			return libitem;
 		}else {
-			System.out.println("ERR: NONE MATCHED ROW");
+			System.out.println("ERR: NO MATCHED ROW");
 			return null;
 		}
 	}
 
-	LibItem findBLibName(String libName) {
+	LibItem findByLibName(String libName) {
 		
 	}
 

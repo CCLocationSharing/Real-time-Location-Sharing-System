@@ -12,10 +12,10 @@ public class TabItem {
 
 	@NotBlank
 	private String tabId;
-	@NotEmpty
-	private int size;
 	@NotBlank
 	private String libId;
+	@NotNull
+	private int size;
 
 	@DynamoDBHashKey(attributeName = "tabId")
 	public String getTabId() {
@@ -25,20 +25,20 @@ public class TabItem {
 		this.tabId = tabId;
 	}
 
+	@DynamoDBRangeKey(attributeName = "libId")
+	public String getLibId() {
+		return libId;
+	}
+	public void setLibId(String libId) {
+		this.libId = libId;
+	}
+
 	@DynamoDBAttribute(attributeName = "size")
 	public int getSize() {
 		return size;
 	}
 	public void setSize(int size) {
 		this.size = size;
-	}
-
-	@DynamoDBAttribute(attributeName = "libId")
-	public String getLibId() {
-		return libId;
-	}
-	public void setLibId(String libId) {
-		this.libId = libId;
 	}
 	
 }
