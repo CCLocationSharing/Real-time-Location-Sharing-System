@@ -8,11 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping("/about")
 public class AboutViewController {
 
-	public ModelAndView getAbout(HttpServletRequest request) {
-		ModelAndView mv = new ModelAndView("about");
-		return mv;
+	@RequestMapping(value = "/about", method=RequestMethod.GET)
+	public String getAboutView(HttpServletRequest request) throws Exception {
+		return "about";
 	}
 }

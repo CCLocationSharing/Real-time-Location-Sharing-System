@@ -22,7 +22,8 @@ public class HomeController {
 	SessionUtil sessionUtil;
 
 	@RequestMapping(value="/", method=RequestMethod.GET)
-	public String get(Model model, 
+	public ModelAndView getHomeView(Model model, 
 			HttpServletRequests request, HttpSession session) {
+		
 	}
 }
