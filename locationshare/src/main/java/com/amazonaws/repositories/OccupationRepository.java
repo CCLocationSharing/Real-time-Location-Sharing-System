@@ -1,26 +1,27 @@
 package com.amazonaws.repositories;
 
 import java.util.List;
-import org.springframework.data.repository.CrudRepository;
+import java.util.Map;
 import com.amazonaws.entities.OccupationItem;
+import org.springframework.data.repository.CrudRepository;
 
 public interface OccupationRepository extends CrudRepository<OccupationItem, String> {
 
-	OccupationItem findByIdAndIsValid(String id);
+	OccupationItem findByTabId(String tabId, long currTime);
 
-	List<OccupationItem> findAllByIdAndAreValid(List<String> ids);
+	boolean isAvailable(String tabId, long currTime);
 
-	List<OccupationItem> findByTabIdAndIsValid(String tabId);
+	Map<String, OccupationItem> findAllByTabId(List<String> tabIds, long currTime);
 
-	List<OccupationItem> findAllByTabIdAndAreValid(List<String> tabIds);
+	void save(OccupationItem occupationItem);
 
-	List<OccupationItem> findByUserIdAndIsValid(String userId);
+	void saveAll(List<OccupationItem> occupationItems);
 
-	List<OccupationItem> findAllByUserIdAndAreValid(List<String> userIds);
+	boolean update(OccupationItem occupationItem);
 
-	List<OccupationItem> findAllAndValid();
+	boolean updateAll(List<OccupationItem> occupationItems);
 
-	OccupationItem save(OccupationItem occupationItem);
+	void delete(OccupationItem occupationItem);
 
-	List<OccupationItem> saveAll(List<OccupationItem> occupationItems);
+	void deleteAll(List<OccupationItem> occupationItems);
 }

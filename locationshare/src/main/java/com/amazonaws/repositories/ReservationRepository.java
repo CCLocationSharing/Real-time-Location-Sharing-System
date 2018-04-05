@@ -11,9 +11,9 @@ public interface ReservationRepository extends CrudRepository<ReservationItem, S
 
 	List<Integer> findAvailablePeriods(String tabId, long currTime);
 
-	boolean isAvailableByTimeRange(String tabId, long start, long end);
+	boolean isAvailableByTimeRange(String tabId, long currTime, long start, long end);
 
-	Map<String, List<ReservationItem>> findAllByTabId(List<String> tabIds);
+	Map<String, List<ReservationItem>> findAllByTabId(List<String> tabIds, long currTime);
 
 	void save(ReservationItem reservationItem);
 

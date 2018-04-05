@@ -3,7 +3,7 @@ package com.amazonaws.repositories;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import com.amazonaws.constants.PeriodsConstants;
+import com.amazonaws.constants.TimeConstants;
 import com.amazonaws.entities.ReservationItem;
 import com.amazonaws.repositories.ReservationRepository;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
@@ -38,9 +38,9 @@ public class ReservationRepositoryImpl implements ReservationRepository {
 	}
 
 	List<Integer> findAvailablePeriods(String tabId, long currTime) {
-		List<ReservationItem> result = findByTabId(tabId, currTime);
-		Set<Integer> available = new HashSet(PeriodsConstants.p);
-		for(ReservationItem item: result) {
+		List<ReservationItem> reservationItems = findByTabId(tabId, currTime);
+		Set<Integer> available = new HashSet(TimeConstants.PERIODS);
+		for(ReservationItem item: reservationItems) {
 			Date dates = new Date(item.getStartTime());
 			int hours = dates.getHours();
 			Date datee = new Date(item.getEndTime());
@@ -56,17 +56,22 @@ public class ReservationRepositoryImpl implements ReservationRepository {
 			if(j > hourm)
 				availablePeriods.add(j);
 		}
-		return availablePeriods;
+		if(!availablePeriods.isEmpty()) {
+			return availablePeriods;
+		}else {
+			return null;
+		}
 	}
 
-	boolean isAvailableByTimeRange(String tabId, long start, long end) {
+	boolean isAvailableByTimeRange(String tabId, long, currTime, long start, long end) {
 		Date ds = new Date(start);
 		Date de = new Date(end);
 		int low = ds.getHours();
 		int high = de.getHours();
-		if(low < 8 || high > 22) return false;
-		List<ReservationItem> result = findByTabId(tabId, currTime);
-		for(ReservationItem item: result) {
+		if(low < TimeConstants.OPENTIME || high > TimeConstants.CLOSETIME) return false;
+
+		List<ReservationItem> reservationItems = findByTabId(tabId, currTime);
+		for(ReservationItem item: reservationItems) {
 			Date dates = new Date(item.getStartTime());
 			int hours = dates.getHours();
 			Date datee = new Date(item.getEndTime());
@@ -80,14 +85,18 @@ public class ReservationRepositoryImpl implements ReservationRepository {
 		return true;
 	}
 
-	Map<String, List<ReservationItem>> findAllByTabId(List<String> tabIds) {
+	Map<String, List<ReservationItem>> findAllByTabId(List<String> tabIds, long currTime) {
 		Map<String, List<ReservationItem>> result = new HashMap<>();
-		long currTime = System.currentTimeMillis();
 		for(String tabId: tabIds) {
 			List<ReservationItem> reservationItems = findByTabId(tabId, currTime);
 			result.put(tabId, reservationItems);
 		}
-		return result;
+		if(!result.isEmpty()) {
+			return result;
+		}else {
+			System.out.println("ERR: NO MATCHED ROWS");
+			return null;
+		}
 	}
 
 	void save(ReservationItem reservationItem) {

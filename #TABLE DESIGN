@@ -26,5 +26,10 @@
 		String producedTime	attribute
 5.
 	OBSERVATION
-		//
+		String tabId		hashkey 	NOT BLANK
+		long startTime		rangekey	NOT NULL
+		boolean isExpired	attribute	NOT NULL
+		long endTime		attribute
+		String userId		attribute	NOT BLANK
+		String producedTime	attribute
 
