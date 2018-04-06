@@ -1,0 +1,35 @@
+#TABLE DESIGN
+
+1.
+	USR
+		String userId	hashkey		NOT BLANK
+		String userName attribute 	
+		String password	attribute	NOT EMPTY
+
+2.
+	LIB
+		String libId	hashkey		NOT BLANK
+		String libName	attribute	NOT BLANK
+
+3.
+	TAB
+		String libId 	hashkey		NOT BLANK
+		String tabId	rangekey	NOT BLANK
+		int size	attribute	
+
+4.
+	RESERVATION
+		String tabId		hashkey 	NOT BLANK
+		long startTime		rangekey	NOT NULL
+		long endTime		attribute
+		String userId		attribute	NOT BLANK
+		String producedTime	attribute
+5.
+	OBSERVATION
+		String tabId		hashkey 	NOT BLANK
+		long startTime		rangekey	NOT NULL
+		boolean isExpired	attribute	NOT NULL
+		long endTime		attribute
+		String userId		attribute	NOT BLANK
+		String producedTime	attribute
+
