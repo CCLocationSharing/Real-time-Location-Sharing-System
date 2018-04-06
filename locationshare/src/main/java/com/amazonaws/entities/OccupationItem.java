@@ -1,12 +1,11 @@
 package com.amazonaws.entities;
 
-import com.amazonaws.constants.RequestType
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
 @DynamoDBTable(tableName = "Occupation")
 public class OccupationItem {
@@ -14,7 +13,7 @@ public class OccupationItem {
 	@NotBlank
 	private String tabId;
 	@NotNull
-	private long startTime
+	private long startTime;
 	@NotNull
 	private boolean isExipred;
 

@@ -1,4 +1,4 @@
-package com.amazonaws.constants
+package com.amazonaws.constants;
 
 public enum RequestType {
 	OCCUPATION, RESERVATION

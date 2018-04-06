@@ -1,12 +1,18 @@
 package com.amazonaws.repositories;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.amazonaws.entities.TabItem;
 import com.amazonaws.repositories.TabRepository;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 
 public class TabRepositoryImpl implements TabRepository {
 
@@ -18,7 +24,7 @@ public class TabRepositoryImpl implements TabRepository {
 		this.mapper = new DynamoDBMapper(amazonDynamoDB);
 	}
 
-	TabItem findByLibIdAndTabId(String libId, String tabId) {
+	public TabItem findByLibIdAndTabId(String libId, String tabId) {
 		TabItem tabItem = mapper.load(TabItem.class, libId, tabId);
 		if(tabItem != null) {
 			return tabItem;
@@ -28,7 +34,7 @@ public class TabRepositoryImpl implements TabRepository {
 		}
 	}
 
-	List<TabItem> findAllByLibIdAndTabId(List<String[]> combos) {
+	public List<Object> findAllByLibIdAndTabId(List<String[]> combos) {
 		List<TabItem> tabItems = new ArrayList<>();
 		for(String[] ids: combos) {
 			TabItem tabItem = new TabItem();
@@ -36,7 +42,7 @@ public class TabRepositoryImpl implements TabRepository {
 			tabItem.setTabId(ids[1]);
 			tabItems.add(tabItem);
 		}
-		Map<String, List<TabItem>> items = mapper.batchLoad(tabItems);
+		Map<String, List<Object>> items = mapper.batchLoad(tabItems);
 		if(items != null) {
 			return items.get("TAB");
 		}else {
@@ -45,7 +51,7 @@ public class TabRepositoryImpl implements TabRepository {
 		}
 	}
 
-	List<TabItem> findByLibId(String libId) {
+	public List<TabItem> findByLibId(String libId) {
 		Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
 		eav.put(":v1", new AttributeValue().withS(libId));
 		DynamoDBQueryExpression<TabItem> queryExpression = new DynamoDBQueryExpression<TabItem>() 
@@ -60,10 +66,10 @@ public class TabRepositoryImpl implements TabRepository {
     	}
 	}
 
-	Map<String, List<TabItem>> findAllByLibId(List<String> libIds) {
+	public Map<String, List<TabItem>> findAllByLibId(List<String> libIds) {
 		Map<String, List<TabItem>> result = new HashMap<>();
 		for(String libId: libIds) {
-			List<TabItem> tabItems = findByLibId(String libId);
+			List<TabItem> tabItems = findByLibId(libId);
 			result.put(libId, tabItems);
 		}
 		return result;

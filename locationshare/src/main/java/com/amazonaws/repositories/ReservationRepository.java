@@ -3,9 +3,8 @@ package com.amazonaws.repositories;
 import java.util.List;
 import java.util.Map;
 import com.amazonaws.entities.ReservationItem;
-import org.springframework.data.repository.CrudRepository;
 
-public interface ReservationRepository extends CrudRepository<ReservationItem, String> {
+public interface ReservationRepository {
 
 	List<ReservationItem> findByTabId(String tabId, long currTime);
 

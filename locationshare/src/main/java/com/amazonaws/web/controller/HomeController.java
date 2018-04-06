@@ -2,11 +2,9 @@ package com.amazonaws.web.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.servlet.http.HttpServletRequests;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import com.amazonaws.web.utils.SessionUtil;
-import com.amazonaws.vo.FilterElementVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,10 +18,5 @@ public class HomeController {
 
 	@Autowired
 	SessionUtil sessionUtil;
-
-	@RequestMapping(value="/", method=RequestMethod.GET)
-	public ModelAndView getHomeView(Model model, 
-			HttpServletRequests request, HttpSession session) {
-		
-	}
+	
 }

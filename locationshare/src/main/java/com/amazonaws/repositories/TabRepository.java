@@ -3,13 +3,12 @@ package com.amazonaws.repositories;
 import java.util.List;
 import java.util.Map;
 import com.amazonaws.entities.TabItem;
-import org.springframework.data.repository.CrudRepository;
 
-public interface TabRepository extends CrudRepository<TabItem, String> {
+public interface TabRepository {
 
 	TabItem findByLibIdAndTabId(String libId, String tabId);
 
-	List<TabItem> findAllByLibIdAndTabId(List<String[]> combos);
+	List<Object> findAllByLibIdAndTabId(List<String[]> combos);
 
 	List<TabItem> findByLibId(String libId);
 

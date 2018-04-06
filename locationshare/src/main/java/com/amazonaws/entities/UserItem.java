@@ -3,10 +3,10 @@ package com.amazonaws.entities;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.NotBlank;
 
-@DynamoDBTable(tabelName = "USR")
+@DynamoDBTable(tableName = "USR")
 public class UserItem {
 
 	@NotBlank

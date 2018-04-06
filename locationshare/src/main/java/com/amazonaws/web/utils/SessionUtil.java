@@ -1,15 +1,9 @@
 package com.amazonaws.web.utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
-
 import com.amazonaws.constants.DeviceType;
 import com.amazonaws.constants.SessionConstants;
-import com.amazonaws.vo.UserVo;
+import com.amazonaws.vo.SignInUserVo;
 
 import org.springframework.stereotype.Component;
 
@@ -23,8 +17,8 @@ public class SessionUtil {
 		return lastVisitedUrl != null ? lastVisitedUrl : "/";
 	}
 	
-	public UserVo getSignInUser(HttpSession session){
-		return (UserVo)session.getAttribute(
+	public SignInUserVo getSignInUser(HttpSession session){
+		return (SignInUserVo)session.getAttribute(
 				SessionConstants.SESSION_SIGNIN_USER);
 	}
 	

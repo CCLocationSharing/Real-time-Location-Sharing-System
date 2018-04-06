@@ -3,9 +3,8 @@ package com.amazonaws.repositories;
 import java.util.List;
 import java.util.Map;
 import com.amazonaws.entities.OccupationItem;
-import org.springframework.data.repository.CrudRepository;
 
-public interface OccupationRepository extends CrudRepository<OccupationItem, String> {
+public interface OccupationRepository {
 
 	OccupationItem findByTabId(String tabId, long currTime);
 

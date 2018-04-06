@@ -3,10 +3,9 @@ package com.amazonaws.entities;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
-@DynamoDBTable(tabelName = "LIB")
+@DynamoDBTable(tableName = "LIB")
 public class LibItem {
 
 	@NotBlank

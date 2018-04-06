@@ -1,6 +1,6 @@
 package com.amazonaws.web.controller;
 
-import javax.servlet.http.HttpServletRequests;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
