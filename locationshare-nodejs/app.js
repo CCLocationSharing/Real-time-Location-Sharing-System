@@ -59,6 +59,11 @@ app.post("/signup", signin.postNewUser);// Done
 app.post("/login", signin.postLogin); // Done
 
 app.get("/dashboard", dashboard.getDashboard);// Done
+
+app.get("/about", function(req, res) { // Done
+    res.render("about.html", { navbarFixedTop : true});
+});
+
 /*
 app.post("/postAdminUpdate", dashboard.postAdminUpdate);
 app.post("/postOrder", dashboard.postOrder);// Done

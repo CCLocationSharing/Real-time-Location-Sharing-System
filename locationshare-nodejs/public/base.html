@@ -26,7 +26,13 @@
          {% if navbarFixedTop %} navbar-fixed-top {% endif %}">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/">UTop Tutor</a>
+                <a class="navbar-brand" href="/">Home</a>
+            </div>
+            <div class="navbar-header">
+                <a class="navbar-brand" href="about">About</a>
+            </div>
+            <div class="navbar-header">
+                <a class="navbar-brand" href="reserve">Reserve</a>
             </div>
             {% if session.user %}
             <form id='searchSubmit' class="navbar-form navbar-left" role="search">
@@ -37,7 +43,7 @@
             </form>
             {% endif %}
             <ul class="nav navbar-nav navbar-right">
-                <li ><a href="dashboard">Order</a></li>
+                <!--li ><a href="dashboard">Order</a></li-->
                 {% if session.user %}
                 <li ><a href="profile?id={{session.user.username}}">Profile</a></li>
                 <li ><a href="logout">Log out</a></li>
