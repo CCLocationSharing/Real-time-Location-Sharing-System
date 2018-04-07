@@ -31,8 +31,8 @@ exports.postNewUser = function(req, res) {
                 Item: {
                     "username":req.body.username,
                     "password":req.body.password,
-                    "isonline":true,
-                    "friends": []
+                    "isonline":true, // currently no use
+                    "friends": [] // currently no use
                 }
             };
 
@@ -60,7 +60,7 @@ exports.postLogin = function(req, res) {
         if (!user.Item) res.json({status: 1});
         else if (user.Item.password != req.body.password) res.json({status: 2});
         else {
-            var updateUser = {
+            /*var updateUser = {
                 TableName: "Users",
                 Key: {
                     "username":req.body.username
@@ -72,10 +72,10 @@ exports.postLogin = function(req, res) {
             };
             docClient.update(updateUser, function(err, data) {
                 if (err) throw err;
-                
+                */
                 req.session.user = { username: user.Item.username };
                 res.json({status: 0, redirect: "dashboard"});
-            });
+            //});
         }
     });
 };
@@ -83,14 +83,21 @@ exports.postLogin = function(req, res) {
 exports.getLogout = function(req, res) {
     if (req.session.user === undefined) return res.redirect("/");
 
-    User.findOne({ username : req.session.user.username }, function(err, user) {
+    /*
+    var user = {
+        TableName: "Users",
+        Key: {
+            "username":req.body.username
+        }
+    };
+    docClient.get(user, function(err, user) {
         if (err) throw err;
 
         user.online = false;
         user.save(function(err, data) {
             if (err) throw err;
         });
-    });
+    });*/
     req.session.destroy();
     res.redirect('/');
 }

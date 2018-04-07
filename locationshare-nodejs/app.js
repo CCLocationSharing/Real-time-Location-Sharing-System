@@ -37,9 +37,9 @@ app.use(function(req, res, next) {
 });
 
 //========== MAIN ==========
-var dashboard = require("./routes/dashboard");
-//var profile = require("./routes/profile");
 var signin = require("./routes/signin");
+//var dashboard = require("./routes/dashboard");
+var reserve = require("./routes/reserve");
 
 app.get("/", function(req, res) { // Done
     res.render("index.html", { navbarFixedTop : true});
@@ -59,6 +59,8 @@ app.post("/signup", signin.postNewUser);// Done
 app.post("/login", signin.postLogin); // Done
 
 app.get("/dashboard", dashboard.getDashboard);// Done
+app.get("/reserve", reserve.getReserve);// Done
+
 /*
 app.post("/postAdminUpdate", dashboard.postAdminUpdate);
 app.post("/postOrder", dashboard.postOrder);// Done

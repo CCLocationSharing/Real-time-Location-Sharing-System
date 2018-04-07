@@ -1,12 +1,12 @@
 'use strict';
 
-var dashboard = {};
+var reserve = {};
 
 
 //append search result at search.html by using res.render() , using template
 //need to specify the template of search.html
 
-dashboard.init = function() {
+reserve.init = function() {
     $("#info-form").submit(function(event) {
         event.preventDefault();
         let json_info = $(this).serializeArray(), json_time = $("#time-form").serializeArray();
@@ -39,5 +39,5 @@ dashboard.init = function() {
 }
 
 $(document).ready(function() {
-    dashboard.init();
+    reserve.init();
 });
