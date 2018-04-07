@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+
+{% block body %}
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  let courseGroupSocket = io();
+  courseGroupSocket.on('message', function(data){
+
+      let middleDiv = document.getElementById("middle-column");
+
+      let newDiv = document.createElement("div");
+      newDiv.setAttribute("id", data.username + data.msg);
+      newDiv.setAttribute("class", "list-group-item");
+
+      let newiFrame = document.createElement("iframe");
+      newiFrame.setAttribute("name", "hiddenFrame");
+      newiFrame.setAttribute("class", "hide");
+
+      let newForm = document.createElement("form");
+
+      //<form action="/course/response?/id={{currCourse}}" method="post" target="hiddenFrame">
+      newForm.setAttribute("action", "/course/response?/id=" + data.cName);
+      newForm.setAttribute("method", "post");
+      newForm.setAttribute("target", "hiddenFrame");
+
+      let newFieldset = document.createElement("fieldset");
+      newFieldset.setAttribute("id", data.username + data.msg + "Fieldset");
+
+      let newLegend = document.createElement("legend");
+      newLegend.innerHTML = data.username;
+
+      let newPre = document.createElement("pre");
+      newPre.innerHTML = data.msg;
+
+      let newSpan = document.createElement("span");
+      newSpan.innerHTML = "Post Response";
+
+      let newTextArea = document.createElement("textarea");
+      newTextArea.setAttribute("id", data.username + "|" + data.msg + "|" + "Response");
+      newTextArea.setAttribute("name", data.username + "|" + data.msg + "|" + "Response");
+      newTextArea.setAttribute("required", "required");
+      newTextArea.setAttribute("rows", "1");
+      newTextArea.setAttribute("style", "resize: vertical; width: 100%");
+      newTextArea.setAttribute("placeholder", "Reply to this Post");
+
+      let newResponseButton = document.createElement("button");
+      newResponseButton.setAttribute("id", "submitResponse");
+      newResponseButton.setAttribute("name", data.username + "|" + data.msg + "|" + "ResponseButton");
+      newResponseButton.setAttribute("class", "button");
+      newResponseButton.appendChild(newSpan);
+
+      newFieldset.appendChild(newLegend);
+      newFieldset.innerHTML += "<br />";
+      newFieldset.appendChild(newPre);
+      newFieldset.innerHTML += "<br />";
+      newFieldset.appendChild(newTextArea);
+      newFieldset.innerHTML += "<br />";
+      newFieldset.appendChild(newResponseButton);
+      newFieldset.innerHTML += "<br />";
+      newFieldset.innerHTML += "<br />";
+
+      newForm.appendChild(newFieldset);
+      newDiv.appendChild(newiFrame);
+      newDiv.appendChild(newForm);
+      middleDiv.appendChild(newDiv);
+
+      let course = document.getElementById("CourseNum-" + data.cName);
+
+      let postsNum = course.innerHTML.substring(course.innerHTML.indexOf("Posts"));
+      postsNum = postsNum.substring(0, postsNum.indexOf("<br>"));
+      postsNum = parseInt(postsNum.substring(postsNum.indexOf(":") + 1).trim());
+      postsNum += 1;
+
+      let tutorsNum = course.innerHTML.substring(course.innerHTML.indexOf("Tutors"));
+      tutorsNum = tutorsNum.substring(0, tutorsNum.indexOf("<br>"));
+      tutorsNum = parseInt(tutorsNum.substring(tutorsNum.indexOf(":") + 1).trim());
+
+      let studentsNum = course.innerHTML.substring(course.innerHTML.indexOf("Students"));
+      studentsNum = studentsNum.substring(0, studentsNum.indexOf("<br>"));
+      studentsNum = parseInt(studentsNum.substring(studentsNum.indexOf(":") + 1).trim());
+
+      let newStr = data.cName + "<br>Posts: " + postsNum + "<br>Tutors: " +
+                   tutorsNum + "<br>Students: " + studentsNum + "<br>";
+
+      course.innerHTML = newStr;
+
+      document.getElementById("textQuestion").value = "";
+    });
+
+    courseGroupSocket.on('Duplicate Post', function(data){
+          document.getElementById("textQuestion").value = "";
+    });
+
+    courseGroupSocket.on('responseMessage', function(data){
+
+        let f = document.getElementById(data.user + data.text + "Fieldset");
+        let p = document.createElement("pre");
+
+        if(data.responsesLength == 0)
+        {
+            let fo = document.createElement("font");
+            fo.setAttribute("size", "3");
+            fo.innerHTML = "<br />Responses";
+
+            let l = document.createElement("legend");
+
+            l.appendChild(fo);
+            f.appendChild(l);
+        }
+
+        p.setAttribute("style", "margin: 1em 5em;");
+        p.innerHTML = data.response;
+
+        document.getElementById(data.user + "|" + data.text + "|" + "Response").value = "";
+
+        f.appendChild(p);
+    });
+</script>
+<form action="/course?id={{currCourse}}" method="post">
+</form>
+<div class="col-sm-3 col-md-3 sidebar">
+<div id="courses-div" class="list-group">
+        {% if session.user.type === "admin" %}
+            <center>All Courses</center>
+        {% else %}
+            <center>Courses Enrolled In</center>
+        {% endif %}
+        {% for course in courses %}
+        <a href="/course?id={{course.code}}", id="CourseNum-{{course.code}}" class="list-group-item">
+            {{course.code}}<br>
+            Posts: {{course.num_posts}}<br>
+            Tutors: {{course.num_tutors}}<br>
+            Students: {{course.num_students}}<br>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="middle-column" class="col-sm-6 col-md-6" name="middle-column">
+<center><h2>{{currCourse}} Group Page</h2></center><br>
+  <h3>Welcome {{username}}</h3>
+  <div id="posts-div" class="list-group-item">
+      <style>
+          #submitPost
+          {
+            display: inline-block;
+            border-radius: 4px;
+            background-color: #4d94ff;
+            border: none;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 15px;
+            padding: 7px;
+            width: 100px;
+            transition: all 0.5s;
+            cursor: pointer;
+          }
+
+          #submitResponse
+          {
+              display: inline-block;
+              border-radius: 4px;
+              background-color: #ff751a;
+              border: none;
+              color: #FFFFFF;
+              text-align: center;
+              font-size: 12px;
+              padding: 5px;
+              width: 125px;
+              transition: all 0.5s;
+              cursor: pointer;
+          }
+
+          .button span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+          }
+
+          .button span:after {
+            content: "»";
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+          }
+
+          .button:hover span {
+            padding-right: 25px;
+          }
+
+          .button:hover span:after {
+            opacity: 1;
+            right: 0;
+          }
+      </style>
+      <iframe name="hiddenFrame" class="hide"></iframe>
+      <form action="/course?id={{currCourse}}" method="post" target="hiddenFrame">
+          <textarea id="textQuestion" name="textQuestion" rows="7" required="required" style="resize:vertical; width:100%;" placeholder="What question would you like to ask?"></textarea><br><br>
+          <button id="submitPost" name="postButton" class="button" style="vertical-align:middle"><span>Post </span></button>
+      </form>
+  </div>
+    {% for post in prevPosts %}
+    <div id="{{post[0]}}{{post[1]}}" class="list-group-item">
+        <iframe name="hiddenFrame" class="hide"></iframe>
+        <form action="/course/response?/id={{currCourse}}" method="post" target="hiddenFrame">
+            <fieldset id="{{post[0]}}{{post[1]}}Fieldset">
+              <legend>{{post[0]}}</legend>
+                &nbsp;&nbsp;&nbsp;&nbsp;<pre>{{post[1]}}</pre>
+                &nbsp;&nbsp;&nbsp;&nbsp;<textarea id="{{post[0]}}|{{post[1]}}|Response" name="{{post[0]}}|{{post[1]}}|Response" required="required" rows="1" style="resize:vertical; width:100%;" placeholder="Reply to this Post"></textarea>
+                <button id="submitResponse" name="{{post[0]}}|{{post[1]}}|ResponseButton" class="button"><span>Post Response </span></button>
+                {% if post[2].length != 0 %}
+                    <br><br>
+                        <legend><font size="3">Responses</font></legend>
+                        {% for resp in post[2] %}
+                            <pre style="margin: 1em 5em;">{{resp.text}}</pre>
+                        {% endfor %}
+                {% endif %}
+            </fieldset>
+        </form>
+        <br>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="col-sm-3 col-md-3 sidebar">
+    <div id="friends-div" class="list-group">
+      {% if userType === "admin" %}
+          <center>All Users Enrolled</center>
+      {% else %}
+          <center>All Friends in Course</center>
+      {% endif %}
+        {% for friend in friends %}
+        <a href="/profile?id={{friend.username}}" class="list-group-item">
+            {{friend.username}}
+            <span style="float: right; color: {% if friend.online %}green{% else %}red{% endif %}">
+                ● {% if friend.online %}online{% else %}offline{% endif %}
+            </span>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

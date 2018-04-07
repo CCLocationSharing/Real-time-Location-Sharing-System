@@ -1,0 +1,19 @@
+[
+    {
+        "code": "CSC108",
+        "posts": [
+            {
+                "text": "This is the first CSC108 post",
+                "author": "Syugen",
+                "date": "2017-12-31T23:07:11Z"
+            }
+        ],
+        "tutors":["Syugen"],
+        "students":[]
+    },
+    {
+        "code": "CSC148",
+        "students":[],
+        "tutors":[]
+    }
+]

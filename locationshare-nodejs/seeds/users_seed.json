@@ -1,0 +1,14 @@
+[
+    {
+        "username": "Syugen",
+        "password": "123456",
+        "type": "admin"
+    },
+    {
+        "username": "Dummy",
+        "password": "123456",
+        "type": "student",
+        "courses": ["CSC108"],
+        "friends": ["Syugen"]
+    }
+]

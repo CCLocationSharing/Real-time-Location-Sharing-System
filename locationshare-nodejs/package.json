@@ -1,0 +1,13 @@
+{
+  "name": "LocationSharing",
+  "description": "The group project",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "aws-sdk": "latest",
+    "body-parser": "latest",
+    "express": "latest",
+    "express-session": "latest",
+    "nunjucks": "latest"
+  }
+}

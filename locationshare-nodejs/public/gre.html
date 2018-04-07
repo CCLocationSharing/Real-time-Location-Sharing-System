@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <div class="col-sm-3 col-md-3 sidebar">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-tasks"></i>
+                <span>学习课目</span><br>
+            </div>
+
+            <div class="panel-body">
+                <a href="/gre?subject=voc"><span class="list-group-item">词汇</span></a>
+                <a href="/gre?subject=verbal"><span class="list-group-item">填空</span></a>
+                <a href="/gre?subject=reading"><span class="list-group-item">阅读</span></a>
+                <a href="/gre?subject=writing"><span class="list-group-item">写作</span></a>
+                <a href="/gre"><span class="list-group-item">返回GRE主页</span></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-pencil-square-o"></i>
+                <span>今日任务</span><br>
+            </div>
+
+            <div class="panel-body">
+                <h1 style="text-align:center;">{{ month }}月{{ date }}日</h1>
+                {% if session.user.startdate === undefined %}
+                请先设置学习开始日期！
+                {% else %}
+                    {% if subject === undefined %}
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>词汇</th>
+                            <th>填空</th>
+                            <th>阅读</th>
+                            <th>写作</th>
+                        </tr>
+                        <tr>
+                            <td>未完成</td>
+                            <td>未完成</td>
+                            <td>未完成</td>
+                            <td>未完成</td>
+                        </tr>
+                    </table>
+                    {% elif subject === "voc" %}
+                    {{test}}
+                    {{content}}
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-3 col-md-3 sidebar">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-user"></i>
+                <span>进度</span><br>
+            </div>
+
+            <div class="panel-body">
+                <form id="startdate-form">
+                    {% if session.user.startdate === undefined %}
+                    请设置开始学习日期：<input type="date" name="startdate"><br>
+                    提交后即日开始学习进度，学习时长为50天。<br>
+                    <span id="form-feedback" style="color: red"></span><br>
+                    <input type="submit" value="提交">
+                    {% else %}
+                    <input type="hidden" id="startdate" value="{{ session.user.startdate }}">
+                    今天是学习的第<span id="datediff">天！加油！
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

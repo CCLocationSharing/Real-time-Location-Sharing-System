@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block body %}
+    {% if session.user %}
+    <script>window.location = "dashboard";</script>
+    {% endif %}
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
+                <h1 id="homeHeading">UTop Tutor<br></h1>
+                <h3>WE DO THE BEST!</h3>
+                <hr>
+                <p>Designed for helping U of T students to study computer science courses.</p>
+                <a href="signup" class="btn btn-primary btn-xl page-scroll">Click here to Sign Up</a>
+            </div>
+        </div>
+    </header>
+
+{% endblock %}

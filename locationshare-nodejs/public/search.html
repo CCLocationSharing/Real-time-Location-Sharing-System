@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <div class="col-sm-12 col-md-12">
+    {% if type === "people" %}
+        {% if session.user.type === "student" %}
+        <span style="color: grey">You are logged in as a student. Below are tutors found.</span>
+        {% elif session.user.type === "tutor" %}
+        <span style="color: grey">You are logged in as a tutor. Below are students found.</span>
+        {% elif session.user.type === "admin" %}
+        <span style="color: grey">You are logged in as an admin. Below are both students and tutors found.</span>
+        {% endif %}
+        <br>{{users.length}} results found.
+        {% for user in users %}
+            <div class="list-group-item">
+                <span style="color: purple"> Username: {{user.username}} </span>
+                <a id="add-friend-{{user.username}}" style="float: right">Make friends</a>
+                <span id='friended-{{user.username}}' class='friended'></span>
+                <span style="float: right"> | </span>
+                <a href="profile?id={{user.username}}" style="float: right">View Profile</a>
+                {% for course in user.courses %}
+                <span class="list-group-item">
+                    Course code: {{course}}
+                    <a id="add-course-{{course}}" style="float: right">Add</a>
+                    <span id='courseAdded-{{course}}' class='courseAdded'></span><br>
+                    {% for post in posts %}
+                        {% if post.username == user.username and post.subject == course %}
+                        <span class="list-group-item">
+                            <span class='postTitle'>Title: {{post.title}}</span><br>
+                            <span class='postDetail'>Detail: {{post.detail}}</span><br>
+                            {% if post.is_student %}
+                            <span class='postWhen'>Expected time to be tutored: {{post.when}}</span><br>
+                            {% endif %}
+                            <span class='postData'>Date of making this post: {{post.date}}</span><br>
+                        </span>
+                        {% endif %}
+                    {% endfor %}
+                    </span>
+                </span>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+    {% elif type === "course" %}
+        {% if course === false %}
+            <span style="color: red">Course not found.</span>
+        {% else %}
+            Click <b>Add</b> to join the course forum.<br>
+            <span class="list-group-item">
+                Course code: {{course}}
+                <a id="add-course-{{course}}" style="float: right">Add</a>
+                <span id='courseAdded-{{course}}' style="color: green"></span>
+            </span>
+            <br>
+
+            {% if session.user.type === "student" %}
+            <span style="color: grey">You are logged in as a student. Below are tutors found.</span>
+            {% elif session.user.type === "tutor" %}
+            <span style="color: grey">You are logged in as a tutor. Below are students found.</span>
+            {% elif session.user.type === "admin" %}
+            <span style="color: grey">You are logged in as an admin. Below are both students and tutors found.</span>
+            {% endif %}
+            <br>{{people.length}} results found in {{course}}.
+            {% for person in people %}
+                <span class="list-group-item">
+                    <span style="color: purple">Username: {{person}}</span>
+                    <a id="add-friend-{{person}}" style="float: right">Make friends</a>
+                    <span style="float: right"> | </span>
+                    <a href="profile?id={{person}}" style="float: right">View Profile</a>
+                    <span id='friended-{{person}}' style="color: green"></span>
+                    {% for post in posts %}
+                        {% if post.username === person %}
+                        <span class="list-group-item">
+                            <span>Title: {{post.title}}</span><br>
+                            <span>Detail: {{post.detail}}</span><br>
+                            {% if post.is_student %}
+                            <span>Expected time to be tutored: {{post.when}}</span><br>
+                            {% endif %}
+                            <span>Date of making this post: {{post.date}}</span><br>
+                        </span>
+                        {% endif %}
+                    {% endfor %}
+                </span>
+            {% endfor %}
+        {% endif %} <!-- course === false -->
+    {% endif %} <!-- type === "course" -->
+{% endblock %}
