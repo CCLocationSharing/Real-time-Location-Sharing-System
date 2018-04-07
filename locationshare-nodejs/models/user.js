@@ -1,30 +1,21 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var userSchema = {
+    TableName : "Users",
+    KeySchema: [
+        { AttributeName: "username", KeyType: "HASH"},
+    ],
 
-var userSchema = new Schema(
-    {
-        username: {
-            type: String, required: true, unique: true
-        },
-        password: {
-            type: String, requried: true
-        },
-        email: {type: String, default: ""},
-        picture: {type: String, default: "default.png"},
-        bio: {type: String, default: ""},
-        type: {
-            type: String, requried: true
-        },
-        online: {
-            type: Boolean, required: true, default: 0
-        },
-        courses: [String],
-        friends: [String]
+
+    /// change below
+    username: {
+        type: String, required: true, unique: true
     },
-    {
-        collection: 'users'
-    }
-);
-
-mongoose.connect('mongodb://localhost/usersdb');
-module.exports = mongoose.model('User', userSchema);
+    password: {
+        type: String, requried: true
+    },
+    email: {type: String, default: ""},
+    bio: {type: String, default: ""},
+    online: {
+        type: Boolean, required: true, default: 0
+    },
+    friends: [String]
+}

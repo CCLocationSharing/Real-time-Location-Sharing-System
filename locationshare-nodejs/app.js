@@ -4,6 +4,7 @@ var AWS = require('aws-sdk');
 var express = require('express');
 var bodyParser = require('body-parser');
 
+// ========== AWS ==========
 AWS.config.region = process.env.REGION
 
 var sns = new AWS.SNS();
@@ -13,18 +14,20 @@ var ddbTable =  process.env.STARTUP_SIGNUP_TABLE;
 //var snsTopic =  process.env.NEW_SIGNUP_TOPIC;
 var app = express();
 
-//app.engine('.html', require('ejs').__express);
+// ========== SETTINGS ==========
 app.set('view engine', 'html');
 app.set('views', __dirname);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/assets'));
 
+//========== NUNJUCKS ==========
 var path = require('path');
 var nunjucks = require('nunjucks');
 nunjucks.configure(path.resolve(__dirname + '/public/'),
     { autoescape: true, express: app });
 
+//========== SESSION ==========
 var session = require('express-session');
 app.use(session({ secret: 'What is this', resave: false, saveUninitialized: false,
                   cookie: { maxAge: 900000 }}));
@@ -33,9 +36,10 @@ app.use(function(req, res, next) {
     next();
 });
 
+//========== MAIN ==========
 //var dashboard = require("./routes/dashboard");
 //var profile = require("./routes/profile");
-//var signin = require("./routes/signin");
+var signin = require("./routes/signin");
 
 app.get("/", function(req, res) { // Done
     res.render("index.html", { navbarFixedTop : true});
