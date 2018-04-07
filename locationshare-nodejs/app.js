@@ -37,7 +37,7 @@ app.use(function(req, res, next) {
 });
 
 //========== MAIN ==========
-//var dashboard = require("./routes/dashboard");
+var dashboard = require("./routes/dashboard");
 //var profile = require("./routes/profile");
 var signin = require("./routes/signin");
 
@@ -57,10 +57,9 @@ app.get('/logout', signin.getLogout);// Done
 
 app.post("/signup", signin.postNewUser);// Done
 app.post("/login", signin.postLogin); // Done
-/*
+
 app.get("/dashboard", dashboard.getDashboard);// Done
-app.get("/order", dashboard.getDashboard);
-app.get("/bm", dashboard.getDashboard);
+/*
 app.post("/postAdminUpdate", dashboard.postAdminUpdate);
 app.post("/postOrder", dashboard.postOrder);// Done
 

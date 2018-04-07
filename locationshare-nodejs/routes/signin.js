@@ -3,7 +3,7 @@
 var AWS = require("aws-sdk");
 AWS.config.update({
     region: "us-west-2",
-    endpoint: "http://localhost:8000"
+    endpoint: "https://dynamodb.us-west-2.amazonaws.com"//"http://127.0.0.1:8000"
 });
 
 var docClient = new AWS.DynamoDB.DocumentClient();
@@ -15,48 +15,69 @@ exports.postNewUser = function(req, res) {
         return res.send({status:2});
     }
 
-    var newUser = {
+    var user = {
         TableName: "Users",
         Key: {
-            "username":req.body.username//,
-            //"password":req.body.password,
-            //"online":true,
-            //"friends": []
+            "username":req.body.username
         }
     };
 
-    docClient.get(newUser, function(err, user) {
-        console.log("here")
+    docClient.get(user, function(err, user) {
         if (err) throw err;
-        if (user) res.json({status: 1});
+        if (user.Item) res.json({status: 1});
         else {
-            newUser.save(function(err, newUser) {
-                if (err) throw err;
+            var newUser = {
+                TableName: "Users",
+                Item: {
+                    "username":req.body.username,
+                    "password":req.body.password,
+                    "isonline":true,
+                    "friends": []
+                }
+            };
 
-                req.session.user = { username: newUser.username, type: newUser.type };
+            docClient.put(newUser, function(err, data) {
+                if (err) throw err;
+                
+                req.session.user = { username: newUser.Item.username };
                 res.json({status: 0});
             });
         }
     });
 };
 
-exports.postLogin = function(req, res) {/*
-    User.findOne({ username : req.body.username }, function(err, user) {
+exports.postLogin = function(req, res) {
+    var user = {
+        TableName: "Users",
+        Key: {
+            "username":req.body.username
+        }
+    };
+
+    docClient.get(user, function(err, user) {
         if (err) throw err;
 
-        if (!user) res.json({status: 1});
-        else if (user.password != req.body.password) res.json({status: 2});
+        if (!user.Item) res.json({status: 1});
+        else if (user.Item.password != req.body.password) res.json({status: 2});
         else {
-            user.online = true;
-            user.save(function(err, data) {
+            var updateUser = {
+                TableName: "Users",
+                Key: {
+                    "username":req.body.username
+                },
+                UpdateExpression: "set isonline=:isonline",
+                ExpressionAttributeValues:{
+                    ":isonline": true
+                }
+            };
+            docClient.update(updateUser, function(err, data) {
                 if (err) throw err;
-
-                req.session.user = { username: user.username, type: user.type };
-                let redirect = ["gre", "search"].includes(req.body.from) ? req.body.from : "dashboard";
-                res.json({status: 0, redirect: redirect});
+                
+                req.session.user = { username: user.Item.username };
+                res.json({status: 0, redirect: "dashboard"});
             });
         }
-    });*/
+    });
 };
 
 exports.getLogout = function(req, res) {
