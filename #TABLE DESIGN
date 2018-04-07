@@ -2,8 +2,7 @@
 
 1.
 	USR
-		String userId	hashkey		NOT BLANK
-		String userName attribute 	
+		String username	hashkey		NOT BLANK
 		String password	attribute	NOT EMPTY
 
 2.
