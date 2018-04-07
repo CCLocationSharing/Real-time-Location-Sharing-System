@@ -52,12 +52,12 @@ app.get("/signup", function(req, res) { // Done
 app.get("/login", function(req, res) { // Done
     res.render("login.html", { scripts: ["login"], styles: ["signin"], from: req.query.from });
 });
-/*
+
 app.get('/logout', signin.getLogout);// Done
 
 app.post("/signup", signin.postNewUser);// Done
 app.post("/login", signin.postLogin); // Done
-
+/*
 app.get("/dashboard", dashboard.getDashboard);// Done
 app.get("/order", dashboard.getDashboard);
 app.get("/bm", dashboard.getDashboard);

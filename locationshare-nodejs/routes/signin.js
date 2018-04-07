@@ -1,8 +1,12 @@
 'use strict';
 
-var User = require("../models/user");
-//var Course = require("../models/course");
-var express = require('express');
+var AWS = require("aws-sdk");
+AWS.config.update({
+    region: "us-west-2",
+    endpoint: "http://localhost:8000"
+});
+
+var docClient = new AWS.DynamoDB.DocumentClient();
 
 exports.postNewUser = function(req, res) {
     if (!req.body.password.match(/^\w{6,20}$/)) {
@@ -11,16 +15,18 @@ exports.postNewUser = function(req, res) {
         return res.send({status:2});
     }
 
-    var newUser = new User({
-                username:req.body.username,
-                password:req.body.password,
-                type:"student",
-                online:true,
-                courses:null,
-                friends: null
-            });
+    var newUser = {
+        TableName: "Users",
+        Key: {
+            "username":req.body.username//,
+            //"password":req.body.password,
+            //"online":true,
+            //"friends": []
+        }
+    };
 
-    User.findOne({ username : req.body.username }, function(err, user) {
+    docClient.get(newUser, function(err, user) {
+        console.log("here")
         if (err) throw err;
         if (user) res.json({status: 1});
         else {
@@ -34,7 +40,7 @@ exports.postNewUser = function(req, res) {
     });
 };
 
-exports.postLogin = function(req, res) {
+exports.postLogin = function(req, res) {/*
     User.findOne({ username : req.body.username }, function(err, user) {
         if (err) throw err;
 
@@ -50,7 +56,7 @@ exports.postLogin = function(req, res) {
                 res.json({status: 0, redirect: redirect});
             });
         }
-    });
+    });*/
 };
 
 exports.getLogout = function(req, res) {
