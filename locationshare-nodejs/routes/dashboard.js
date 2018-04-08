@@ -31,3 +31,7 @@ exports.getLibraryStatus = function(req, res) {
 		res.json(taken.Items);
 	});
 }
+
+/*exports.getFriendList = function(req, res) {
+
+}*/

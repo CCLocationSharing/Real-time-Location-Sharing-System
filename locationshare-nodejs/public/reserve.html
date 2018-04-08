@@ -63,53 +63,5 @@
             </div>
         </div>
     </div>
-
-    <div class="col-sm-3 col-md-3 sidebar">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <i class="fa fa-tasks fa"></i>
-                Upcoming orders
-            </div>
-
-            <div class="panel-body">
-                {% if orders.length === 0 %}
-                    You don't have any upcoming orders!
-                {% endif %}
-
-                {% for order in orders %}
-                    <span class="list-group-item">
-                        {{order.date}}: {{order.course}}<br>
-                    </span>
-            {% endfor %}
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-3 col-md-3 sidebar">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <i class="fa fa-user"></i>
-                    {% if session.user.type === "admin" %}
-                        All Users
-                    {% else %}
-                        Friends List
-                    {% endif %}
-            </div>
-
-            <div class="panel-body">
-                {% if friends.length === 0 %}
-                    You don't have any friends!
-                {% endif %}
-                {% for friend in friends %}
-                    <a href="/profile?id={{friend.username}}" class="list-group-item">
-                        {{friend.username}}
-                        <span style="float: right; color: {% if friend.online %}green{% else %}red{% endif %}">
-                            ● {% if friend.online %}online{% else %}offline{% endif %}
-                        </span>
-                    </a>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
 </div>
 {% endblock %}

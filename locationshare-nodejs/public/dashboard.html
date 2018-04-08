@@ -13,7 +13,7 @@
             <table class="table table-bordered" id="library-status">
                 <tr>
                     <th>Library</th>
-                    <th>Availability</th>
+                    <th>Free seats</th>
                 </tr>
             </table>
             </div>
@@ -47,11 +47,10 @@
                 <i class="fa fa-user"></i>Friends List
             </div>
 
-            <div class="panel-body" id>
-                Loading...
-                {% for friend in friends %}
-                    <a href="/profile?id={{friend.username}}" class="list-group-item">
-                        {{friend.username}}
+            <div class="panel-body" id="friend-list">
+                {% for friend in session.user.friends %}
+                    <a href="/profile?id={{friend}}" class="list-group-item" id="{{friend}}">
+                        {{friend}}
                         <span style="float: right; color: {% if friend.online %}green{% else %}red{% endif %}">
                             ● {% if friend.online %}online{% else %}offline{% endif %}
                         </span>

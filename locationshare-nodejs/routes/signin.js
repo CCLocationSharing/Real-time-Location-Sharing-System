@@ -8,7 +8,11 @@ AWS.config.update({
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
-var crypto = require('crypto');
+var express = require('express');
+var app = express();
+var http = require("http").Server(app);
+var io = require("socket.io")(http);
+var crypto = require("crypto");
 
 /**
  * generates random string of characters i.e salt
@@ -67,7 +71,7 @@ exports.postNewUser = function(req, res) {
             docClient.put(newUser, function(err, data) {
                 if (err) throw err;
                 
-                req.session.user = { username: newUser.Item.username };
+                req.session.user = {username: user.Item.username};
                 res.json({status: 0});
             });
         }
@@ -103,7 +107,8 @@ exports.postLogin = function(req, res) {
             docClient.update(updateUser, function(err, data) {
                 if (err) throw err;
                 */
-                req.session.user = { username: user.Item.username };
+                io.emit("login", {username: user.Item.username});
+                req.session.user = {username: user.Item.username};
                 res.json({status: 0, redirect: "dashboard"});
             //});
         }

@@ -1,18 +1,8 @@
 'use strict';
 
-var AWS = require('aws-sdk');
 var express = require('express');
-var bodyParser = require('body-parser');
-
-// ========== AWS ==========
-AWS.config.region = process.env.REGION
-
-var sns = new AWS.SNS();
-var ddb = new AWS.DynamoDB();
-
-var ddbTable =  process.env.STARTUP_SIGNUP_TABLE;
-//var snsTopic =  process.env.NEW_SIGNUP_TOPIC;
 var app = express();
+var bodyParser = require('body-parser');
 
 // ========== SETTINGS ==========
 app.set('view engine', 'html');
@@ -40,6 +30,14 @@ app.use(function(req, res, next) {
 var signin = require("./routes/signin");
 var dashboard = require("./routes/dashboard");
 var reserve = require("./routes/reserve");
+//var socketio = require("./routes/socketio");
+
+var server = require("http").Server(app);
+var io = require("socket.io")(server);
+
+io.sockets.on('connection', function(socket) {
+	
+});
 
 app.get("/", function(req, res) { // Done
     res.render("index.html", { navbarFixedTop : true});
@@ -63,10 +61,12 @@ app.post("/signup", signin.postNewUser);// Done
 app.post("/login", signin.postLogin); // Done
 
 app.get("/dashboard", function(req, res) {
+	if (req.session.user === undefined) return res.redirect("/");
 	res.render("dashboard.html", {styles: ["dashboard"], scripts: ["dashboard"]});
 });// Done
 app.get("/libraryCapacity", dashboard.getLibraryCapacity);
 app.get("/libraryStatus", dashboard.getLibraryStatus);
+//app.get("/friendList", dashboard.getFriendList);
 
 app.get("/reserve", function(req, res) {
 	if (req.session.user === undefined) return res.redirect("/");
@@ -91,12 +91,9 @@ app.post("/profile", upload.single("picture"), profile.postProfile);// Done
 app.post("/removeCourse", profile.removeCourse);// Done
 app.post("/removeFriend", profile.removeFriend);// Done
 app.post("/removeTutorPost", profile.removeTutorPost);// Done
-
-app.get("/gre", gre.getGre);
-app.post("/postGreStartDate", gre.postStartDate);
 */
 var port = process.env.PORT || 3000;
 
-var server = app.listen(port, function () {
+server.listen(port, function () {
     console.log('Server running at http://127.0.0.1:' + port + '/');
 });
