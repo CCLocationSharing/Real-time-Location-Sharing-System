@@ -8,6 +8,31 @@ AWS.config.update({
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
+var crypto = require('crypto');
+
+/**
+ * generates random string of characters i.e salt
+ * @function
+ * @param {number} length - Length of the random string.
+ */
+var genRandomString = function(length){
+    return crypto.randomBytes(Math.ceil(length/2))
+            .toString('hex') /** convert to hexadecimal format */
+            .slice(0,length);   /** return required number of characters */
+};
+
+/**
+ * hash password with sha512.
+ * @function
+ * @param {string} password - List of required fields.
+ * @param {string} salt - Data to be validated.
+ */
+var sha512 = function(password, salt){
+    var hash = crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
+    hash.update(password);
+    return hash.digest('hex');
+};
+
 exports.postNewUser = function(req, res) {
     if (!req.body.password.match(/^\w{6,20}$/)) {
         return res.send({status:3});
@@ -26,11 +51,14 @@ exports.postNewUser = function(req, res) {
         if (err) throw err;
         if (user.Item) res.json({status: 1});
         else {
+            var salt = genRandomString(16);
+            var password = sha512(req.body.password, salt);
             var newUser = {
                 TableName: "Users",
                 Item: {
                     "username":req.body.username,
-                    "password":req.body.password,
+                    "salt": salt,
+                    "password":password,
                     "isonline":true, // currently no use
                     "friends": [] // currently no use
                 }
@@ -57,8 +85,10 @@ exports.postLogin = function(req, res) {
     docClient.get(user, function(err, user) {
         if (err) throw err;
 
-        if (!user.Item) res.json({status: 1});
-        else if (user.Item.password != req.body.password) res.json({status: 2});
+        if (!user.Item) return res.json({status: 1});
+        var salt = user.Item.salt;
+        if (user.Item.password != sha512(req.body.password, salt)) 
+            res.json({status: 2});
         else {
             /*var updateUser = {
                 TableName: "Users",

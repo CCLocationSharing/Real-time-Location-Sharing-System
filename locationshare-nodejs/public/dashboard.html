@@ -44,18 +44,11 @@
     <div class="col-sm-3 col-md-3 sidebar">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-user"></i>
-                    {% if session.user.type === "admin" %}
-                        All Users
-                    {% else %}
-                        Friends List
-                    {% endif %}
+                <i class="fa fa-user"></i>Friends List
             </div>
 
-            <div class="panel-body">
-                {% if friends.length === 0 %}
-                    You don't have any friends!
-                {% endif %}
+            <div class="panel-body" id>
+                Loading...
                 {% for friend in friends %}
                     <a href="/profile?id={{friend.username}}" class="list-group-item">
                         {{friend.username}}
