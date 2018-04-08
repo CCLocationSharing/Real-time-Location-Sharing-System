@@ -38,11 +38,15 @@ app.use(function(req, res, next) {
 
 //========== MAIN ==========
 var signin = require("./routes/signin");
-//var dashboard = require("./routes/dashboard");
+var dashboard = require("./routes/dashboard");
 var reserve = require("./routes/reserve");
 
 app.get("/", function(req, res) { // Done
     res.render("index.html", { navbarFixedTop : true});
+});
+
+app.get("/about", function(req, res) { // Done
+    res.render("about.html", { navbarFixedTop : true});
 });
 
 app.get("/signup", function(req, res) { // Done
@@ -50,7 +54,7 @@ app.get("/signup", function(req, res) { // Done
 });
 
 app.get("/login", function(req, res) { // Done
-    res.render("login.html", { scripts: ["login"], styles: ["signin"], from: req.query.from });
+    res.render("login.html", { scripts: ["login"], styles: ["signin"] });
 });
 
 app.get('/logout', signin.getLogout);// Done
@@ -58,8 +62,14 @@ app.get('/logout', signin.getLogout);// Done
 app.post("/signup", signin.postNewUser);// Done
 app.post("/login", signin.postLogin); // Done
 
-app.get("/dashboard", dashboard.getDashboard);// Done
+app.get("/dashboard", function(req, res) {
+	res.render("dashboard.html", {styles: ["dashboard"], scripts: ["dashboard"]});
+});// Done
+app.get("/libraryCapacity", dashboard.getLibraryCapacity);
+app.get("/libraryStatus", dashboard.getLibraryStatus);
+
 app.get("/reserve", reserve.getReserve);// Done
+
 
 /*
 app.post("/postAdminUpdate", dashboard.postAdminUpdate);

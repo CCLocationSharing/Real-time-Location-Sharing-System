@@ -4,10 +4,10 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "aws-sdk": "latest",
-    "body-parser": "latest",
-    "express": "latest",
-    "express-session": "latest",
-    "nunjucks": "latest"
+    "aws-sdk": "^2.222.1",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "nunjucks": "^3.1.2"
   }
 }
