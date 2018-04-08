@@ -1,14 +1,21 @@
 #TABLE DESIGN
 
 1.
-	USR
-		String username	hashkey		NOT BLANK
-		String password	attribute	NOT EMPTY
+	Users
+		String username		hashkey		NOT BLANK
+		String password		attribute	NOT EMPTY
+		Bool   isonline		attribute
+		Array  friends		attribute
 
 2.
-	LIB
-		String libId	hashkey		NOT BLANK
-		String libName	attribute	NOT BLANK
+	Libraries
+		String libID		hashkey		NOT BLANK
+		String libName		attribute	NOT BLANK
+		Number libCapacity	attribute
+
+	LibraryAvailability
+		String libID		hashkey		NOT BLANK
+		Number taken		attribute
 
 3.
 	TAB
