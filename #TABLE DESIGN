@@ -1,5 +1,8 @@
 #TABLE DESIGN
 
+Note:
+	Run ./feed_db.sh to feed the AWS DynamoDB. Running the script will add
+	seeds to your own DB with your AWS credential.
 1.
 	Users
 		String username		hashkey		NOT BLANK

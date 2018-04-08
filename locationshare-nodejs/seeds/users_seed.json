@@ -1,14 +1,29 @@
-[
-    {
-        "username": "Syugen",
-        "password": "123456",
-        "type": "admin"
-    },
-    {
-        "username": "Dummy",
-        "password": "123456",
-        "type": "student",
-        "courses": ["CSC108"],
-        "friends": ["Syugen"]
-    }
-]
+{
+    "Users": [
+        {"PutRequest": {"Item": {
+            "username": {"S": "Syugen"},
+            "password": {"S": "123456"},
+            "isonline": {"BOOL": true},
+            "friends": {"L": [
+            	{"S": "yz2369"},
+            	{"S": "xm99"}
+            ]}
+        }}},
+        {"PutRequest": {"Item": {
+            "username": {"S": "yz2369"},
+            "password": {"S": "123456"},
+            "isonline": {"BOOL": true},
+            "friends": {"L": [
+            	{"S": "Syugen"}
+            ]}
+        }}},
+        {"PutRequest": {"Item": {
+            "username": {"S": "xm99"},
+            "password": {"S": "123456"},
+            "isonline": {"BOOL": true},
+            "friends": {"L": [
+            	{"S": "Syugen"}
+            ]}
+        }}}
+    ]
+}

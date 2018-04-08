@@ -1,8 +1,0 @@
-[
-    {
-        "date": {"$date": 1490709600000},
-        "username": "ZhuaMei",
-        "order_date": {"$date": 1490467970000},
-        "course": "CSC108"
-    }
-]

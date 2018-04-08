@@ -1,11 +1,5 @@
 'use strict';
 
-exports.getReserve = function(req, res) {
-    let loggedIn = req.session.user, start, end, dateString = [];
-    let setting = {styles: ["dashboard"], scripts: ["dashboard", "jquery.maskedinput.min"]};
-    return res.render("dashboard.html", setting);
-}
-
 exports.postAdminUpdate = function(req, res) {
     if (req.session.user === undefined) return res.redirect("/login?from=dashboard");
     if (req.session.user.type !== "admin") return res.send({status: 1});

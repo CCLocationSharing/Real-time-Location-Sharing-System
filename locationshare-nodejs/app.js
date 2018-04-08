@@ -68,7 +68,10 @@ app.get("/dashboard", function(req, res) {
 app.get("/libraryCapacity", dashboard.getLibraryCapacity);
 app.get("/libraryStatus", dashboard.getLibraryStatus);
 
-app.get("/reserve", reserve.getReserve);// Done
+app.get("/reserve", function(req, res) {
+	if (req.session.user === undefined) return res.redirect("/");
+	res.render("reserve.html", {styles: ["reserve"], scripts: ["reserve"]});
+});
 
 
 /*
