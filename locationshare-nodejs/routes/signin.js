@@ -70,9 +70,10 @@ exports.postNewUser = function(req, res) {
 
             docClient.put(newUser, function(err, data) {
                 if (err) throw err;
-                
-                req.session.user = {username: user.Item.username};
-                res.json({status: 0});
+                else{
+                    req.session.user = {username: newUser.Item.username, friends: newUser.Item.friends};
+                    res.json({status: 0, redirect: "dashboard"});
+                }
             });
         }
     });
@@ -108,7 +109,7 @@ exports.postLogin = function(req, res) {
                 if (err) throw err;
                 */
                 io.emit("login", {username: user.Item.username});
-                req.session.user = {username: user.Item.username};
+                req.session.user = {username: user.Item.username, friends: user.Item.friends};
                 res.json({status: 0, redirect: "dashboard"});
             //});
         }
