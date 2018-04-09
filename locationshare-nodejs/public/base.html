@@ -24,13 +24,13 @@
          {% if navbarFixedTop %} navbar-fixed-top {% endif %}">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/">Home</a>
+                <a class="navbar-brand {{home}}" href="/">Home</a>
             </div>
             <div class="navbar-header">
-                <a class="navbar-brand" href="about">About</a>
+                <a class="navbar-brand {{about}}" href="about">About</a>
             </div>
             <div class="navbar-header">
-                <a class="navbar-brand" href="reserve">Reserve</a>
+                <a class="navbar-brand {{reserve}}" href="reserve">Reserve</a>
             </div>
             <!--{% if session.user %}
             <form id='searchSubmit' class="navbar-form navbar-left" role="search">

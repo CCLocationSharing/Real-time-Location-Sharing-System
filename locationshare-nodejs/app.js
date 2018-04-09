@@ -40,11 +40,12 @@ io.sockets.on('connection', function(socket) {
 });
 
 app.get("/", function(req, res) { // Done
-    res.render("index.html", { navbarFixedTop : true});
+
+    res.render("index.html", { navbarFixedTop : true, home : "active"});
 });
 
 app.get("/about", function(req, res) { // Done
-    res.render("about.html", { navbarFixedTop : true});
+    res.render("about.html", { navbarFixedTop : true, about : "active"});
 });
 
 app.get("/signup", function(req, res) { // Done
@@ -62,7 +63,7 @@ app.post("/login", signin.postLogin); // Done
 
 app.get("/dashboard", function(req, res) {
 	if (req.session.user === undefined) return res.redirect("/");
-	res.render("dashboard.html", {styles: ["dashboard"], scripts: ["dashboard"]});
+	res.render("dashboard.html", {styles: ["dashboard"], scripts: ["dashboard"], home : "active"});
 });// Done
 app.get("/libraryCapacity", dashboard.getLibraryCapacity);
 app.get("/libraryStatus", dashboard.getLibraryStatus);
@@ -70,7 +71,7 @@ app.get("/libraryStatus", dashboard.getLibraryStatus);
 
 app.get("/reserve", function(req, res) {
 	if (req.session.user === undefined) return res.redirect("/");
-	res.render("reserve.html", {styles: ["reserve"], scripts: ["reserve"]});
+	res.render("reserve.html", {styles: ["reserve"], scripts: ["reserve"], reserve : "active"});
 });
 
 
