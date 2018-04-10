@@ -7,8 +7,14 @@ dashboard.init = function() {
 
     let libTable = $("#library-status");
     let libIDToRow = [];
+
+    let thead = "<thead><tr><th>Libraries</th><th>Status</th></tr></thead>";
+    libTable.append(thead);
+    libTable.append("<tbody>");
+
     $.get("/libraryCapacity", function(result) {
         for (let i = 0; i < result.length; i++) {
+            capList[i] = result[i].libCapacity;
             let libID = result[i].libID, name = result[i].libName;
             let cap = result[i].libCapacity;
             let td1 = "<td id=" + libID + ">" + name + "</td>";
@@ -19,17 +25,17 @@ dashboard.init = function() {
 
         $.get("/libraryStatus", function(result) {
             for (let i = 0; i < result.length; i++) {
+                takenList[i] = result[i].taken;
                 let row = libIDToRow[result[i].libID];
                 let td = libTable.find("tr").eq(row).find("td").eq(1);
                 td.text(result[i].taken + "/" + td.attr("cap"));
             }
+            libChart.update();
         });
+        libChart.update();
     });
 
-    /*let usernameToRow = [];
-    $.get("/friendList", function(result) {
-        
-    }*/
+    libTable.append("</tbody>");
 }
 
 $(document).ready(function() {

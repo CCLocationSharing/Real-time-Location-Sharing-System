@@ -113,7 +113,7 @@ aside {
   }
   .navbar-default .navbar-header .navbar-brand {
      /*color:rgb(253, 105, 7);*/
-     color: #fff;
+     color: #bbb;
   }
   .navbar-default .navbar-header .navbar-brand:hover,
   .navbar-default .navbar-header .navbar-brand:focus {

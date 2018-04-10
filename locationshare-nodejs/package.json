@@ -7,6 +7,7 @@
     "aws": "0.0.3-2",
     "aws-sdk": "^2.222.1",
     "body-parser": "^1.18.2",
+    "chart.js": "^2.7.2",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "nunjucks": "^3.1.2",
