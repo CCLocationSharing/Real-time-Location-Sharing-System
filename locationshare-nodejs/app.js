@@ -70,7 +70,10 @@ app.get("/libraryStatus", dashboard.getLibraryStatus);
 //app.get("/friendList", dashboard.getFriendList);
 
 app.get("/reserve", function(req, res) {
-	if (req.session.user === undefined) return res.redirect("/");
+	if (req.session.user === undefined) {
+        req.session.lastUrl = "/reserve";
+        return res.redirect("/login");
+    }
 	res.render("reserve.html", {styles: ["reserve"], scripts: ["reserve"], reserve : "active"});
 });
 

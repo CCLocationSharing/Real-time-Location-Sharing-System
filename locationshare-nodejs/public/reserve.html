@@ -1,5 +1,73 @@
 {% extends "base.html" %}
 
 {% block body %}
-    
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-6 col-md-6">
+			
+		</div>
+		<div class="col-sm-6 col-md-6">
+			
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 col-md-12">
+			<div class="row">
+				<div class="col-sm-6 col-md-6">
+					<h3>Date for Reservation</h3>
+				</div>
+				<div class="col-sm-2 col-md-2"></div>
+				<div class="col-sm-4 col-md-4">
+					<div class="form-group" style="margin-top: 20px">
+						<div class='input-group date'>
+							<input id="datepicker" type='text' class="form-control" />
+                    		<span class="input-group-addon">
+                        		<span class="glyphicon glyphicon-calendar"></span>
+                    		</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 col-md-12">
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">test1</th>
+									<th scope="col">test2</th>
+									<th scope="col">test3</th>
+									<th scope="col">test4</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">olinr1</th>
+									<td>1</td>
+									<td>2</td>
+									<td>3</td>
+								</tr>
+								<tr>
+									<th scope="row">olinr2</th>
+									<td>4</td>
+									<td>5</td>
+									<td>6</td>
+								</tr>
+								<tr>
+									<th scope="row">olinr3</th>
+									<td>7</td>
+									<td>8</td>
+									<td>9</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="scripts/moment.min.js"></script>
+<script src="scripts/pikaday.js"></script>
 {% endblock %}

@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 
 {% block body %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 <div class="container-fluid">
     <div class="row">
-        <main role="main" class="col-md-9 col-md-9 pt-3 px-4">
+        <main role="main" class="col-sm-9 col-md-9 pt-3 px-4">
             <h2>Study Space Status</h2>
             <div class="table-responsive">
-                <table id="library-status" class="table table-striped table-sm">
+                <table id="library-status" class="table table-hover">
                 </table>
             </div>
             <h2></h2>
@@ -57,7 +56,8 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
+<script src="scripts/Chart.min.js"></script>
+<script>
     var takenList = [];
     var capList = [];
     var libChart = new Chart($("#libChart"), {

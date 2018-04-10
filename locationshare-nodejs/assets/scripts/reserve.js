@@ -5,7 +5,7 @@ var reserve = {};
 
 //append search result at search.html by using res.render() , using template
 //need to specify the template of search.html
-
+/*
 reserve.init = function() {
     $("#info-form").submit(function(event) {
         event.preventDefault();
@@ -36,6 +36,12 @@ reserve.init = function() {
     });
 
     if($("#phone-input").length) $("#phone-input").mask("(999) 999-9999");
+}*/
+
+reserve.init = function () {
+    //pikaday plugin
+    var picker = new Pikaday({ field: $("#datepicker")[0] });
+
 }
 
 $(document).ready(function() {

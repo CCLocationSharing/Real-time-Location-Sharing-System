@@ -110,7 +110,11 @@ exports.postLogin = function(req, res) {
                 */
                 io.emit("login", {username: user.Item.username});
                 req.session.user = {username: user.Item.username, friends: user.Item.friends};
-                res.json({status: 0, redirect: "dashboard"});
+                if(req.session.lastUrl === undefined || req.session.lastUrl != "/reserve") {
+                    res.json({status: 0, redirect: "dashboard"});
+                }else{
+                    res.json({status: 0, redirect: "reserve"});
+                }
             //});
         }
     });
