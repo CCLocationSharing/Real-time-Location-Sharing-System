@@ -235,3 +235,146 @@ http://nicolasgallagher.com/micro-clearfix-hack/
     cursor: help;
 }
 
+/*seat*/
+*,*:before,*:after {
+    box-sizing: border-box;
+}
+
+.rsv {
+  position: relative; 
+} 
+
+.rsv input[type=checkbox] {
+    position: absolute;
+    opacity: 0;
+}
+.rsv input[type=checkbox]:checked + label {
+    background: #bada55;      
+    -webkit-animation-name: rubberBand;
+        animation-name: rubberBand;
+    animation-duration: 300ms;
+    animation-fill-mode: both;
+}
+
+.rsv input[type=checkbox]:disabled + label {
+    background: #dddddd;
+    text-indent: -9999px;
+    overflow: hidden;
+}
+.rsv input[type=checkbox]:disabled + label:after {
+    content: "X";
+    text-indent: 0;
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+.rsv input[type=checkbox]:disabled + label:hover {
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.rsv span {    
+    display: block;
+    position: relative;    
+    width: 100%;    
+    line-height: 2rem;
+    padding: 8px 0;
+    background: #F42536;
+    animation-duration: 300ms;
+    animation-fill-mode: both;
+}
+.rsv span:before {
+    content: "";
+    position: absolute;
+    width: 75%;
+    height: 75%;
+    top: 1px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    background: rgba(255,255,255,.4);
+    border-radius: 3px;
+}
+.rsv span:hover {
+    cursor: pointer;
+    box-shadow: 0 0 0px 2px #5C6AFF;
+}
+
+@-webkit-keyframes rubberBand {
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+  }
+
+  30% {
+    -webkit-transform: scale3d(1.25, 0.75, 1);
+            transform: scale3d(1.25, 0.75, 1);
+  }
+
+  40% {
+    -webkit-transform: scale3d(0.75, 1.25, 1);
+            transform: scale3d(0.75, 1.25, 1);
+  }
+
+  50% {
+    -webkit-transform: scale3d(1.15, 0.85, 1);
+            transform: scale3d(1.15, 0.85, 1);
+  }
+
+  65% {
+    -webkit-transform: scale3d(.95, 1.05, 1);
+            transform: scale3d(.95, 1.05, 1);
+  }
+
+  75% {
+    -webkit-transform: scale3d(1.05, .95, 1);
+            transform: scale3d(1.05, .95, 1);
+  }
+
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes rubberBand {
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+  }
+
+  30% {
+    -webkit-transform: scale3d(1.25, 0.75, 1);
+            transform: scale3d(1.25, 0.75, 1);
+  }
+
+  40% {
+    -webkit-transform: scale3d(0.75, 1.25, 1);
+            transform: scale3d(0.75, 1.25, 1);
+  }
+
+  50% {
+    -webkit-transform: scale3d(1.15, 0.85, 1);
+            transform: scale3d(1.15, 0.85, 1);
+  }
+
+  65% {
+    -webkit-transform: scale3d(.95, 1.05, 1);
+            transform: scale3d(.95, 1.05, 1);
+  }
+
+  75% {
+    -webkit-transform: scale3d(1.05, .95, 1);
+            transform: scale3d(1.05, .95, 1);
+  }
+
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+  }
+}
+
+.rubberBand {
+  -webkit-animation-name: rubberBand;
+          animation-name: rubberBand;
+}
