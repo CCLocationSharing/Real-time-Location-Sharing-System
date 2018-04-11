@@ -39,8 +39,28 @@ reserve.init = function() {
 }*/
 
 reserve.init = function () {
+    var now = moment();
+    var minDate = now;
+    var maxDate = moment().add(7, 'day');
     //pikaday plugin
-    var picker = new Pikaday({ field: $("#datepicker")[0] });
+    var picker = new Pikaday({ 
+        field: $('#datepicker')[0],
+        trigger: $('#datepickerTrigger')[0],
+        minDate: now,
+        maxDate: maxDate,
+        disableDayFn: function(date) {
+            if(date < minDate || date > maxDate) {
+                return true;
+            }else {
+                return false;
+            }
+        },
+        onSelect: function(date) {
+            $('#datepicker')[0].value = picker.toString();
+        }
+    });
+
+
 
 }
 

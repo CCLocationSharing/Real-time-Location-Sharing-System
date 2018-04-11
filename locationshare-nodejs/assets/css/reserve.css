@@ -248,7 +248,7 @@ http://nicolasgallagher.com/micro-clearfix-hack/
     position: absolute;
     opacity: 0;
 }
-.rsv input[type=checkbox]:checked + label {
+.rsv input[type=checkbox]:checked + span {
     background: #bada55;      
     -webkit-animation-name: rubberBand;
         animation-name: rubberBand;
@@ -256,20 +256,13 @@ http://nicolasgallagher.com/micro-clearfix-hack/
     animation-fill-mode: both;
 }
 
-.rsv input[type=checkbox]:disabled + label {
+.rsv input[type=checkbox]:disabled + span {
     background: #dddddd;
     text-indent: -9999px;
     overflow: hidden;
 }
-.rsv input[type=checkbox]:disabled + label:after {
-    content: "X";
-    text-indent: 0;
-    position: absolute;
-    top: 4px;
-    left: 50%;
-    transform: translate(-50%, 0%);
-}
-.rsv input[type=checkbox]:disabled + label:hover {
+
+.rsv input[type=checkbox]:disabled + span:hover {
     box-shadow: none;
     cursor: not-allowed;
 }
@@ -277,13 +270,22 @@ http://nicolasgallagher.com/micro-clearfix-hack/
 .rsv span {    
     display: block;
     position: relative;    
-    width: 100%;    
+    height: 24px;
+    width: 32px;   
     line-height: 2rem;
     padding: 8px 0;
-    background: #F42536;
+    background: #3db73f;
     animation-duration: 300ms;
     animation-fill-mode: both;
 }
+
+.rsv span.full {
+    background-color: #F42536 !important;
+}
+.rsv span.empty {
+    background-color: #3db73f !important;
+}
+
 .rsv span:before {
     content: "";
     position: absolute;
@@ -297,7 +299,7 @@ http://nicolasgallagher.com/micro-clearfix-hack/
 }
 .rsv span:hover {
     cursor: pointer;
-    box-shadow: 0 0 0px 2px #5C6AFF;
+    box-shadow: 0 0 0px 2px #ffffff;
 }
 
 @-webkit-keyframes rubberBand {
