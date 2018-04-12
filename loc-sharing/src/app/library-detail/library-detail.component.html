@@ -1,0 +1,22 @@
+<!--
+<p>
+  library-detail works!
+</p>
+<div *ngIf="library">
+
+  <h2>{{ library.name | uppercase }} Details</h2>
+  <div><span>id: </span>{{library.id}}</div>
+  <div>
+    <label>name:
+      <input [(ngModel)]="library.name" placeholder="name">
+    </label>
+  </div>
+
+</div>
+-->
+<ul class="seats">
+  <li *ngFor="let seat of seats" (click)="onSelect(seat)">
+    Seat No. <span>{{seat.id}} @ </span> {{seat.libraryName}} is {{seat.status}}
+  </li>
+</ul>
+<button (click)="goBack()">go back</button>

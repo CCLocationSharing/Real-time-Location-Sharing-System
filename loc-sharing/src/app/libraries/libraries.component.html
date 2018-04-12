@@ -1,0 +1,49 @@
+<!--
+<h2>{{ library.name | uppercase }} Details</h2>
+<div><span>id: </span>{{library.id}}</div>
+<div><span>name: </span>{{library.name}}</div>
+<div>
+    <label>name:
+      <input [(ngModel)]="library.name" placeholder="name">
+    </label>
+</div>
+-->
+<h2>A List of All the Libraries</h2>
+<!--
+<ul class="libraries">
+  <li *ngFor="let library of libraries" (click)="onSelect(library)">
+    <span class="badge">{{library.id}}</span> {{library.name}}
+  </li>
+</ul>
+<ul class="libraries">
+  <li *ngFor="let library of libraries"
+    [class.selected]="library === selectedLibrary"
+    (click)="onSelect(library)">
+    <span class="badge">{{library.id}}</span> {{library.name}}
+  </li>
+</ul>
+-->
+<ul class="libraries">
+  <li *ngFor="let library of libraries">
+    <a routerLink="/detail/{{library.id}}">
+      <span class="badge">{{library.id}}</span> {{library.name}}
+    </a>
+  </li>
+</ul>
+<button (click)="goBack()">go back</button>
+
+<!--
+<div *ngIf="selectedLibrary">
+
+  <h2>{{ selectedLibrary.name | uppercase }} Details</h2>
+  <div><span>id: </span>{{selectedLibrary.id}}</div>
+  <div>
+    <label>name:
+      <input [(ngModel)]="selectedLibrary.name" placeholder="name">
+    </label>
+  </div>
+
+</div>
+
+<app-library-detail [library]="selectedLibrary"></app-library-detail>
+-->

@@ -1,0 +1,25 @@
+<div>
+  <label>Seat Id:
+    <input [(ngModel)]="request.seatId">
+  </label>
+</div>
+<div>
+  <label>Library Name:
+  	<input [(ngModel)]="request.libraryName">
+  </label>
+</div>
+<div>
+  <label>Start Time:
+  	<input [(ngModel)]="request.startTime">
+  </label>
+</div>
+<div>
+  <label>End Time:
+  	<input [(ngModel)]="request.endTime">
+  </label>
+</div>
+<!--<div><span>seatId: </span>{{request.seatId}}</div>-->
+<button (click)="confirm()">confirm</button>
+<button (click)="goBack()">go back</button>
+
+
