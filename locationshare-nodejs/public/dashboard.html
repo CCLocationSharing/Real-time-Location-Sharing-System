@@ -61,22 +61,22 @@
     var takenList = [];
     var capList = [];
     var libChart = new Chart($("#libChart"), {
-        type: 'line',
+        type: 'bar',
         data: {
             labels: ['Olin Library', 'Gates Hall', 'Uris Hall', 'Carpenter Hall'],
             datasets: [{
                 data: takenList,
-                backgroundColor: '#ffad9a',
+                backgroundColor: '#9ec2e2',
                 fill: true,
-                borderColor: '#f17659',
+                borderColor: '#9ec2e2',
                 borderWidth: 2,
-                pointBackgroundColor: '#f17659'
+                pointBackgroundColor: '#9ec2e2'
             }, {
                 data: capList,
                 fill: false,
-                borderColor: '#eca912',
-                borderWidth: 2,
-                pointBackgroundColor: '#eca912'
+                borderColor: '#d6e3ef',
+                borderWidth: 1,
+                pointBackgroundColor: '#d6e3ef'
             }]     
         },
         options: {
