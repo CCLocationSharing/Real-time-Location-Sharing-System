@@ -22,25 +22,25 @@ Note:
 
 3.
 	Tables
-		String	libId 		hashkey		NOT BLANK
-		String	tabId		rangekey	NOT BLANK
+		String	libID 		hashkey		NOT BLANK
+		String	tabID		rangekey	NOT BLANK
 		Number	capacity 	attribute	
 		Bool 	reservable 	attribute	
 
 
 4.
 	Reservations
-		String	tabId		hashkey 	NOT BLANK
-		Number	startTime	rangekey	NOT NULL
-		Number	endTime		attribute
-		String	userId		attribute	
+		String	tabID		hashkey 	NOT BLANK
+		Number	endTime		rangekey	NOT NULL
+		Number	startTime	attribute
+		String	username	attribute	
 		Number	producedTime		attribute
 5.
 	Occupations
-		String	tabId		hashkey 	NOT BLANK
+		String	tabID		hashkey 	NOT BLANK
 		Number	startTime	rangekey	NOT NULL
 		Bool	isExpired	attribute	
 		Number	endTime		attribute
-		String	userId		attribute	
+		String	username	attribute	
 		Number	producedTime	attribute
 

@@ -39,9 +39,10 @@ reserve.init = function() {
 }*/
 
 reserve.init = function () {
-    var now = moment();
-    var minDate = now;
-    var maxDate = moment().add(7, 'day');
+    let now = moment();
+    let minDate = now;
+    let maxDate = moment().add(7, 'day');
+
     //pikaday plugin
     var picker = new Pikaday({ 
         field: $('#datepicker')[0],
@@ -57,10 +58,15 @@ reserve.init = function () {
         },
         onSelect: function(date) {
             $('#datepicker')[0].value = picker.toString();
+            $('#date')[0].value = picker.toString();
         }
     });
 
-
+    //post reservations
+    $('#reserve_form').submit(function(event) {
+        event.preventDefault();
+        let form_info = $(this).serializeArray(), producedTime = moment().unix();
+    });
 
 }
 

@@ -77,6 +77,8 @@ app.get("/reserve", function(req, res) {
 	res.render("reserve.html", {styles: ["reserve"], scripts: ["reserve"], reserve : "active"});
 });
 
+app.post("/reservation", reserve.postReservation);
+
 
 /*
 app.post("/postAdminUpdate", dashboard.postAdminUpdate);
