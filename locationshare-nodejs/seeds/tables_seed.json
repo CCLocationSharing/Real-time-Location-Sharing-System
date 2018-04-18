@@ -1,0 +1,56 @@
+{
+	"Tables": [
+		{
+			"PutRequest": {
+				"Item": {
+					"libID": {"S": "olin"},
+					"tabID": {"S": "olin study room1"},
+					"capacity": {"N": 4},
+					"reservable": {"BOOL": true}
+				}
+			}
+		},
+		{
+			"PutRequest": {
+				"Item": {
+					"libID": {"S": "olin"},
+					"tabID": {"S": "olin study room2"},
+					"capacity": {"N": 8},
+					"reservable": {"BOOL": true}
+				}
+			}
+		},
+		{
+			"PutRequest": {
+				"Item": {
+					"libID": {"S": "olin"},
+					"tabID": {"S": "olin study room3"},
+					"capacity": {"N": 2},
+					"reservable": {"BOOL": true}
+				}
+			}
+
+		},
+		{
+			"PutRequest": {
+				"Item": {
+					"libID": {"S": "olin"},
+					"tabID": {"S": "001"},
+					"capacity": {"N": 1},
+					"reservable": {"BOOL": false}
+				}
+			}
+
+		},
+		{
+			"PutRequest": {
+				"Item": {
+					"libID": {"S": "olin"},
+					"tabID": {"S": "002"},
+					"capacity": {"N": 1},
+					"reservable": {"BOOL": false}
+				}
+			}
+		}
+	]
+}

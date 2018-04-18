@@ -121,14 +121,17 @@ exports.getRender = function(req, res) {
             TableName: "Reservations",
             ProjectionExpression:"startTime, endTime",
             KeyConditionExpression: "#tb = :id and #et between :qt and :ed",
+            FilterExpression: "#r = :a",
             ExpressionAttributeNames:{
                 "#tb": "tabID",
-                "#et": "endTime"
+                "#et": "endTime",
+                "#r": "reservable"
             },
             ExpressionAttributeValues: {
                 ":id": tabid,
                 ":qt": queryTime,
-                ":ed": endOfDay
+                ":ed": endOfDay,
+                ":a": true
             }
         };
 
