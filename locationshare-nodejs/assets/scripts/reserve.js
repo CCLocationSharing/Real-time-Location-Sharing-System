@@ -37,11 +37,53 @@ reserve.init = function() {
 
     if($("#phone-input").length) $("#phone-input").mask("(999) 999-9999");
 }*/
+var reRender = function(date) {
+    let table = $('#reserve_table');
+
+    let justfortest = {};
+    justfortest["library"] = "olin";
+
+    $('#reserve_table').append("<tbody id=\"temp\">");
+    $.get("/renderForPicker", function(result) {
+        for(let i = 0; i < result.length; i++) {
+            let stringBuilder = [];
+
+            let item = result[i];
+            let table = item.table;
+            let timesections = item.data.timesections;
+
+            stringBuilder[0] = "<th scope=\"row\">"+table+"<\/th>";
+            let prefix = "<td class=\"rsv\"><input type=\"checkbox\" id=";
+            let suffix = "\/><span><\/span><\/td>";
+
+            for(let j = 0; j < timesections.length; j++) {
+                let section = timesections[j].timesection;
+                let r = timesections[j].reservable;
+                if(r === true) {
+                    let id = table+"+"+section;
+                    stringBuilder[j + 1] = prefix + id + suffix;
+                }else {
+                    let id = table+"+"+section;
+                    stringBuilder[j + 1] = prefix + id + " disabled " + suffix;
+                }
+            }
+
+            $('#reserve_table').append("<tr>");
+            for(let j = 0; j < stringBuilder.length; j++) {
+                $('#reserve_table').append(stringBuilder[j]);
+            }
+            $('#reserve_table').append("<\/tr>");
+        }
+    });
+    $('#reserve_table').append("<\/tbody>");
+}
 
 reserve.init = function () {
     let now = moment();
     let minDate = now;
     let maxDate = moment().add(7, 'day');
+
+    reRender(now);
 
     //pikaday plugin
     var picker = new Pikaday({ 
@@ -59,13 +101,15 @@ reserve.init = function () {
         onSelect: function(date) {
             $('#datepicker')[0].value = picker.toString();
             $('#date')[0].value = picker.toString();
+            $("#temp")[0].remove();
+            reRender(date);
         }
     });
 
     //post reservations
     $('#reserve_form').submit(function(event) {
         event.preventDefault();
-        let form_info = $(this).serializeArray(), producedTime = moment().unix();
+        let form_info = $(this).serializeArray(), producedTime = moment().millisecond();
     });
 
 }

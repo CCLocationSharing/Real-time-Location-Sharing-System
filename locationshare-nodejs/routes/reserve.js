@@ -10,9 +10,12 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 var express = require('express');
 var app = express();
 var http = require("http").Server(app);
-var io = require("socket.io")(http);
-var crypto = require("crypto");
 
+/**
+ * get all libIDs for the given library
+ * @function
+ * @param {String} libid - HashKey libID for db query
+ */
 var getTablesFromLib = function(libid) {
     var tables = {
         TableName: "Tables",
@@ -24,9 +27,9 @@ var getTablesFromLib = function(libid) {
         ExpressionAttributeValues: {
             ":id": libid
         }
-    }
+    };
 
-    let tableList = []
+    let tableList = [];
 
     docClient.query(params, function(err, data) {
         if(err) {
@@ -41,8 +44,12 @@ var getTablesFromLib = function(libid) {
     return tableList;
 }
 
+/**
+ * generate default json array for "timesections": [{"timesection": , "reservable": }]
+ * @function
+ */
 var getDefaultTimeSections = function() {
-    let timeSection = []
+    let timeSection = [];
     for(let j = 0; j < 15; j++) {
         let section = {};
         section["timesection"] = j + 8;
@@ -53,90 +60,107 @@ var getDefaultTimeSections = function() {
     return timeSection;
 }
 
-var getDefaultDates = function(currTime) {
-    let dates = {}
-    dates["dates"] = [];
+/**
+ * generate default json object {"day": , "timesections": json array}
+ * @function
+ */
+var getDefaultDate = function(time) {
+    let date = {};
 
-    let currDay = currTime.dayOfYear();
-    let currHour = currTime.hour();
+    let day = time.dayOfYear();
+    let hour = time.hour();
 
-    for(let i = 0; i < 5; i++) {
-        let thisDay = {};
-        thisDay["day"] = currDay + i;
-        thisDay["timesections"] = getDefaultTimeSections();
-        dates[i] = thisDay;
+    date["day"] = day;
+    date["timesections"] = getDefaultTimeSections();
+
+    //if time == today then modify today
+    let today = moment().dayOfYear();
+    if(day == today) {
+        $.each(date.timesections, function(i, value, array) {
+            if(array[i].timesection <= hour) {
+                array[i].reservable = false;
+            }
+        });
     }
-
-    //modify today
-    //dates[0]
-    $.each(dates[0].timesections, function(i, value, array) {
-        if(array[i].timesection <= currHour) {
-            array[i].reservable = false;
-        }
-    });
-
-    return dates;
+    return date;
 }
 
-exports.getReservation = function(req, res) {
-    let libid = req.body.lib;
+exports.getRender = function(req, res) {
+    let libid = req.body.library;
     let tableList = getTablesFromLib(libid);
 
-    let currTime = moment();
-    let currDay = currTime.dayOfYear();
-    let thirtyMBefore = currTime.subtract(30, 'minute');
-    let queryTime = thirtyMBefore.milliseconds();
-    let queryHour = thirtyMBefore.hour();
+    //query time variables
+    //Date: moment, Day: the day of the year range 1-366
+    //Hour: hour of the day range 0-23, Time: milliseconds
+    let queryDate = req.body.date;
+    let queryDay = queryDate.dayOfYear(), queryHour, queryTime;
+    let endOfDay = moment(queryDate).hour(23).millisecond();
+    let today = moment().dayOfYear();
 
-    //get the default json result
-    let dates = getDefaultDates(currTime);
+    if(queryDay < today || queryDay - today > 4) {
+        console.log("invalid query date.")
+        return res.json({status: 1});
+    }
 
+    if(queryDay == today) {
+        // must make reservations 30 mins before
+        let thirtyMBefore = queryDate.subtract(30, 'minute');
+        queryHour = thirtyMBefore.hour();
+        queryTime = thirtyMBefore.milliseconds();
+    }else {
+        queryDate.hour(7);
+        queryHour = queryDate.hour();
+        queryTime = queryDate.milliseconds();
+    }
+
+
+    items = []
     for(let i = 0; i < tableList.length; i++) {
         let tabid = tableList[i];
         let param = {
             TableName: "Reservations",
             ProjectionExpression:"startTime, endTime",
-            KeyConditionExpression: "#tb = :id and #et >= :qt",
+            KeyConditionExpression: "#tb = :id and #et between :qt and :ed",
             ExpressionAttributeNames:{
                 "#tb": "tabID",
                 "#et": "endTime"
             },
             ExpressionAttributeValues: {
                 ":id": tabid,
-                ":qt": queryTime
+                ":qt": queryTime,
+                ":ed": endOfDay
             }
-        }
+        };
 
+        let date = getDefaultDate(queryDate);
+        //those existing reservations between querytime and the end of day
         docClient.query(param, function(err, data) {
             if(err) {
                 throw err;
             } else {
+                if(!data.Items) {
+                    return res.json(date);
+                }
+
                 //forbidden these time sections
                 data.Items.forEach(function(item) {
-                    let day = moment().millisecond(item.startTime).dayOfYear();
                     let start = moment().millisecond(item.startTime).hour();
                     let end = moment().millisecond(item.endTime).hour();
-
-                    let index = day - currDay;
-                    if(index < 0) {
-                        console.log("get invalid query items");
-                        return res.json({status: 1});
-                    }else {
-                        if(dates[index].day != day) {
-                            console.log("get wrong query items");
-                            return res.json({status: 1});
-                        }else {
-                            for(let k = start; k <= end; k++) {
-                                //k - 8
-                                dates[index].timesections[k - 8].reservable = false;
-                            }
-                        }
+                    for(let k = start; k <= end; k++) {
+                        date.timesections[k - 8].reservable = false;
                     }
                 });
             }
         });
+
+        let item = {
+            "table": tabid,
+            "data": date
+        };
+
+        items.push(item);
     }
-    return res.json(dates);
+    return res.json(items);
 }
 
 exports.postReservation = function(req, res) {

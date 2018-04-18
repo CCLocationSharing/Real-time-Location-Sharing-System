@@ -40,7 +40,6 @@ io.sockets.on('connection', function(socket) {
 });
 
 app.get("/", function(req, res) { // Done
-
     res.render("index.html", { navbarFixedTop : true, home : "active"});
 });
 
@@ -77,6 +76,7 @@ app.get("/reserve", function(req, res) {
 	res.render("reserve.html", {styles: ["reserve"], scripts: ["reserve"], reserve : "active"});
 });
 
+app.get("/renderForPicker", reserve.getRender);
 app.post("/reservation", reserve.postReservation);
 
 

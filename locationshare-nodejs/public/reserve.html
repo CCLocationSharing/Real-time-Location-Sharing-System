@@ -34,7 +34,7 @@
 			<div class="row">
 				<div class="col-sm-12 col-md-12">
 					<div class="table-responsive">
-						<table class="table">
+						<table id="reserve_table" class="table">
 							<thead>
 								<tr>
 									<th scope="col"></th>
@@ -55,7 +55,7 @@
 									<th scope="col">10pm</th>
 								</tr>
 							</thead>
-							<tbody>
+							<!--tbody>
 								<tr>
 									<th scope="row">olinstudyroom1</th>
 									<td class="rsv">
@@ -182,7 +182,7 @@
           								<span></span>
 									</td>
 								</tr>
-							</tbody>
+							</tbody-->
 						</table>
 					</div>
 				</div>
@@ -192,9 +192,11 @@
 	</div>
 </div>
 <form id="reserve_form">
+	<input type="hidden" id="library" name="library">
 	<input type="hidden" id="date" name="date">
 	<input type="hidden" id="table" name="table">
-
+	<input type="hidden" id="start" name="start">
+	<input type="hidden" id="end" name="end">
 </form>
 <script src="scripts/moment.min.js"></script>
 <script src="scripts/pikaday.js"></script>
