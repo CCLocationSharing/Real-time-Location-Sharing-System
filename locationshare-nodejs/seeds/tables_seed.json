@@ -5,7 +5,7 @@
 				"Item": {
 					"libID": {"S": "olin"},
 					"tabID": {"S": "olin study room1"},
-					"capacity": {"N": 4},
+					"capacity": {"N": "4"},
 					"reservable": {"BOOL": true}
 				}
 			}
@@ -15,7 +15,7 @@
 				"Item": {
 					"libID": {"S": "olin"},
 					"tabID": {"S": "olin study room2"},
-					"capacity": {"N": 8},
+					"capacity": {"N": "8"},
 					"reservable": {"BOOL": true}
 				}
 			}
@@ -25,7 +25,7 @@
 				"Item": {
 					"libID": {"S": "olin"},
 					"tabID": {"S": "olin study room3"},
-					"capacity": {"N": 2},
+					"capacity": {"N": "2"},
 					"reservable": {"BOOL": true}
 				}
 			}
@@ -36,7 +36,7 @@
 				"Item": {
 					"libID": {"S": "olin"},
 					"tabID": {"S": "001"},
-					"capacity": {"N": 1},
+					"capacity": {"N": "1"},
 					"reservable": {"BOOL": false}
 				}
 			}
@@ -47,7 +47,7 @@
 				"Item": {
 					"libID": {"S": "olin"},
 					"tabID": {"S": "002"},
-					"capacity": {"N": 1},
+					"capacity": {"N": "1"},
 					"reservable": {"BOOL": false}
 				}
 			}
