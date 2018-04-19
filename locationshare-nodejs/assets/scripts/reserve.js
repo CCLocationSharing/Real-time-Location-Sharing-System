@@ -2,7 +2,6 @@
 
 var reserve = {};
 
-
 //append search result at search.html by using res.render() , using template
 //need to specify the template of search.html
 /*
@@ -38,13 +37,15 @@ reserve.init = function() {
     if($("#phone-input").length) $("#phone-input").mask("(999) 999-9999");
 }*/
 var reRender = function(date) {
-    let table = $('#reserve_table');
+    let tbody = $("#reserve_table");
 
     let justfortest = {};
     justfortest["library"] = "olin";
+    justfortest["date"] = date;
 
-    $('#reserve_table').append("<tbody id=\"temp\">");
-    $.get("/renderForPicker", function(result) {
+    tbody.append("<tbody id=\"temp\">");
+    $.get("/renderForPicker", justfortest, function(result) {
+        console.log("result:",result);
         for(let i = 0; i < result.length; i++) {
             let stringBuilder = [];
 
@@ -68,14 +69,15 @@ var reRender = function(date) {
                 }
             }
 
-            $('#reserve_table').append("<tr>");
+            tbody.append("<tr>");
             for(let j = 0; j < stringBuilder.length; j++) {
-                $('#reserve_table').append(stringBuilder[j]);
+                tbody.append(stringBuilder[j]);
             }
-            $('#reserve_table').append("<\/tr>");
+            tbody.append("<\/tr>");
         }
     });
-    $('#reserve_table').append("<\/tbody>");
+
+    tbody.append("<\/tbody>");
 }
 
 reserve.init = function () {
@@ -83,7 +85,9 @@ reserve.init = function () {
     let minDate = now;
     let maxDate = moment().add(7, 'day');
 
-    reRender(now);
+    let now_str = now.format();
+
+    reRender(now_str);
 
     //pikaday plugin
     var picker = new Pikaday({ 
@@ -102,7 +106,8 @@ reserve.init = function () {
             $('#datepicker')[0].value = picker.toString();
             $('#date')[0].value = picker.toString();
             $("#temp")[0].remove();
-            reRender(date);
+            let date_str = moment(date).format();
+            reRender(date_str);
         }
     });
 
