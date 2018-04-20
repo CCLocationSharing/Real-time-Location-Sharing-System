@@ -36,81 +36,54 @@ reserve.init = function() {
     if($("#phone-input").length) $("#phone-input").mask("(999) 999-9999");
 }*/
 
-var renderHelper = function(timesections, stringBuilder) {
-
-}
-
-var reRender = function(date) {
-    let tbody = $("#reserve_table");
-
+function reRender(date) {
     let justfortest = {};
     justfortest["library"] = "olin";
     justfortest["date"] = date;
 
-    let stringBuilder = [];
-    stringBuilder[0] = "<tbody id=\"temp\">";
+    let stringBuilder = "<tbody id=\"temp\">";
 
-    $.get("/renderForPicker", justfortest, function(result) {
-        result.foreachSeries(function(item) {
+    $.get("/renderForPicker", justfortest, function(result, reRenderDone) {
+        if(result === undefined) {
+            console.log("result is undefined");
+            return;
+        }
+
+        result.forEach(function(item) {
             let table = item.table;
             let timesections = item.data.timesections;
 
-            stringBuilder.push("<tr>");
-            stringBuilder.push("<th scope=\"row\">"+table+"<\/th>");
-            let prefix = "<td class=\"rsv\"><input type=\"checkbox\" id=";
+            stringBuilder = stringBuilder + "<tr><th scope=\"row\">" + table + "<\/th>";
+            let prefix = "<td class=\"rsv\"><input type=\"checkbox\" id=\"";
             let suffix = "\/><span><\/span><\/td>";
 
-            timesections.foreachSeries(function(item) {
+            timesections.forEach(function(item) {
                 let section = item.timesection;
                 let r = item.reservable;
                 if(r === true) {
                     let id = table+"+"+section;
-                    stringBuilder.push(prefix + id + suffix);
+                    stringBuilder = stringBuilder + prefix + id + "\"" + suffix;
                 }else {
                     let id = table+"+"+section;
-                    stringBuilder.push(prefix + id + " disabled " + suffix);
+                    stringBuilder = stringBuilder + prefix + id + "\"" + " disabled " + suffix;
                 }
-            }
+                if(section === 22) {
+                    stringBuilder = stringBuilder + "<\/tr>";
+                }
+            });
+        });
+        reRenderDone(stringBuilder);
+
+        function reRenderDone(stringBuilder) {
+            stringBuilder = stringBuilder + "<\/tbody>"; 
+            $('#reserve_table').append(stringBuilder);
         }
     });
 }
-        /*
-        for(let i = 0; i < result.length; i++) {
-
-            let item = result[i];
-            let table = item.table;
-            let timesections = item.data.timesections;
-
-            stringBuilder.push("<tr>");
-            stringBuilder.push("<th scope=\"row\">"+table+"<\/th>");
-            let prefix = "<td class=\"rsv\"><input type=\"checkbox\" id=";
-            let suffix = "\/><span><\/span><\/td>";
-
-            for(let j = 0; j < timesections.length; j++) {
-                let section = timesections[j].timesection;
-                let r = timesections[j].reservable;
-                if(r === true) {
-                    let id = table+"+"+section;
-                    stringBuilder.push(prefix + id + suffix);
-                }else {
-                    let id = table+"+"+section;
-                    stringBuilder.push(prefix + id + " disabled " + suffix);
-                }
-            }
-
-            stringBuilder.push("<\/tr>");
-        }
-        stringBuilder.push("<\/tbody>");
-
-        for(let j = 0; j < stringBuilder.length; j++) {
-            tbody.append(stringBuilder[j]);
-        }*/
-
-
 reserve.init = function () {
     let now = moment();
-    let minDate = now;
-    let maxDate = moment().add(7, 'day');
+    let minDate = moment().startOf('date');
+    let maxDate = moment().add(6, 'day');
 
     let now_str = now.format();
 
@@ -120,7 +93,7 @@ reserve.init = function () {
     var picker = new Pikaday({ 
         field: $('#datepicker')[0],
         trigger: $('#datepickerTrigger')[0],
-        minDate: now,
+        minDate: minDate,
         maxDate: maxDate,
         disableDayFn: function(date) {
             if(date < minDate || date > maxDate) {

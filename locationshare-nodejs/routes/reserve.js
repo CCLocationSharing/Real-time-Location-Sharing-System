@@ -20,11 +20,9 @@ var async = require('async');
  */
 var getTableElements = function(url, tableList, res) {
 
-    console.log("getTableElements function")
-
     if(tableList === undefined) {
         console.log("undefined param @tableList");
-        return res.json({status: 5});
+        return;
     }
 
     let dateParam = getUrlParam(url, "date");
@@ -33,12 +31,11 @@ var getTableElements = function(url, tableList, res) {
     let endOfDay = moment(queryDate).hour(23).millisecond();
     let today = moment().dayOfYear();
 
-    if(queryDay < today || queryDay - today > 4) {
-        console.log("invalid query date.")
-        return res.json({status: 1});
+    if(queryDay < today || queryDay - today > 6) {
+        console.log("invalid query date.", queryDay, today);
+        return;
     }
     if(queryDay == today) {
-    // must make reservations 30 mins before
         let thirtyMBefore = queryDate.subtract(30, 'minute');
         queryHour = thirtyMBefore.hour();
         queryTime = thirtyMBefore.milliseconds();
@@ -71,7 +68,11 @@ var getTableElements = function(url, tableList, res) {
                 throw err;
             } else {
                 if(!data.Items) {
-                    
+                    let item = {
+                        "table": tabid,
+                        "data": date
+                    };
+                    callback(null,item);
                 }else {
                     data.Items.forEach(function(item) {
                         let start = moment().millisecond(item.startTime).hour();
@@ -93,7 +94,7 @@ var getTableElements = function(url, tableList, res) {
             throw err;
         } else {
             if(results === undefined) {
-                return res.json({status: 1});
+                return;
             }else {
                 return res.json(results);
             }
@@ -124,9 +125,7 @@ var getDefaultTimeSections = function() {
  */
 var getDefaultDate = function(time) {
     let date = {};
-
     let day = time.dayOfYear();
-    let hour = time.hour();
 
     date["day"] = day;
     date["timesections"] = getDefaultTimeSections();
@@ -134,6 +133,7 @@ var getDefaultDate = function(time) {
     //if time == today then modify today
     let today = moment().dayOfYear();
     if(day == today) {
+        let hour = time.hour();
         date.timesections.forEach(function(item) {
             if(item.timesection <= hour) {
                 item.reservable = false;
