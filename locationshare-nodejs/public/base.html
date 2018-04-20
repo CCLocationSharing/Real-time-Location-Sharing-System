@@ -14,6 +14,11 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
 
+    {% if heat %}
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxK0o8YSV9fxKtKgaQODXkJ73hhas0pok&libraries=visualization&callback=initMap"></script>
+    {% endif %}
+
     {% for script in scripts %}
     <script src="scripts/{{ script }}.js"></script>
     {% endfor %}
@@ -21,7 +26,7 @@
 
 <body id="page-top">
     <nav id="mainNav" class="navbar navbar-default
-         {% if navbarFixedTop %} navbar-fixed-top {% endif %}">
+         {% if fixNav %} navbar-fixed-top {% endif %}">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand {{home}}" href="/">Home</a>
@@ -31,6 +36,9 @@
             </div>
             <div class="navbar-header">
                 <a class="navbar-brand {{reserve}}" href="reserve">Reserve</a>
+            </div>
+            <div class="navbar-header">
+                <a class="navbar-brand {{heat}}" href="heat">Heat Map</a>
             </div>
             <!--{% if session.user %}
             <form id='searchSubmit' class="navbar-form navbar-left" role="search">

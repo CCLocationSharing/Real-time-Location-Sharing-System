@@ -39,24 +39,12 @@ io.sockets.on('connection', function(socket) {
 	
 });
 
-app.get("/", function(req, res) { // Done
-    res.render("index.html", { navbarFixedTop : true, home : "active"});
-});
+app.get("/", (req, res) => {res.render("index", {fixNav: true, home: "active"})});
+app.get("/about", (req, res) => {res.render("about", {about: "active"})});
 
-app.get("/about", function(req, res) { // Done
-    res.render("about.html", { navbarFixedTop : true, about : "active"});
-});
-
-app.get("/signup", function(req, res) { // Done
-    res.render("signup.html", { scripts: ["signin"], styles: ["signin"] });
-});
-
-app.get("/login", function(req, res) { // Done
-    res.render("login.html", { scripts: ["login"], styles: ["signin"] });
-});
-
-app.get('/logout', signin.getLogout);// Done
-
+app.get("/signup", (req, res) => {res.render("signup.html", { scripts: ["signin"], styles: ["signin"] })});
+app.get("/login", (req, res) => {res.render("login.html", { scripts: ["login"], styles: ["signin"] })});
+app.get('/logout', signin.getLogout);
 app.post("/signup", signin.postNewUser);// Done
 app.post("/login", signin.postLogin); // Done
 
@@ -79,25 +67,9 @@ app.get("/reserve", function(req, res) {
 app.get("/renderForPicker", reserve.getRender);
 app.post("/reservation", reserve.postReservation);
 
+app.get("/heat", (req, res) => {res.render("heat", {scripts: ["heat"], styles: ["heat"], heat: "active"})});
 
-/*
-app.post("/postAdminUpdate", dashboard.postAdminUpdate);
-app.post("/postOrder", dashboard.postOrder);// Done
 
-app.get('/search', search.getSearch);// Done
-app.post('/makeFriends', search.makeFriends); //Done
-app.post('/addCourse', search.addCourse);// Done
-
-app.get("/course", course.getCourse);
-app.post("/course/response", function(req, res) {});
-app.post("/course", function(req, res) {});
-
-app.get("/profile", profile.getProfile);// Done
-app.post("/profile", upload.single("picture"), profile.postProfile);// Done
-app.post("/removeCourse", profile.removeCourse);// Done
-app.post("/removeFriend", profile.removeFriend);// Done
-app.post("/removeTutorPost", profile.removeTutorPost);// Done
-*/
 var port = process.env.PORT || 3000;
 
 server.listen(port, function () {
