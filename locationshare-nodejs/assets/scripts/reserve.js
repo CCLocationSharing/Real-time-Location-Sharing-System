@@ -1,7 +1,6 @@
 'use strict';
 
 var reserve = {};
-
 //append search result at search.html by using res.render() , using template
 //need to specify the template of search.html
 /*
@@ -36,6 +35,11 @@ reserve.init = function() {
 
     if($("#phone-input").length) $("#phone-input").mask("(999) 999-9999");
 }*/
+
+var renderHelper = function(timesections, stringBuilder) {
+
+}
+
 var reRender = function(date) {
     let tbody = $("#reserve_table");
 
@@ -43,17 +47,42 @@ var reRender = function(date) {
     justfortest["library"] = "olin";
     justfortest["date"] = date;
 
-    tbody.append("<tbody id=\"temp\">");
+    let stringBuilder = [];
+    stringBuilder[0] = "<tbody id=\"temp\">";
+
     $.get("/renderForPicker", justfortest, function(result) {
-        console.log("result:",result);
+        result.foreachSeries(function(item) {
+            let table = item.table;
+            let timesections = item.data.timesections;
+
+            stringBuilder.push("<tr>");
+            stringBuilder.push("<th scope=\"row\">"+table+"<\/th>");
+            let prefix = "<td class=\"rsv\"><input type=\"checkbox\" id=";
+            let suffix = "\/><span><\/span><\/td>";
+
+            timesections.foreachSeries(function(item) {
+                let section = item.timesection;
+                let r = item.reservable;
+                if(r === true) {
+                    let id = table+"+"+section;
+                    stringBuilder.push(prefix + id + suffix);
+                }else {
+                    let id = table+"+"+section;
+                    stringBuilder.push(prefix + id + " disabled " + suffix);
+                }
+            }
+        }
+    });
+}
+        /*
         for(let i = 0; i < result.length; i++) {
-            let stringBuilder = [];
 
             let item = result[i];
             let table = item.table;
             let timesections = item.data.timesections;
 
-            stringBuilder[0] = "<th scope=\"row\">"+table+"<\/th>";
+            stringBuilder.push("<tr>");
+            stringBuilder.push("<th scope=\"row\">"+table+"<\/th>");
             let prefix = "<td class=\"rsv\"><input type=\"checkbox\" id=";
             let suffix = "\/><span><\/span><\/td>";
 
@@ -62,23 +91,21 @@ var reRender = function(date) {
                 let r = timesections[j].reservable;
                 if(r === true) {
                     let id = table+"+"+section;
-                    stringBuilder[j + 1] = prefix + id + suffix;
+                    stringBuilder.push(prefix + id + suffix);
                 }else {
                     let id = table+"+"+section;
-                    stringBuilder[j + 1] = prefix + id + " disabled " + suffix;
+                    stringBuilder.push(prefix + id + " disabled " + suffix);
                 }
             }
 
-            tbody.append("<tr>");
-            for(let j = 0; j < stringBuilder.length; j++) {
-                tbody.append(stringBuilder[j]);
-            }
-            tbody.append("<\/tr>");
+            stringBuilder.push("<\/tr>");
         }
-    });
+        stringBuilder.push("<\/tbody>");
 
-    tbody.append("<\/tbody>");
-}
+        for(let j = 0; j < stringBuilder.length; j++) {
+            tbody.append(stringBuilder[j]);
+        }*/
+
 
 reserve.init = function () {
     let now = moment();

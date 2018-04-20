@@ -33,9 +33,8 @@ dashboard.init = function() {
             libChart.update();
         });
         libChart.update();
+        libTable.append("</tbody>");
     });
-
-    libTable.append("</tbody>");
 }
 
 $(document).ready(function() {

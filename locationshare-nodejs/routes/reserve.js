@@ -11,13 +11,17 @@ var express = require('express');
 var app = express();
 var http = require("http").Server(app);
 var moment = require('moment');
+var async = require('async');
 
 /**
  * get all libIDs for the given library
  * @function
  * @param {String} libid - HashKey libID for db query
  */
-var prepare = function(url, tableList) {
+var getTableElements = function(url, tableList, res) {
+
+    console.log("getTableElements function")
+
     if(tableList === undefined) {
         console.log("undefined param @tableList");
         return res.json({status: 5});
@@ -44,8 +48,7 @@ var prepare = function(url, tableList) {
         queryTime = queryDate.milliseconds();
     }
 
-    let items = [];
-    tableList.forEach(function(tabid) {
+    async.map(tableList, function(tabid, callback) {
         let param = {
             TableName: "Reservations",
             ProjectionExpression:"startTime, endTime",
@@ -81,46 +84,23 @@ var prepare = function(url, tableList) {
                         "table": tabid,
                         "data": date
                     };
-                    items.push(item);
+                    callback(null,item);
                 }
             }
         });
-    });
-}
-
-var getTablesFromLib = function(url, prepare) {
-
-    console.log("function getTablesFromLib");
-
-    let libid = getUrlParam(url, "library");
-
-    var tables = {
-        TableName: "Tables",
-        ProjectionExpression:"tabID",
-        KeyConditionExpression: "#lb = :id",
-        FilterExpression: "#r = :a",
-        ExpressionAttributeNames:{
-            "#lb": "libID",
-            "#r": "reservable"
-        },
-        ExpressionAttributeValues: {
-            ":id": libid,
-            ":a": true
-        }
-    }
-
-    docClient.query(tables, function(err, data) {
+    }, function(err, results) {
         if(err) {
             throw err;
         } else {
-            let tableList = [];
-            data.Items.forEach(function(item) {
-                tableList.push(item.tabID);
-            });
-            prepare(url, tableList);
+            if(results === undefined) {
+                return res.json({status: 1});
+            }else {
+                return res.json(results);
+            }
         }
-    });
-};
+    }); 
+}
+
 
 /**
  * generate default json array for "timesections": [{"timesection": , "reservable": }]
@@ -163,6 +143,10 @@ var getDefaultDate = function(time) {
     return date;
 };
 
+/**
+ * get two params from url
+ * @function
+ */
 var getUrlParam = function(url, name) {  
     let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); 
     let r = url.substr(17).match(reg); 
@@ -174,9 +158,39 @@ var getUrlParam = function(url, name) {
     }   
 };
 
+
 exports.getRender = function(req, res) {
     let url = req.url;
-    getTablesFromLib(url, prepare);
+
+    console.log("getRender function");
+    
+    let libid = getUrlParam(url, "library");
+    var tables = {
+        TableName: "Tables",
+        ProjectionExpression:"tabID",
+        KeyConditionExpression: "#lb = :id",
+        FilterExpression: "#r = :a",
+        ExpressionAttributeNames:{
+            "#lb": "libID",
+            "#r": "reservable"
+        },
+        ExpressionAttributeValues: {
+            ":id": libid,
+            ":a": true
+        }
+    }
+
+    docClient.query(tables, function(err, data) {
+        if(err) {
+            throw err;
+        } else {
+            let tableList = [];
+            data.Items.forEach(function(item) {
+                tableList.push(item.tabID);
+            });
+            getTableElements(url, tableList, res);
+        }
+    });
 }
 
 exports.postReservation = function(req, res) {
