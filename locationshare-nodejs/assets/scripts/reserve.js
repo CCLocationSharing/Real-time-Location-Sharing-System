@@ -2,9 +2,9 @@
 
 var reserve = {};
 
-function reRender(date) {
+function reRender(date, lib) {
     let justfortest = {};
-    justfortest["library"] = "olin";
+    justfortest["library"] = lib;
     justfortest["date"] = date;
 
     let stringBuilder = "<tbody id=\"temp\">";
@@ -46,6 +46,19 @@ function reRender(date) {
         }
     });
 }
+
+function show(date, lib) {
+    if(date === undefined || date === null) {
+        var now_str = moment().format();
+    }else {
+        var now_str = date;
+    }
+    if($("#temp").length > 0) {
+        $("#temp")[0].remove();
+    }
+    reRender(now_str, lib);
+}
+
 reserve.init = function () {
     let now = moment();
     let minDate = moment().startOf('date');
@@ -53,7 +66,7 @@ reserve.init = function () {
 
     let now_str = now.format();
 
-    reRender(now_str);
+    show(now_str, "olin");
 
     //pikaday plugin
     var picker = new Pikaday({ 
