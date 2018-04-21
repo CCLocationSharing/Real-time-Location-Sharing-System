@@ -20,7 +20,7 @@ function reRender(date, lib) {
             let timesections = item.data.timesections;
 
             stringBuilder = stringBuilder + "<tr><th scope=\"row\">" + table + "<\/th>";
-            let prefix = "<td class=\"rsv\"><input type=\"checkbox\" id=\"";
+            let prefix = "<td class=\"rsv\" onclick=\"selecttime(this)\"><input type=\"checkbox\" id=\"";
             let suffix = "\/><span><\/span><\/td>";
 
             timesections.forEach(function(item) {
@@ -47,15 +47,28 @@ function reRender(date, lib) {
     });
 }
 
+function selecttime(itself) {
+    if(itself != undefined) {
+        let checkbox = $(itself).find("input")[0];
+        if(checkbox.checked === undefined || checkbox.checked === false) {
+            checkbox.checked = true;
+        }else {
+            checkbox.checked = false;
+        }
+    }
+}
+
 function show(date, lib) {
     if(date === undefined || date === null) {
         var now_str = moment().format();
     }else {
-        var now_str = date;
+        var now_str = moment(date).format();
     }
     if($("#temp").length > 0) {
         $("#temp")[0].remove();
     }
+    $('#library')[0].value = lib;
+    $('#date')[0].value = now_str;
     reRender(now_str, lib);
 }
 
@@ -63,10 +76,10 @@ reserve.init = function () {
     let now = moment();
     let minDate = moment().startOf('date');
     let maxDate = moment().add(6, 'day');
+    let default_lib = "carpenter";
 
-    let now_str = now.format();
-
-    show(now_str, "olin");
+    //default, now, carpenter hall
+    show(now, default_lib);
 
     //pikaday plugin
     var picker = new Pikaday({ 
@@ -84,11 +97,12 @@ reserve.init = function () {
         onSelect: function(date) {
             $('#datepicker')[0].value = picker.toString();
             $('#date')[0].value = picker.toString();
-            if($("#temp").length > 0) {
-                $("#temp")[0].remove();
+            
+            let lib = "carpenter";
+            if($('#library')[0].value != undefined) {
+                lib = $('#library')[0].value;
+                show(date, lib);
             }
-            let date_str = moment(date).format();
-            reRender(date_str);
         }
     });
 
