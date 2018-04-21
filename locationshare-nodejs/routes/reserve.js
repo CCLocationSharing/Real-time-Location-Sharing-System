@@ -203,6 +203,8 @@ exports.postReservation = function(req, res) {
 
 };
 
+
+
 /*
 exports.postAdminUpdate = function(req, res) {
     if (req.session.user === undefined) return res.redirect("/login?from=dashboard");

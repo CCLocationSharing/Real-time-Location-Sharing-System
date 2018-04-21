@@ -3,18 +3,36 @@
 {% block body %}
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-sm-5 col-md-5">
-			
+		<div id="sidebar-div" class="col-sm-2 col-md-2 bd-sidebar">
+			<div class="row">
+				<nav class="collapse bd-links" id="bd-docs-nav">
+					<div class="bd-toc-item active">
+						<h3 style="color: transparent;">Libraries</h3>
+					</div>
+				</nav>
+			</div>
+			<div id="sidebar" class="row">
+				<nav class="collapse bd-links" id="bd-docs-nav">
+					<div class="bd-toc-item active">
+						<ul class="nav bd-sidenav">
+							<li class="active bd-sidenav-active">
+								<a href="">Carpenter Hall</a>
+							</li>
+							<li class="active bd-sidenav-active">
+								<a href="">Gates Hall</a>
+							</li>
+							<li class="active bd-sidenav-active">
+								<a href="">Olin Library</a>
+							</li>
+							<li class="active bd-sidenav-active">
+								<a href="">Uris Library</a>
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</div>
 		</div>
-		<div class="col-sm-5 col-md-5">
-			
-		</div>
-		<div class="col-sm-2 col-md-2">
-			
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-sm-10 col-md-10">
+		<div class="col-sm-8 col-md-8" style="margin-left: 5%; margin-top: 3%;">
 			<div class="row">
 				<div class="col-sm-6 col-md-6">
 					<h3>Date for Reservation</h3>
@@ -55,140 +73,12 @@
 									<th scope="col">10pm</th>
 								</tr>
 							</thead>
-							<!--tbody>
-								<tr>
-									<th scope="row">olinstudyroom1</th>
-									<td class="rsv">
-										<input type="checkbox" id="8am" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="9am" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input disabled type="checkbox" id="10am" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="11am" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="12pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="1pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="2pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="3pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="4pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="5pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="6pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="7pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="8pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="9pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="10pm" />
-          								<span></span>
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">olinstudyroom2</th>
-									<td class="rsv">
-										<input type="checkbox" id="8am" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="9am" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="10am" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="11am" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="12pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="1pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input disabled type="checkbox" id="2pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input disabled type="checkbox" id="3pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="4pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="5pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input disabled type="checkbox" id="6pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="7pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="8pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="9pm" />
-          								<span></span>
-									</td>
-									<td class="rsv">
-										<input type="checkbox" id="10pm" />
-          								<span></span>
-									</td>
-								</tr>
-							</tbody-->
 						</table>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-2 col-md-2"></div>
+		<div class="col-sm-1 col-md-1"></div>	
 	</div>
 </div>
 <form id="reserve_form">
