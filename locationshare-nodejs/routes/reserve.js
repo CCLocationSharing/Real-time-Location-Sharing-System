@@ -14,9 +14,9 @@ var moment = require('moment');
 var async = require('async');
 
 /**
- * get all libIDs for the given library
+ * get results in json for render
  * @function
- * @param {String} libid - HashKey libID for db query
+ * @param {String} url- url from get method, @param {Array} tableList - consists of reservable tables for the given library, @param res - HTTP RES
  */
 var getTableElements = function(url, tableList, res) {
 
@@ -66,7 +66,7 @@ var getTableElements = function(url, tableList, res) {
         docClient.query(param, function(err, data) {
             if(err) {
                 throw err;
-            } else {
+            }else {
                 if(!data.Items) {
                     let item = {
                         "table": tabid,
@@ -111,11 +111,14 @@ var getDefaultTimeSections = function() {
     let timeSection = [];
     for(let j = 0; j < 15; j++) {
         let section = {};
+
         section["timesection"] = j + 8;
         section["reservable"] = true;
         timeSection[j] = section;
     }
 
+    timeSection[0].timesection = "0" + timeSection[0].timesection;
+    timeSection[1].timesection = "0" + timeSection[1].timesection;
     return timeSection;
 };
 
@@ -160,10 +163,7 @@ var getUrlParam = function(url, name) {
 
 
 exports.getRender = function(req, res) {
-    let url = req.url;
-
-    console.log("getRender function");
-    
+    let url = req.url;    
     let libid = getUrlParam(url, "library");
     var tables = {
         TableName: "Tables",
@@ -199,7 +199,7 @@ exports.postReservation = function(req, res) {
         return res.redirect("/login");
     }
 
-    //let reservations = JSON.parse(req.body.reservations);
+    
 
 };
 

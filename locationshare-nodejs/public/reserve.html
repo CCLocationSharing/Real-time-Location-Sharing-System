@@ -75,19 +75,44 @@
 							</thead>
 						</table>
 					</div>
+					<!--div>
+						<span class="badge badge-light">not available</span>
+						<span class="badge badge-danger">occupied</span>
+						<span class="badge badge-success">empty room</span>
+					</div-->
 				</div>
+			</div>
+			<div class="row">
+				<form id="reserve_form">
+					<div class="form-row">
+						<div class="form-group col-sm-5 col-md-5">
+							<label for="table">Study Space</label>
+							<input readonly type="text" class="form-control" id="table" name="table">
+						</div>
+						<div class="form-group col-sm-2 col-md-2"></div>
+						<div class="form-group col-sm-5 col-md-5">
+							<label for="date">Reservation on</label>
+							<input readonly type="text" class="form-control" id="date" name="date">
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-sm-5 col-md-5">
+							<label for="start">From</label>
+							<input readonly type="text" class="form-control" id="start" name="start">
+						</div>
+						<div class="form-group col-sm-2 col-md-2"></div>
+						<div class="form-group col-sm-5 col-md-5">
+							<label for="end">To</label>
+							<input readonly type="text" class="form-control" id="end" name="end">
+						</div>
+					</div>
+					<input type="hidden" id="library" name="library">
+				</form>
 			</div>
 		</div>
 		<div class="col-sm-1 col-md-1"></div>	
 	</div>
 </div>
-<form id="reserve_form">
-	<input type="hidden" id="library" name="library">
-	<input type="hidden" id="date" name="date">
-	<input type="hidden" id="table" name="table">
-	<input type="hidden" id="start" name="start">
-	<input type="hidden" id="end" name="end">
-</form>
 <script src="scripts/moment.min.js"></script>
 <script src="scripts/pikaday.js"></script>
 {% endblock %}

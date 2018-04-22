@@ -47,16 +47,130 @@ function reRender(date, lib) {
     });
 }
 
+
 function selecttime(itself) {
     if(itself != undefined) {
         let checkbox = $(itself).find("input")[0];
-        if(checkbox.checked === undefined || checkbox.checked === false) {
-            checkbox.checked = true;
+        if(checkbox.disabled) {
+            return;
+        }
+
+        let prev = $(itself).prev(), next = $(itself).next();
+        if(!prev.hasClass("rsv")) {
+            if(checkbox.checked === undefined || checkbox.checked === false) {
+                if(!$(itself).hasClass("inactive")) {
+                    checkbox.checked = true;
+
+                    let id = checkbox.id;
+                    let k = id.indexOf('+');
+                    let table = id.substring(0, k), time = id.substring(k + 1);
+
+                    $("#start")[0].value = time + ":00";
+                    if(!next.find("input")[0].checked) {
+                        $("#table")[0].value = table;
+                        $("#end")[0].value = time + ":59";
+                    }
+                    $("td.rsv").not($(itself)).not(next).addClass("inactive");
+                }else {
+                    return;
+                }
+            }else {
+                checkbox.checked = false;
+                let c2 = next.find("input")[0];
+                if(!c2.checked) {
+                    $("td.rsv").each(function() {
+                        if($(this).hasClass("inactive")) {
+                            $(this).removeClass("inactive");
+                        }
+                    });
+                    $("#table")[0].value = "";
+                    $("#start")[0].value = "";
+                    $("#end")[0].value = "";
+                }else {
+                    $("#start")[0].value = c2.id.substring(c2.id.indexOf('+') + 1) + ":00";
+                    next.next().removeClass("inactive");
+                }
+            }
+        }else if(!next.hasClass("rsv")) {
+            if(checkbox.checked === undefined || checkbox.checked === false) {
+                if(!$(itself).hasClass("inactive")) {
+                    checkbox.checked = true;
+                    let id = checkbox.id;
+                    let k = id.indexOf('+');
+                    let table = id.substring(0, k), time = id.substring(k + 1);
+
+                    $("#end")[0].value = time + ":59";
+                    if(!prev.find("input")[0].checked) {
+                        $("#table")[0].value = table;
+                        $("#start")[0].value = time + ":00";
+                    }
+                    $("td.rsv").not($(itself)).not(prev).addClass("inactive");
+                }else {
+                    return;
+                }
+            }else {
+                checkbox.checked = false;
+                let c1 = prev.find("input")[0];
+                if(!c1.checked) {
+                    $("td.rsv").each(function() {
+                        if($(this).hasClass("inactive")) {
+                            $(this).removeClass("inactive");
+                        }
+                    });
+                    $("#table")[0].value = "";
+                    $("#start")[0].value = "";
+                    $("#end")[0].value = "";
+                }else {
+                    $("#end")[0].value = c1.id.substring(c1.id.indexOf('+') + 1) + ":59";
+                    prev.prev().removeClass("inactive");
+                }
+            }
         }else {
-            checkbox.checked = false;
+            if(checkbox.checked === undefined || checkbox.checked === false) {
+                if(!$(itself).hasClass("inactive")) {
+                    checkbox.checked = true;
+                    let id = checkbox.id;
+                    let k = id.indexOf('+');
+                    let table = id.substring(0, k), time = id.substring(k + 1);
+                    if(!prev.hasClass("inactive") && !next.hasClass("inactive")) {
+                        $("#table")[0].value = table;
+                        $("#start")[0].value = time + ":00";
+                        $("#end")[0].value = time + ":59";
+                        $("td.rsv").not($(itself)).not(prev).not(next).addClass("inactive");
+                    }else if(prev.hasClass("inactive")) {
+                        $("#start")[0].value = time + ":00";
+                        next.next().addClass("inactive");
+                    }else {
+                        $("#end")[0].value = time + ":59";
+                        prev.prev().addClass("inactive");
+                    }
+                }else {
+                    return;
+                }
+            }else {
+                checkbox.checked = false;
+                let c1 = prev.find("input")[0], c2 = next.find("input")[0];
+                if(!c1.checked && !c2.checked) {
+                    $("td.rsv").each(function() {
+                        if($(this).hasClass("inactive")) {
+                            $(this).removeClass("inactive");
+                        }
+                    });
+                    $("#table")[0].value = "";
+                    $("#start")[0].value = "";
+                    $("#end")[0].value = "";
+                }else if(c1.checked) {
+                    $("#end")[0].value = c1.id.substring(c1.id.indexOf('+') + 1) + ":59";
+                    prev.prev().removeClass("inactive");
+                }else {
+                    $("#start")[0].value = c2.id.substring(c2.id.indexOf('+') + 1) + ":00";
+                    next.next().removeClass("inactive");
+                }
+            }
         }
     }
 }
+
 
 function show(date, lib) {
     if(date === undefined || date === null) {
@@ -68,7 +182,7 @@ function show(date, lib) {
         $("#temp")[0].remove();
     }
     $('#library')[0].value = lib;
-    $('#date')[0].value = now_str;
+    $('#date')[0].value = date;
     reRender(now_str, lib);
 }
 
@@ -109,7 +223,18 @@ reserve.init = function () {
     //post reservations
     $('#reserve_form').submit(function(event) {
         event.preventDefault();
-        let form_info = $(this).serializeArray(), producedTime = moment().millisecond();
+
+        let reserve_info = {};
+        let targets = [];
+        $(":checkbox").each(function() {
+            if($(this).checked) {
+                targets.push($(this).id);
+            }
+        });
+
+        console.log(targets);
+        //reserve_info["username"] = ;
+        reserve_info["producedTime"] = moment().millisecond();
     });
 
 }

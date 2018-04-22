@@ -3,6 +3,12 @@
  * Copyright © 2014 David Bushell | BSD & MIT license | http://dbushell.com/
  */
 
+ #reserve_form .form-control {
+    cursor: none;
+    border: none;
+    box-shadow: none;
+ }
+
  #sidebar-div {
     background-color: #fbf9f9; 
     margin-top: -40px;
@@ -263,8 +269,12 @@ http://nicolasgallagher.com/micro-clearfix-hack/
 }
 
 .rsv {
-  position: relative; 
+    position: relative; 
 } 
+
+.rsv.inactive input[type=checkbox] + span:hover{
+    cursor: not-allowed !important;
+}
 
 .rsv input[type=checkbox] {
     position: absolute;
