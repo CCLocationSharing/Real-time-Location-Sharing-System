@@ -3,13 +3,13 @@
 var reserve = {};
 
 function reRender(date, lib) {
-    let justfortest = {};
-    justfortest["library"] = lib;
-    justfortest["date"] = date;
+    let renderParams = {};
+    renderParams["library"] = lib;
+    renderParams["date"] = date;
 
     let stringBuilder = "<tbody id=\"temp\">";
 
-    $.get("/renderForPicker", justfortest, function(result, reRenderDone) {
+    $.get("/renderForPicker", renderParams, function(result, reRenderDone) {
         if(result === undefined) {
             console.log("result is undefined");
             return;
@@ -171,29 +171,46 @@ function selecttime(itself) {
     }
 }
 
-
 function show(date, lib) {
     if(date === undefined || date === null) {
-        var now_str = moment().format();
+        if($('#date')[0].value === "") {
+            let dateobj = moment();
+            date = dateobj.format();
+            $('#date')[0].value = dateobj.format("MM-DD-YYYY");
+        }else {
+            date = moment($('#date')[0].value, "MM-DD-YYYY").format();
+        }
     }else {
-        var now_str = moment(date).format();
+        date = moment(date).format();
+        $('#date')[0].value = moment(date).format("MM-DD-YYYY");
     }
+
     if($("#temp").length > 0) {
         $("#temp")[0].remove();
     }
-    $('#library')[0].value = lib;
-    $('#date')[0].value = date;
-    reRender(now_str, lib);
+
+    if(lib === undefined || lib === null) {
+        if($('#library')[0].value === "") {
+            lib = "carpenter";
+            $('#library')[0].value = "carpenter";
+        }else {
+            lib = $('#library')[0].value;
+        }
+    }else {
+        $('#library')[0].value = lib;
+    }
+
+    reRender(date, lib);
 }
 
 reserve.init = function () {
     let now = moment();
     let minDate = moment().startOf('date');
     let maxDate = moment().add(6, 'day');
-    let default_lib = "carpenter";
 
     //default, now, carpenter hall
-    show(now, default_lib);
+    $('#datepicker')[0].value = now.format("MM-DD-YYYY");
+    show(now, "carpenter");
 
     //pikaday plugin
     var picker = new Pikaday({ 
@@ -211,32 +228,46 @@ reserve.init = function () {
         onSelect: function(date) {
             $('#datepicker')[0].value = picker.toString();
             $('#date')[0].value = picker.toString();
-            
-            let lib = "carpenter";
-            if($('#library')[0].value != undefined) {
-                lib = $('#library')[0].value;
-                show(date, lib);
-            }
+            show(date, $('#library')[0].value);
         }
     });
 
-    //post reservations
-    $('#reserve_form').submit(function(event) {
+    $("#reserve-form").submit(function(event) {
         event.preventDefault();
 
-        let reserve_info = {};
-        let targets = [];
-        $(":checkbox").each(function() {
-            if($(this).checked) {
-                targets.push($(this).id);
+        let formInfo = $(this).serializeArray(), reserveInfo = {};
+        formInfo.forEach(function(item) {
+            if(item.value === undefined || item.value === "") {
+                $("#error-message").text("empty");
+                return;
             }
         });
 
-        console.log(targets);
-        //reserve_info["username"] = ;
-        reserve_info["producedTime"] = moment().millisecond();
-    });
+        let date = moment(formInfo[1].value, "MM-DD-YYYY");
+        let start = formInfo[2].value.substring(0,2), end = formInfo[3].value.substring(0,2);
+        
+        let startTime = moment(date).hour(start).startOf('hour');        
+        let endTime = moment(date).hour(end).endOf('hour');
 
+        
+        reserveInfo["tabID"] = formInfo[0].value;
+        reserveInfo["startTime"] = startTime.valueOf();
+        reserveInfo["endTime"] = endTime.valueOf();
+        reserveInfo["producedTime"] = moment().valueOf();
+
+        console.log("1:", formInfo, reserveInfo);
+
+        $.post("/makeReservations", reserveInfo, function(result) {
+            if(result === undefined || result.IDs === undefined) {
+                console.log("unsuccessful reservation");
+            }else {
+                result.IDs.forEach(function(item) {
+                    $("#"+item).attr("disabled");
+                    show(date, formInfo[4].value);
+                });
+            }
+        });
+    });
 }
 
 $(document).ready(function() {

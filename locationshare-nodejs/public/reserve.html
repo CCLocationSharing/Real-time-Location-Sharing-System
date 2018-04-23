@@ -49,7 +49,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row">
+			<div class="row reservation-table-row">
 				<div class="col-sm-12 col-md-12">
 					<div class="table-responsive">
 						<table id="reserve_table" class="table">
@@ -82,32 +82,40 @@
 					</div-->
 				</div>
 			</div>
-			<div class="row">
-				<form id="reserve_form">
+			<div class="row reservation-form-row">
+				<div class="col-sm-12 col-md-12">
+				<form id="reserve-form"">
 					<div class="form-row">
-						<div class="form-group col-sm-5 col-md-5">
+						<div class="form-group col-sm-6 col-md-6">
 							<label for="table">Study Space</label>
 							<input readonly type="text" class="form-control" id="table" name="table">
 						</div>
-						<div class="form-group col-sm-2 col-md-2"></div>
-						<div class="form-group col-sm-5 col-md-5">
+						<div class="form-group col-sm-1 col-md-1"></div>
+						<div class="form-group col-sm-4 col-md-4">
 							<label for="date">Reservation on</label>
 							<input readonly type="text" class="form-control" id="date" name="date">
 						</div>
+						<div class="form-group col-sm-1 col-md-1"></div>
 					</div>
-					<div class="form-row">
-						<div class="form-group col-sm-5 col-md-5">
+					<div class="form-row align-items-center">
+						<div class="form-group col-sm-3 col-md-3">
 							<label for="start">From</label>
 							<input readonly type="text" class="form-control" id="start" name="start">
 						</div>
-						<div class="form-group col-sm-2 col-md-2"></div>
-						<div class="form-group col-sm-5 col-md-5">
+						<div class="form-group col-sm-3 col-md-3">
 							<label for="end">To</label>
 							<input readonly type="text" class="form-control" id="end" name="end">
 						</div>
+						<div class="form-group col-sm-1 col-md-1"></div>
+						<div class="form-group col-sm-4 col-md-4">
+							<button type="submit" class="btn btn-primary mb-2">Submit</button>
+							<label id="error-message" class="checkbox pull-left error"></label>
+						</div>
+						<div class="form-group col-sm-1 col-md-1"></div>
 					</div>
 					<input type="hidden" id="library" name="library">
 				</form>
+				</div>
 			</div>
 		</div>
 		<div class="col-sm-1 col-md-1"></div>	

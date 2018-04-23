@@ -3,33 +3,53 @@
  * Copyright © 2014 David Bushell | BSD & MIT license | http://dbushell.com/
  */
 
- #reserve_form .form-control {
+.reservation-table-row {
+    border: 1px solid #eee;
+    border-radius: .25rem;
+}
+
+.reservation-form-row {
+    padding-bottom: 30px;
+    padding-top: 30px;
+    margin-top: 5%;
+    border: 1px solid #eee;
+    border-left-width: .25rem;
+    border-radius: .25rem;
+    border-left-color: #F05F40;
+}
+
+button[type=submit].btn {
+    margin-top: 25px;
+    border-radius: 10px !important;
+ }
+
+#reserve-form .form-control {
     cursor: none;
     border: none;
     box-shadow: none;
- }
+}
 
- #sidebar-div {
+#sidebar-div {
     background-color: #fbf9f9; 
     margin-top: -40px;
     max-width: 150px !important;
- }
+}
 
- #sidebar {
+#sidebar {
     overflow: hidden;
- }
+}
 
- #sidebar li {
+#sidebar li {
     white-space: nowrap;
- }
+}
 
- #mainNav {
+#mainNav {
     margin-bottom: 0 !important;
- }
+}
 
- .table > tbody > tr > th {
+.table > tbody > tr > th {
     white-space: nowrap;
- }
+}
 
 .pika-single {
     z-index: 9999;

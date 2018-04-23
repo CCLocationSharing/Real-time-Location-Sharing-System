@@ -65,7 +65,7 @@ app.get("/reserve", function(req, res) {
 });
 
 app.get("/renderForPicker", reserve.getRender);
-app.post("/reservation", reserve.postReservation);
+app.post("/makeReservations", reserve.postReservation);
 
 app.get("/heat", (req, res) => {res.render("heat", {scripts: ["heat"], styles: ["heat"], heat: "active"})});
 

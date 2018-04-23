@@ -28,7 +28,7 @@ var getTableElements = function(url, tableList, res) {
     let dateParam = getUrlParam(url, "date");
     let queryDate = moment(dateParam);
     let queryDay = queryDate.dayOfYear(), queryHour, queryTime;
-    let endOfDay = moment(queryDate).hour(23).millisecond();
+    let endOfDay = moment(queryDate).hour(23).valueOf();
     let today = moment().dayOfYear();
 
     if(queryDay < today || queryDay - today > 6) {
@@ -38,11 +38,11 @@ var getTableElements = function(url, tableList, res) {
     if(queryDay == today) {
         let thirtyMBefore = queryDate.subtract(30, 'minute');
         queryHour = thirtyMBefore.hour();
-        queryTime = thirtyMBefore.milliseconds();
+        queryTime = thirtyMBefore.valueOf();
     }else {
         queryDate.hour(7);
         queryHour = queryDate.hour();
-        queryTime = queryDate.milliseconds();
+        queryTime = queryDate.valueOf();
     }
 
     async.map(tableList, function(tabid, callback) {
@@ -75,8 +75,8 @@ var getTableElements = function(url, tableList, res) {
                     callback(null,item);
                 }else {
                     data.Items.forEach(function(item) {
-                        let start = moment().millisecond(item.startTime).hour();
-                        let end = moment().millisecond(item.endTime).hour();
+                        let start = moment(item.startTime).hour();
+                        let end = moment(item.endTime).hour();
                         for(let k = start; k <= end; k++) {
                             date.timesections[k - 8].reservable = false;
                         }
@@ -199,9 +199,72 @@ exports.postReservation = function(req, res) {
         return res.redirect("/login");
     }
 
-    
+    let tabid = req.body.tabID;
+    let starttime = Number(req.body.startTime), endtime = Number(req.body.endTime);
 
-};
+    var overlap = {
+        TableName: "Reservations",
+        KeyConditionExpression: "#tb = :id and #et >= :stparam",
+        FilterExpression: "#st <= :etparam",
+        ExpressionAttributeNames:{
+            "#tb": "tabID",
+            "#et": "endTime",
+            "#st": "startTime"
+        },
+        ExpressionAttributeValues: {
+            ":id": tabid,
+            ":stparam": starttime,
+            ":etparam": endtime
+        }
+    };    
+        
+    docClient.query(overlap, function(err, data) {
+        if(err) {
+            console.log("starttime", starttime);
+            console.log("query overlap:", err);
+        }else {
+            if(data.Count === 0) {
+                var reservation = {
+                    TableName: "Reservations",
+                    Item: {
+                        "tabID": tabid,
+                        "endTime": endtime,
+                        "startTime": starttime,
+                        "username": req.session.user.username,
+                        "producedTime": req.body.producedTime
+                    }
+                };
+
+                docClient.put(reservation, function(err, data) {
+                    if(err) {
+                        console.log("add item:", err);
+                    }else {
+                        console.log("Added item:", JSON.stringify(data, null, 2));
+                        let IDs = [];
+                        let h1 = moment(starttime).hour(), h2 = moment(endtime).hour();
+                        
+                        if(h1 < 10) {
+                            IDs.push(tabid+"+0"+h1);
+                        }else {
+                            IDs.push(tabid+"+"+h1);
+                        }
+
+                        if(h1 < h2) {
+                            if(h2 < 10) {
+                                IDs.push(tabid+"+0"+h2);
+                            }else {
+                                IDs.push(tabid+"+"+h2);
+                            }
+                        }
+                        return res.json({"IDs": IDs});
+                    }
+                });
+            }else {
+                console.log("Fail", JSON.stringify(data, null, 2));
+            }
+        }
+    });
+}
 
 
 
