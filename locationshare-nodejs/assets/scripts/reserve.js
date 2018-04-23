@@ -2,6 +2,7 @@
 
 var reserve = {};
 
+/*@param {string} date. @param {string} lib*/
 function reRender(date, lib) {
     let renderParams = {};
     renderParams["library"] = lib;
@@ -171,31 +172,37 @@ function selecttime(itself) {
     }
 }
 
-function show(date, lib) {
-    if(date === undefined || date === null) {
-        if($('#date')[0].value === "") {
-            let dateobj = moment();
-            date = dateobj.format();
-            $('#date')[0].value = dateobj.format("MM-DD-YYYY");
-        }else {
-            date = moment($('#date')[0].value, "MM-DD-YYYY").format();
-        }
+function getDateString(date) {
+    let today = moment().dayOfYear(), day = date.dayOfYear();
+    if(day === today) {
+        return moment().format();
     }else {
-        date = moment(date).format();
-        $('#date')[0].value = moment(date).format("MM-DD-YYYY");
+        return moment(date).format();
     }
+}
 
+//change library will call show function, the first parameter is null
+//initialization will call show function, 2 parameters are passed
+//picker will call show function, the second paramter is null
+/*
+*function
+*@param {string} date, @param {string} lib
+*/
+function show(date, lib) {
+    //clear the old table
     if($("#temp").length > 0) {
         $("#temp")[0].remove();
     }
 
+    if(date === undefined || date === null) {
+        date = moment($('#date')[0].value).format();
+    }
+
+    //standardization
+    date = getDateString(date);
+
     if(lib === undefined || lib === null) {
-        if($('#library')[0].value === "") {
-            lib = "carpenter";
-            $('#library')[0].value = "carpenter";
-        }else {
-            lib = $('#library')[0].value;
-        }
+        lib = $('#library')[0].value;
     }else {
         $('#library')[0].value = lib;
     }
@@ -204,13 +211,17 @@ function show(date, lib) {
 }
 
 reserve.init = function () {
-    let now = moment();
     let minDate = moment().startOf('date');
     let maxDate = moment().add(6, 'day');
 
-    //default, now, carpenter hall
-    $('#datepicker')[0].value = now.format("MM-DD-YYYY");
-    show(now, "carpenter");
+    //default value for picker
+    let defaultDate = moment().format("MM-DD-YYYY"), defaultLibrary = "carpenter";
+    $('#datepicker')[0].value = defaultDate;
+    $('#library')[0].value = defaultLibrary;
+    $('#date')[0].value = defaultDate;
+
+    //default render
+    show(defaultDate, defaultLibrary);
 
     //pikaday plugin
     var picker = new Pikaday({ 
@@ -226,9 +237,11 @@ reserve.init = function () {
             }
         },
         onSelect: function(date) {
-            $('#datepicker')[0].value = picker.toString();
-            $('#date')[0].value = picker.toString();
-            show(date, $('#library')[0].value);
+            let datestr = picker.toString();
+            date = moment(datestr).format("MM-DD-YYYY");
+            $('#datepicker')[0].value =date;
+            $('#date')[0].value = date;
+            show(date, null);
         }
     });
 
@@ -263,7 +276,7 @@ reserve.init = function () {
             }else {
                 result.IDs.forEach(function(item) {
                     $("#"+item).attr("disabled");
-                    show(date, formInfo[4].value);
+                    show(date.format(), formInfo[4].value);
                 });
             }
         });

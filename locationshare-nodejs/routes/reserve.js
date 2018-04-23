@@ -26,9 +26,13 @@ var getTableElements = function(url, tableList, res) {
     }
 
     let dateParam = getUrlParam(url, "date");
+    //@param {moment Object}
     let queryDate = moment(dateParam);
+    //@param {Number}
     let queryDay = queryDate.dayOfYear(), queryHour, queryTime;
+    //@param {Number} representing epoch time
     let endOfDay = moment(queryDate).hour(23).valueOf();
+    //@param {Number}
     let today = moment().dayOfYear();
 
     if(queryDay < today || queryDay - today > 6) {
@@ -65,7 +69,7 @@ var getTableElements = function(url, tableList, res) {
 
         docClient.query(param, function(err, data) {
             if(err) {
-                throw err;
+                console.log("err when querying if the specific table is reserved in a time period:",err);
             }else {
                 if(!data.Items) {
                     let item = {
@@ -125,6 +129,7 @@ var getDefaultTimeSections = function() {
 /**
  * generate default json object {"day": , "timesections": json array}
  * @function
+ * @param {moment Object} time
  */
 var getDefaultDate = function(time) {
     let date = {};
@@ -165,6 +170,12 @@ var getUrlParam = function(url, name) {
 exports.getRender = function(req, res) {
     let url = req.url;    
     let libid = getUrlParam(url, "library");
+
+    if(libid === undefined || libid === null) {
+        console.log("lacking library ID");
+        return;
+    }
+
     var tables = {
         TableName: "Tables",
         ProjectionExpression:"tabID",
@@ -182,7 +193,7 @@ exports.getRender = function(req, res) {
 
     docClient.query(tables, function(err, data) {
         if(err) {
-            throw err;
+            console.log("err when querying tables from given library:", err);
         } else {
             let tableList = [];
             data.Items.forEach(function(item) {
