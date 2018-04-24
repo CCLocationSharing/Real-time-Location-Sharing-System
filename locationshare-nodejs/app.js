@@ -48,6 +48,8 @@ app.get('/logout', signin.getLogout);
 app.post("/signup", signin.postNewUser);// Done
 app.post("/login", signin.postLogin); // Done
 
+//var moment = require('moment');
+
 app.get("/dashboard", function(req, res) {
 	if (req.session.user === undefined) return res.redirect("/");
 	res.render("dashboard.html", {styles: ["dashboard"], scripts: ["dashboard"], home : "active"});

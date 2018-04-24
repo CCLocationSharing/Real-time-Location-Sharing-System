@@ -29,7 +29,7 @@ var getTableElements = function(url, tableList, res) {
     //@param {moment Object}
     let queryDate = moment(dateParam);
     //@param {Number}
-    let queryDay = queryDate.dayOfYear(), queryHour, queryTime;
+    let queryDay = queryDate.dayOfYear(), queryHour = queryDate.hour(), queryTime = queryDate.valueOf();
     //@param {Number} representing epoch time
     let endOfDay = moment(queryDate).hour(23).valueOf();
     //@param {Number}
@@ -38,15 +38,6 @@ var getTableElements = function(url, tableList, res) {
     if(queryDay < today || queryDay - today > 6) {
         console.log("invalid query date.", queryDay, today);
         return;
-    }
-    if(queryDay == today) {
-        let thirtyMBefore = queryDate.subtract(30, 'minute');
-        queryHour = thirtyMBefore.hour();
-        queryTime = thirtyMBefore.valueOf();
-    }else {
-        queryDate.hour(7);
-        queryHour = queryDate.hour();
-        queryTime = queryDate.valueOf();
     }
 
     async.map(tableList, function(tabid, callback) {

@@ -173,11 +173,11 @@ function selecttime(itself) {
 }
 
 function getDateString(date) {
-    let today = moment().dayOfYear(), day = date.dayOfYear();
+    let today = moment().dayOfYear(), day = moment(date, "MM-DD-YYYY").dayOfYear();
     if(day === today) {
-        return moment().format();
+        return moment();
     }else {
-        return moment(date).format();
+        return moment(date, "MM-DD-YYYY").hour(7).startOf('hour');
     }
 }
 
@@ -191,37 +191,35 @@ function getDateString(date) {
 function show(date, lib) {
     //clear the old table
     if($("#temp").length > 0) {
-        $("#temp")[0].remove();
+        $("#temp").remove();
     }
 
     if(date === undefined || date === null) {
-        date = moment($('#date')[0].value).format();
+        let dateStr = $('#date')[0].value;
+        let moment = getDateString(dateStr);
+        date = moment.format();
     }
-
-    //standardization
-    date = getDateString(date);
 
     if(lib === undefined || lib === null) {
         lib = $('#library')[0].value;
     }else {
         $('#library')[0].value = lib;
     }
-
     reRender(date, lib);
 }
 
 reserve.init = function () {
-    let minDate = moment().startOf('date');
-    let maxDate = moment().add(6, 'day');
+    let defaultMoment = moment(), defaultDate = defaultMoment.format('MM-DD-YYYY'), defaultLibrary = "carpenter";
+    let minDate = moment(defaultMoment).startOf('date');
+    let maxDate = moment(defaultMoment).add(6, 'day');
 
     //default value for picker
-    let defaultDate = moment().format("MM-DD-YYYY"), defaultLibrary = "carpenter";
     $('#datepicker')[0].value = defaultDate;
-    $('#library')[0].value = defaultLibrary;
     $('#date')[0].value = defaultDate;
+    $('#library')[0].value = defaultLibrary;
 
     //default render
-    show(defaultDate, defaultLibrary);
+    reRender(defaultMoment.format(), defaultLibrary);
 
     //pikaday plugin
     var picker = new Pikaday({ 
@@ -236,12 +234,13 @@ reserve.init = function () {
                 return false;
             }
         },
-        onSelect: function(date) {
-            let datestr = picker.toString();
-            date = moment(datestr).format("MM-DD-YYYY");
+        onSelect: function(item) {
+            let strs = picker.toString().split('-');
+            let dateStr = strs[1] + "-" + strs[2] + "-" + strs[0];
+            let moment = getDateString(dateStr), date = moment.format('MM-DD-YYYY');
             $('#datepicker')[0].value =date;
             $('#date')[0].value = date;
-            show(date, null);
+            show(moment.format(), null);
         }
     });
 
@@ -274,10 +273,16 @@ reserve.init = function () {
             if(result === undefined || result.IDs === undefined) {
                 console.log("unsuccessful reservation");
             }else {
-                result.IDs.forEach(function(item) {
-                    $("#"+item).attr("disabled");
-                    show(date.format(), formInfo[4].value);
+                /*result.IDs.forEach(function(item) {
+                    let id = "#" + item;
+                    $(id).attr("disabled",true);
                 });
+
+                refresh(formInfo[4].value);
+
+                function refresh(lib) {
+                    show(moment().format(), lib);
+                };*/
             }
         });
     });
