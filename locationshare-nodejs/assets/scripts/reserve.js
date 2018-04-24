@@ -18,6 +18,7 @@ function reRender(date, lib) {
 
         result.forEach(function(item) {
             let table = item.table;
+            let tableStr = table.replace(/( )+/g,'-');
             let timesections = item.data.timesections;
 
             stringBuilder = stringBuilder + "<tr><th scope=\"row\">" + table + "<\/th>";
@@ -28,10 +29,10 @@ function reRender(date, lib) {
                 let section = item.timesection;
                 let r = item.reservable;
                 if(r === true) {
-                    let id = table+"+"+section;
+                    let id = tableStr+"+"+section;
                     stringBuilder = stringBuilder + prefix + id + "\"" + suffix;
                 }else {
-                    let id = table+"+"+section;
+                    let id = tableStr+"+"+section;
                     stringBuilder = stringBuilder + prefix + id + "\"" + " disabled " + suffix;
                 }
                 if(section === 22) {
@@ -64,7 +65,8 @@ function selecttime(itself) {
 
                     let id = checkbox.id;
                     let k = id.indexOf('+');
-                    let table = id.substring(0, k), time = id.substring(k + 1);
+                    let tableStr = id.substring(0, k), time = id.substring(k + 1);
+                    let table = tableStr.replace(/(-)+/g,' ');
 
                     $("#start")[0].value = time + ":00";
                     if(!next.find("input")[0].checked) {
@@ -98,7 +100,8 @@ function selecttime(itself) {
                     checkbox.checked = true;
                     let id = checkbox.id;
                     let k = id.indexOf('+');
-                    let table = id.substring(0, k), time = id.substring(k + 1);
+                    let tableStr = id.substring(0, k), time = id.substring(k + 1);
+                    let table = tableStr.replace(/(-)+/g,' ');
 
                     $("#end")[0].value = time + ":59";
                     if(!prev.find("input")[0].checked) {
@@ -132,7 +135,9 @@ function selecttime(itself) {
                     checkbox.checked = true;
                     let id = checkbox.id;
                     let k = id.indexOf('+');
-                    let table = id.substring(0, k), time = id.substring(k + 1);
+                    let tableStr = id.substring(0, k), time = id.substring(k + 1);
+                    let table = tableStr.replace(/(-)+/g,' ');
+
                     if(!prev.hasClass("inactive") && !next.hasClass("inactive")) {
                         $("#table")[0].value = table;
                         $("#start")[0].value = time + ":00";
@@ -181,9 +186,6 @@ function getDateString(date) {
     }
 }
 
-//change library will call show function, the first parameter is null
-//initialization will call show function, 2 parameters are passed
-//picker will call show function, the second paramter is null
 /*
 *function
 *@param {string} date, @param {string} lib
@@ -250,7 +252,7 @@ reserve.init = function () {
         let formInfo = $(this).serializeArray(), reserveInfo = {};
         formInfo.forEach(function(item) {
             if(item.value === undefined || item.value === "") {
-                $("#error-message").text("empty");
+                $('#error-message').text("empty item(s)");
                 return;
             }
         });
@@ -260,29 +262,28 @@ reserve.init = function () {
         
         let startTime = moment(date).hour(start).startOf('hour');        
         let endTime = moment(date).hour(end).endOf('hour');
-
-        
+ 
         reserveInfo["tabID"] = formInfo[0].value;
         reserveInfo["startTime"] = startTime.valueOf();
         reserveInfo["endTime"] = endTime.valueOf();
         reserveInfo["producedTime"] = moment().valueOf();
 
-        console.log("1:", formInfo, reserveInfo);
-
         $.post("/makeReservations", reserveInfo, function(result) {
             if(result === undefined || result.IDs === undefined) {
                 console.log("unsuccessful reservation");
             }else {
-                /*result.IDs.forEach(function(item) {
+                result.IDs.forEach(function(item) {
                     let id = "#" + item;
-                    $(id).attr("disabled",true);
+                    $(id).attr('disabled', true);
+                    $("td.rsv").each(function() {
+                        if($(this).hasClass("inactive")) {
+                            $(this).removeClass("inactive");
+                        }
+                    });
+                    $("#table")[0].value = "";
+                    $("#start")[0].value = "";
+                    $("#end")[0].value = "";
                 });
-
-                refresh(formInfo[4].value);
-
-                function refresh(lib) {
-                    show(moment().format(), lib);
-                };*/
             }
         });
     });

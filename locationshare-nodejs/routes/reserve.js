@@ -201,8 +201,18 @@ exports.postReservation = function(req, res) {
         return res.redirect("/login");
     }
 
-    let tabid = req.body.tabID;
+    let table = req.body.tabID;
     let starttime = Number(req.body.startTime), endtime = Number(req.body.endTime);
+
+    if(table === undefined || table === "") {
+        console.log("empty tableID");
+        return;
+    }
+
+    if(starttime === undefined || endtime === undefined) {
+        console.log("lacking parameters of start or end time");
+        return;
+    }
 
     var overlap = {
         TableName: "Reservations",
@@ -214,7 +224,7 @@ exports.postReservation = function(req, res) {
             "#st": "startTime"
         },
         ExpressionAttributeValues: {
-            ":id": tabid,
+            ":id": table,
             ":stparam": starttime,
             ":etparam": endtime
         }
@@ -222,14 +232,13 @@ exports.postReservation = function(req, res) {
         
     docClient.query(overlap, function(err, data) {
         if(err) {
-            console.log("starttime", starttime);
             console.log("query overlap:", err);
         }else {
             if(data.Count === 0) {
                 var reservation = {
                     TableName: "Reservations",
                     Item: {
-                        "tabID": tabid,
+                        "tabID": table,
                         "endTime": endtime,
                         "startTime": starttime,
                         "username": req.session.user.username,
@@ -244,18 +253,19 @@ exports.postReservation = function(req, res) {
                         console.log("Added item:", JSON.stringify(data, null, 2));
                         let IDs = [];
                         let h1 = moment(starttime).hour(), h2 = moment(endtime).hour();
+                        let tableStr = table.replace(/( )+/g,"\\-");
                         
                         if(h1 < 10) {
-                            IDs.push(tabid+"+0"+h1);
+                            IDs.push(tableStr+"\\+0"+h1);
                         }else {
-                            IDs.push(tabid+"+"+h1);
+                            IDs.push(tableStr+"\\+"+h1);
                         }
 
                         if(h1 < h2) {
                             if(h2 < 10) {
-                                IDs.push(tabid+"+0"+h2);
+                                IDs.push(tableStr+"\\+0"+h2);
                             }else {
-                                IDs.push(tabid+"+"+h2);
+                                IDs.push(tableStr+"\\+"+h2);
                             }
                         }
                         return res.json({"IDs": IDs});
