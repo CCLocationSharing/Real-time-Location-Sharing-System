@@ -35,7 +35,7 @@
 			"PutRequest": {
 				"Item": {
 					"libID": {"S": "olin"},
-					"tabID": {"S": "001"},
+					"tabID": {"S": "olin 001"},
 					"capacity": {"N": "1"},
 					"reservable": {"BOOL": false}
 				}
@@ -46,7 +46,7 @@
 			"PutRequest": {
 				"Item": {
 					"libID": {"S": "olin"},
-					"tabID": {"S": "002"},
+					"tabID": {"S": "olin 002"},
 					"capacity": {"N": "1"},
 					"reservable": {"BOOL": false}
 				}
@@ -108,7 +108,11 @@
 					"libID": {"S": "carpenter"},
 					"tabID": {"S": "CH 001"},
 					"capacity": {"N": "8"},
-					"reservable": {"BOOL": true}
+					"reservable": {"BOOL": true},
+					"reserved": {"L": [
+						{"N": "1524686400000"},
+						{"N": "1524693600000"}]
+					}
 				}
 			}
 		},
@@ -118,7 +122,10 @@
 					"libID": {"S": "carpenter"},
 					"tabID": {"S": "CH 002"},
 					"capacity": {"N": "6"},
-					"reservable": {"BOOL": true}
+					"reservable": {"BOOL": true},
+					"reserved": {"L": [
+						{"N": "1524686400000"}]
+					}
 				}
 			}
 		},
@@ -126,9 +133,12 @@
 			"PutRequest": {
 				"Item": {
 					"libID": {"S": "carpenter"},
-					"tabID": {"S": "CH003"},
+					"tabID": {"S": "CH 003"},
 					"capacity": {"N": "10"},
-					"reservable": {"BOOL": true}
+					"reservable": {"BOOL": true},
+					"reserved": {"L": [
+						{"N": "1524686400000"}]
+					}
 				}
 			}
 		},

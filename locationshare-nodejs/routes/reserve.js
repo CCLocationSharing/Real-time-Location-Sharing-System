@@ -18,82 +18,26 @@ var async = require('async');
  * @function
  * @param {String} url- url from get method, @param {Array} tableList - consists of reservable tables for the given library, @param res - HTTP RES
  */
-var getTableElements = function(url, tableList, res) {
-
-    if(tableList === undefined) {
-        console.log("undefined param @tableList");
-        return;
-    }
-
-    let dateParam = getUrlParam(url, "date");
-    //@param {moment Object}
-    let queryDate = moment(dateParam);
-    //@param {Number}
-    let queryDay = queryDate.dayOfYear(), queryHour = queryDate.hour(), queryTime = queryDate.valueOf();
-    //@param {Number} representing epoch time
-    let endOfDay = moment(queryDate).hour(23).valueOf();
-    //@param {Number}
-    let today = moment().dayOfYear();
-
-    if(queryDay < today || queryDay - today > 6) {
-        console.log("invalid query date.", queryDay, today);
-        return;
-    }
+var getTableElements = function(req, res, tableList) {
 
     async.map(tableList, function(tabid, callback) {
         let param = {
-            TableName: "Reservations",
-            ProjectionExpression:"startTime, endTime",
-            KeyConditionExpression: "#tb = :id and #et between :qt and :ed",
+            TableName: "Tables",
+            ProjectionExpression:"reserved",
+            KeyConditionExpression: "#tb = :id",
             ExpressionAttributeNames:{
-                "#tb": "tabID",
-                "#et": "endTime"
+                "#tb": "tabID"
             },
             ExpressionAttributeValues: {
-                ":id": tabid,
-                ":qt": queryTime,
-                ":ed": endOfDay
+                ":id": tabid
             }
         };
-
-        let date = getDefaultDate(queryDate);
-
         docClient.query(param, function(err, data) {
-            if(err) {
-                console.log("err when querying if the specific table is reserved in a time period:",err);
-            }else {
-                if(!data.Items) {
-                    let item = {
-                        "table": tabid,
-                        "data": date
-                    };
-                    callback(null,item);
-                }else {
-                    data.Items.forEach(function(item) {
-                        let start = moment(item.startTime).hour();
-                        let end = moment(item.endTime).hour();
-                        for(let k = start; k <= end; k++) {
-                            date.timesections[k - 8].reservable = false;
-                        }
-                    });
-                    let item = {
-                        "table": tabid,
-                        "data": date
-                    };
-                    callback(null,item);
-                }
-            }
+            callback(err, {"table": tabid, "reserved": data.Items[0].reserved});
         });
     }, function(err, results) {
-        if(err) {
-            throw err;
-        } else {
-            if(results === undefined) {
-                return;
-            }else {
-                return res.json(results);
-            }
-        }
+        if (err) throw err;
+        return res.json(results);
     }); 
 }
 
@@ -142,56 +86,30 @@ var getDefaultDate = function(time) {
     return date;
 };
 
-/**
- * get two params from url
- * @function
- */
-var getUrlParam = function(url, name) {  
-    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); 
-    let r = url.substr(17).match(reg); 
-
-    if (r != null) {
-        return unescape(r[2]); 
-    }else {
-        return null; 
-    }   
-};
-
-
 exports.getRender = function(req, res) {
-    let url = req.url;    
-    let libid = getUrlParam(url, "library");
-
-    if(libid === undefined || libid === null) {
-        console.log("lacking library ID");
-        return;
+    let libid = req.query.library;
+    
+    if (libid === undefined) {
+        return res.status(400).send("Missing libid");
     }
 
     var tables = {
-        TableName: "Tables",
-        ProjectionExpression:"tabID",
+        TableName: "Libraries",
+        ProjectionExpression:"tables",
         KeyConditionExpression: "#lb = :id",
-        FilterExpression: "#r = :a",
         ExpressionAttributeNames:{
-            "#lb": "libID",
-            "#r": "reservable"
+            "#lb": "libID"
         },
         ExpressionAttributeValues: {
-            ":id": libid,
-            ":a": true
+            ":id": libid
         }
     }
 
     docClient.query(tables, function(err, data) {
-        if(err) {
-            console.log("err when querying tables from given library:", err);
-        } else {
-            let tableList = [];
-            data.Items.forEach(function(item) {
-                tableList.push(item.tabID);
-            });
-            getTableElements(url, tableList, res);
-        }
+        if(err) throw err;
+        
+        let tableList = data.Items[0].tables;
+        getTableElements(req, res, tableList);
     });
 }
 

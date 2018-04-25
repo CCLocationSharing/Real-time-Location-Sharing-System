@@ -4,48 +4,49 @@ var reserve = {};
 
 /*@param {string} date. @param {string} lib*/
 function reRender(date, lib) {
-    let renderParams = {};
-    renderParams["library"] = lib;
-    renderParams["date"] = date;
-
-    let stringBuilder = "<tbody id=\"temp\">";
-
-    $.get("/renderForPicker", renderParams, function(result, reRenderDone) {
+    let renderParams = {
+        "library": lib
+    };
+    
+    $.get("/renderForPicker", renderParams, function(result) {
         if(result === undefined) {
             console.log("result is undefined");
             return;
         }
 
+        let stringBuilder = "<tbody id=\"temp\">";
+        let startHour = moment(date).hour(8).valueOf();
+        let endOfDay = moment(date).hour(23).valueOf();
+        let today = moment(date).dayOfYear();
+        
         result.forEach(function(item) {
             let table = item.table;
             let tableStr = table.replace(/( )+/g,'-');
-            let timesections = item.data.timesections;
-
-            stringBuilder = stringBuilder + "<tr><th scope=\"row\">" + table + "<\/th>";
-            let prefix = "<td class=\"rsv\" onclick=\"selecttime(this)\"><input type=\"checkbox\" id=\"";
-            let suffix = "\/><span><\/span><\/td>";
-
-            timesections.forEach(function(item) {
-                let section = item.timesection;
-                let r = item.reservable;
-                if(r === true) {
-                    let id = tableStr+"+"+section;
-                    stringBuilder = stringBuilder + prefix + id + "\"" + suffix;
-                }else {
-                    let id = tableStr+"+"+section;
-                    stringBuilder = stringBuilder + prefix + id + "\"" + " disabled " + suffix;
-                }
-                if(section === 22) {
-                    stringBuilder = stringBuilder + "<\/tr>";
+            let reserved = [];
+            item.reserved.forEach(reserve => {
+                if (moment(reserve).dayOfYear() == today) {
+                    reserved.push(moment(reserve).hour());
                 }
             });
-        });
-        reRenderDone(stringBuilder);
 
-        function reRenderDone(stringBuilder) {
-            stringBuilder = stringBuilder + "<\/tbody>"; 
-            $('#reserve_table').append(stringBuilder);
-        }
+            stringBuilder = stringBuilder + "<tr><th scope=\"row\">" + table + "</th>";
+            let prefix = "<td class=\"rsv\" onclick=\"selecttime(this)\"><input type=\"checkbox\" id=\"";
+            let suffix = "/><span></span></td>";
+                
+                for (let hour = 8; hour < 23; hour++) {
+                let id = tableStr + "+" + hour;
+                if (hour <= moment(date).hour() || reserved.includes(hour)) {
+                    stringBuilder += prefix + id + "\"" + " disabled " + suffix;
+                } else {
+                    stringBuilder += prefix + id + "\"" + suffix;
+                }
+                if (hour === 22) {
+                    stringBuilder += "</tr>";
+                }
+            }
+        });
+        stringBuilder = stringBuilder + "</tbody>"; 
+        $('#reserve_table').append(stringBuilder);
     });
 }
 
@@ -212,9 +213,7 @@ function show(date, lib) {
 
 reserve.init = function () {
     let defaultMoment = moment(), defaultDate = defaultMoment.format('MM-DD-YYYY'), defaultLibrary = "carpenter";
-    let minDate = moment(defaultMoment).startOf('date');
-    let maxDate = moment(defaultMoment).add(6, 'day');
-
+    
     //default value for picker
     $('#datepicker')[0].value = defaultDate;
     $('#date')[0].value = defaultDate;
@@ -224,6 +223,8 @@ reserve.init = function () {
     reRender(defaultMoment.format(), defaultLibrary);
 
     //pikaday plugin
+    let minDate = defaultMoment.startOf('date');
+    let maxDate = defaultMoment.add(6, 'day');
     var picker = new Pikaday({ 
         field: $('#datepicker')[0],
         trigger: $('#datepickerTrigger')[0],
