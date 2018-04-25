@@ -224,7 +224,7 @@ reserve.init = function () {
 
     //pikaday plugin
     let minDate = defaultMoment.startOf('date');
-    let maxDate = defaultMoment.add(6, 'day');
+    let maxDate = moment().add(6, 'day');
     var picker = new Pikaday({ 
         field: $('#datepicker')[0],
         trigger: $('#datepickerTrigger')[0],
@@ -241,7 +241,7 @@ reserve.init = function () {
             let strs = picker.toString().split('-');
             let dateStr = strs[1] + "-" + strs[2] + "-" + strs[0];
             let moment = getDateString(dateStr), date = moment.format('MM-DD-YYYY');
-            $('#datepicker')[0].value =date;
+            $('#datepicker')[0].value = date;
             $('#date')[0].value = date;
             show(moment.format(), null);
         }
@@ -251,15 +251,10 @@ reserve.init = function () {
         event.preventDefault();
 
         let formInfo = $(this).serializeArray(), reserveInfo = {};
-        formInfo.forEach(function(item) {
-            if(item.value === undefined || item.value === "") {
-                $('#error-message').text("empty item(s)");
-                return;
-            }
-        });
-
+        
         let date = moment(formInfo[1].value, "MM-DD-YYYY");
-        let start = formInfo[2].value.substring(0,2), end = formInfo[3].value.substring(0,2);
+        let start = formInfo[2].value.substring(0, formInfo[2].value.indexOf(":"));
+        let end = formInfo[3].value.substring(0, formInfo[2].value.indexOf(":"));
         
         let startTime = moment(date).hour(start).startOf('hour');        
         let endTime = moment(date).hour(end).endOf('hour');
@@ -270,21 +265,13 @@ reserve.init = function () {
         reserveInfo["producedTime"] = moment().valueOf();
 
         $.post("/makeReservations", reserveInfo, function(result) {
-            if(result === undefined || result.IDs === undefined) {
-                console.log("unsuccessful reservation");
-            }else {
-                result.IDs.forEach(function(item) {
-                    let id = "#" + item;
-                    $(id).attr('disabled', true);
-                    $("td.rsv").each(function() {
-                        if($(this).hasClass("inactive")) {
-                            $(this).removeClass("inactive");
-                        }
-                    });
-                    $("#table")[0].value = "";
-                    $("#start")[0].value = "";
-                    $("#end")[0].value = "";
-                });
+            alert("Success");
+            window.location.replace("/reserve");
+        }).fail(function(err) {
+            if (err.status === 400) {
+                $('#error-message').text(err.responseText);
+            } else if (err.status === 401) {
+                window.location.replace("/login");
             }
         });
     });

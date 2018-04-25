@@ -41,51 +41,6 @@ var getTableElements = function(req, res, tableList) {
     }); 
 }
 
-
-/**
- * generate default json array for "timesections": [{"timesection": , "reservable": }]
- * @function
- */
-var getDefaultTimeSections = function() {
-    let timeSection = [];
-    for(let j = 0; j < 15; j++) {
-        let section = {};
-
-        section["timesection"] = j + 8;
-        section["reservable"] = true;
-        timeSection[j] = section;
-    }
-
-    timeSection[0].timesection = "0" + timeSection[0].timesection;
-    timeSection[1].timesection = "0" + timeSection[1].timesection;
-    return timeSection;
-};
-
-/**
- * generate default json object {"day": , "timesections": json array}
- * @function
- * @param {moment Object} time
- */
-var getDefaultDate = function(time) {
-    let date = {};
-    let day = time.dayOfYear();
-
-    date["day"] = day;
-    date["timesections"] = getDefaultTimeSections();
-
-    //if time == today then modify today
-    let today = moment().dayOfYear();
-    if(day == today) {
-        let hour = time.hour();
-        date.timesections.forEach(function(item) {
-            if(item.timesection <= hour) {
-                item.reservable = false;
-            }
-        });
-    }
-    return date;
-};
-
 exports.getRender = function(req, res) {
     let libid = req.query.library;
     
@@ -115,43 +70,34 @@ exports.getRender = function(req, res) {
 
 exports.postReservation = function(req, res) {
     if (req.session.user === undefined) {
-        req.session.lastUrl = "/reserve";
-        return res.redirect("/login");
+        return res.status(401).send("Please log in first.");
     }
-
     let table = req.body.tabID;
-    let starttime = Number(req.body.startTime), endtime = Number(req.body.endTime);
+    let starttime = moment(Number(req.body.startTime));
+    let endtime = moment(Number(req.body.endTime));
 
-    if(table === undefined || table === "") {
-        console.log("empty tableID");
-        return;
+    if(table === undefined || table === "" || 
+        starttime === undefined || endtime === undefined) {
+        return res.status(400).send("You didn't select any time slot.");
     }
 
-    if(starttime === undefined || endtime === undefined) {
-        console.log("lacking parameters of start or end time");
-        return;
-    }
-
-    var overlap = {
-        TableName: "Reservations",
-        KeyConditionExpression: "#tb = :id and #et >= :stparam",
-        FilterExpression: "#st <= :etparam",
-        ExpressionAttributeNames:{
-            "#tb": "tabID",
-            "#et": "endTime",
-            "#st": "startTime"
-        },
+    let reserve;
+    if (starttime.hour() === endtime.hour()) reserve = [starttime.valueOf()];
+    else reserve = [starttime.valueOf(), endtime.startOf("hour").valueOf()];
+    var param = {
+        TableName: "Tables",
+        Key: {"tabID": table},
+        UpdateExpression: "set #res = list_append(#res, :newres)",
+        ExpressionAttributeNames: {"#res": "reserved"},
         ExpressionAttributeValues: {
-            ":id": table,
-            ":stparam": starttime,
-            ":etparam": endtime
+            ":newres": reserve
         }
     };    
         
-    docClient.query(overlap, function(err, data) {
-        if(err) {
-            console.log("query overlap:", err);
-        }else {
+    docClient.update(param, function(err, data) {
+        if (err) throw err;
+        return res.send("Success");
+        /*
             if(data.Count === 0) {
                 var reservation = {
                     TableName: "Reservations",
@@ -191,8 +137,7 @@ exports.postReservation = function(req, res) {
                 });
             }else {
                 console.log("Fail", JSON.stringify(data, null, 2));
-            }
-        }
+            }*/
     });
 }
 
