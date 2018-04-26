@@ -10,21 +10,22 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 
 let modifyList = [];
 
-setInterval(updateOccupancy, 60000);
+setInterval(updateOccupancy, 5000);
 
 function updateOccupancy() {
     let tempList = modifyList, occupy = new Set(), release = new Set();
     modifyList = [];
-    for (let mod in modifyList) {
+    for (let i = 0; i < tempList.length; i++) {
+        let mod = tempList[i];
         if (mod.type === "o") {
             occupy.add(mod.tabID);
-            release.remove(mod.tabID);
+            release.delete(mod.tabID);
         } else {
             release.add(mod.tabID);
-            occupy.remove(mod.tabID);
+            occupy.delete(mod.tabID);
         }
     }
-
+    console.log(occupy); console.log(release)
     occupy.forEach(tabID => {updateOccupancyDB(tabID, true);});
     release.forEach(tabID => {updateOccupancyDB(tabID, false);});
 }
@@ -39,6 +40,7 @@ function updateOccupancyDB(tabID, toOccupy) {
     };
 
     docClient.update(param, function(err, data) {
+        if (err) throw err;
         console.log("Updated "+tabID+" to be "+toOccupy);
     });
 }
@@ -47,12 +49,6 @@ exports.postOccupy = function(req, res) {
     if (req.body.tabID === undefined)
         return res.status(400).send("Table ID is not given.");
 
-    modifyList.push({"tabID": tabID, "type": "o"});
-}
-
-exports.postRelease = function(req, res) {
-    if (req.body.tabID === undefined)
-        return res.status(400).send("Table ID is not given.");
-
-    modifyList.push({"tabID": tabID, "type": "r"});
+    modifyList.push({"tabID": req.body.tabID, "type": req.body.type});
+    return res.send("Success");
 }

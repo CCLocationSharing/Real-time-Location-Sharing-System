@@ -37,6 +37,7 @@ app.get("/about", (req, res) => {res.render("about", {about: "active"})});
 app.get("/heat", (req, res) => {res.render("heat", {scripts: ["heat"], styles: ["heat"], heat: "active"})});
 app.get("/signup", (req, res) => {res.render("signup", { scripts: ["signin"], styles: ["signin"] })});
 app.get("/login", (req, res) => {res.render("login", { scripts: ["login"], styles: ["signin"] })});
+app.get("/occupy", (req, res) => {res.render("occupy")});
 
 app.get('/logout', signin.getLogout);
 app.post("/signup", signin.postNewUser);

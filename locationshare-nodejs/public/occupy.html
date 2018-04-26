@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container">
+  <p>Note: this page is for testing purpose only. The real occupying behavior should be done by machine learning model automatically.</p>
+  <span id="log"></span>
+</div>
+
+<script>
+  let i = 0;
+  setInterval(postOccupy, 100);
+  setInterval(clearLog, 1000);
+
+  function postOccupy() {
+    let param = {
+      tabID: getRandomTable(),
+      type: getRandomType()
+    };
+    $.post("/occupy", param, function(result) {
+      $("#log").append(JSON.stringify(param) + "<br>");
+    });
+  }
+
+  function getRandomTable() {
+    let list = ["CH 001", "CH 002", "CH 003", 
+      "olin study room1", "olin study room2", "olin study room3",
+      "olin 001", "olin 002", "olin 003",
+      "G23 room1", "G23 room2", "G23 room3", "G23 room4", "G23 room5",
+      "uris 01", "uris 02", "uris 03", "uris 04",
+      "uris ss01", "uris ss02"];
+    let random = Math.floor(Math.random() * list.length);
+    return list[random];
+  }
+
+  function getRandomType() {
+    let random = Math.floor(Math.random() * 2);
+    if (random == 1) {
+      return "o";
+    } else {
+      return "r";
+    }
+  }
+
+  function clearLog() {
+    $("#log").text("");
+  }
+</script>
+{% endblock %}
