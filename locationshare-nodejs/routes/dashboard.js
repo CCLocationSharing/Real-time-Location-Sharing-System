@@ -8,7 +8,7 @@ AWS.config.update({
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
-let libraries = {}, status = {};
+let libraries = {}, status = {}, occupied = new Set();
 
 // Get libraries name
 var scanTable = {
@@ -27,24 +27,28 @@ docClient.scan(scanTable, function(err, data) {
 
 // Periodically update Status
 updateStatus();
-setInterval(updateStatus, 60000);
+setInterval(updateStatus, 10000);
 
 function updateStatus() {
 	var scanTable = {
 	    TableName: "Tables",
-	    ProjectionExpression: "libID, tabCapacity, occupied",
+	    ProjectionExpression: "libID, tabID, tabCapacity, occupied",
 	};
 
 	docClient.scan(scanTable, function(err, taken) {
 		if (err) throw err;
 
 		status = {};
+		occupied = new Set();
 		taken.Items.forEach(item => {
 			if (status[item.libID] === undefined)
 				status[item.libID] = {"capacity": 0, "taken": 0};
 			if (item.occupied === true) 
 				status[item.libID].taken += item.tabCapacity;
 			status[item.libID].capacity += item.tabCapacity;
+
+			if (item.occupied)
+				occupied.add(item.tabID);
 		});
 	});
 }
@@ -55,6 +59,10 @@ exports.getLibraryCapacity = function(req, res) {
 
 exports.getLibraryStatus = function(req, res) {
     return res.send(status);
+}
+
+exports.returnOccupancy = function() {
+	return occupied;
 }
 
 exports.getDashboard = function(req, res) {

@@ -11,7 +11,9 @@
 						{"N": "1524686400000"},
 						{"N": "1524693600000"}]
 					},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.4864817"},
+					"longitude": {"N": "42.4479089"}
 				}
 			}
 		},
@@ -23,7 +25,9 @@
 					"tabCapacity": {"N": "8"},
 					"reservable": {"BOOL": true},
 					"reserved": {"L": []},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.4864817"},
+					"longitude": {"N": "42.4479089"}
 				}
 			}
 		},
@@ -35,7 +39,9 @@
 					"tabCapacity": {"N": "2"},
 					"reservable": {"BOOL": true},
 					"reserved": {"L": []},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.4864817"},
+					"longitude": {"N": "42.4479089"}
 				}
 			}
 
@@ -47,7 +53,9 @@
 					"tabID": {"S": "olin 001"},
 					"tabCapacity": {"N": "1"},
 					"reservable": {"BOOL": false},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.4864817"},
+					"longitude": {"N": "42.4479089"}
 				}
 			}
 
@@ -59,7 +67,9 @@
 					"tabID": {"S": "olin 002"},
 					"tabCapacity": {"N": "1"},
 					"reservable": {"BOOL": false},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.4864817"},
+					"longitude": {"N": "42.4479089"}
 				}
 			}
 		},
@@ -71,7 +81,9 @@
 					"tabCapacity": {"N": "5"},
 					"reservable": {"BOOL": true},
 					"reserved": {"L": []},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.483003"},
+					"longitude": {"N": "42.4448804"}
 				}
 			}
 		},
@@ -83,7 +95,9 @@
 					"tabCapacity": {"N": "5"},
 					"reservable": {"BOOL": true},
 					"reserved": {"L": []},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.483003"},
+					"longitude": {"N": "42.4448804"}
 				}
 			}
 		},
@@ -95,7 +109,9 @@
 					"tabCapacity": {"N": "2"},
 					"reservable": {"BOOL": true},
 					"reserved": {"L": []},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.483003"},
+					"longitude": {"N": "42.4448804"}
 				}
 			}
 		},
@@ -107,7 +123,9 @@
 					"tabCapacity": {"N": "4"},
 					"reservable": {"BOOL": true},
 					"reserved": {"L": []},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.483003"},
+					"longitude": {"N": "42.4448804"}
 				}
 			}
 		},
@@ -119,7 +137,9 @@
 					"tabCapacity": {"N": "3"},
 					"reservable": {"BOOL": true},
 					"reserved": {"L": []},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.483003"},
+					"longitude": {"N": "42.4448804"}
 				}
 			}
 		},
@@ -134,7 +154,9 @@
 						{"N": "1524686400000"},
 						{"N": "1524693600000"}]
 					},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.4863756"},
+					"longitude": {"N": "42.4447858"}
 				}
 			}
 		},
@@ -148,7 +170,9 @@
 					"reserved": {"L": [
 						{"N": "1524686400000"}]
 					},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.4863756"},
+					"longitude": {"N": "42.4447858"}
 				}
 			}
 		},
@@ -162,7 +186,9 @@
 					"reserved": {"L": [
 						{"N": "1524686400000"}]
 					},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.4863756"},
+					"longitude": {"N": "42.4447858"}
 				}
 			}
 		},
@@ -174,7 +200,9 @@
 					"tabCapacity": {"N": "2"},
 					"reservable": {"BOOL": true},
 					"reserved": {"L": []},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.4874984"},
+					"longitude": {"N": "42.4477522"}
 				}
 			}
 		},
@@ -186,7 +214,9 @@
 					"tabCapacity": {"N": "4"},
 					"reservable": {"BOOL": true},
 					"reserved": {"L": []},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.4874984"},
+					"longitude": {"N": "42.4477522"}
 				}
 			}
 		},
@@ -198,7 +228,9 @@
 					"tabCapacity": {"N": "6"},
 					"reservable": {"BOOL": true},
 					"reserved": {"L": []},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.4874984"},
+					"longitude": {"N": "42.4477522"}
 				}
 			}
 		},
@@ -210,7 +242,9 @@
 					"tabCapacity": {"N": "3"},
 					"reservable": {"BOOL": true},
 					"reserved": {"L": []},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.4874984"},
+					"longitude": {"N": "42.4477522"}
 				}
 			}
 		},
@@ -222,7 +256,9 @@
 					"tabCapacity": {"N": "10"},
 					"reservable": {"BOOL": true},
 					"reserved": {"L": []},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.4874984"},
+					"longitude": {"N": "42.4477522"}
 				}
 			}
 		},
@@ -234,7 +270,9 @@
 					"tabCapacity": {"N": "12"},
 					"reservable": {"BOOL": true},
 					"reserved": {"L": []},
-					"occupied": {"BOOL": false}
+					"occupied": {"BOOL": false},
+					"latitude": {"N": "-76.4874984"},
+					"longitude": {"N": "42.4477522"}
 				}
 			}
 		}

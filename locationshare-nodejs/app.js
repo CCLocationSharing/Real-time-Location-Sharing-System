@@ -31,10 +31,10 @@ var signin = require("./routes/signin");
 var dashboard = require("./routes/dashboard");
 var reserve = require("./routes/reserve");
 var occupy = require("./routes/occupy");
+var heat = require("./routes/heat");
 
 app.get("/", (req, res) => {res.render("index", {fixNav: true, home: "active"})});
 app.get("/about", (req, res) => {res.render("about", {about: "active"})});
-app.get("/heat", (req, res) => {res.render("heat", {scripts: ["heat"], styles: ["heat"], heat: "active"})});
 app.get("/signup", (req, res) => {res.render("signup", { scripts: ["signin"], styles: ["signin"] })});
 app.get("/login", (req, res) => {res.render("login", { scripts: ["login"], styles: ["signin"] })});
 app.get("/occupy", (req, res) => {res.render("occupy")});
@@ -50,6 +50,9 @@ app.get("/libraryStatus", dashboard.getLibraryStatus);
 app.get("/reserve", reserve.getReserve);
 app.get("/renderForPicker", reserve.getRender);
 app.post("/makeReservations", reserve.postReservation);
+
+app.get("/heat", (req, res) => {res.render("heat", {scripts: ["heat"], styles: ["heat"], heat: "active"})});
+app.get("/getHeatData", heat.getHeatData);
 
 app.post("/occupy", occupy.postOccupy);
 

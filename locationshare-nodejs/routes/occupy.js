@@ -25,7 +25,6 @@ function updateOccupancy() {
             occupy.delete(mod.tabID);
         }
     }
-    console.log(occupy); console.log(release)
     occupy.forEach(tabID => {updateOccupancyDB(tabID, true);});
     release.forEach(tabID => {updateOccupancyDB(tabID, false);});
 }
@@ -41,7 +40,7 @@ function updateOccupancyDB(tabID, toOccupy) {
 
     docClient.update(param, function(err, data) {
         if (err) throw err;
-        console.log("Updated "+tabID+" to be "+toOccupy);
+        //console.log("Updated "+tabID+" to be "+toOccupy);
     });
 }
 
