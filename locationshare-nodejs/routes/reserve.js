@@ -23,7 +23,7 @@ var getTableElements = function(req, res, tableList) {
     async.map(tableList, function(tabid, callback) {
         let param = {
             TableName: "Tables",
-            ProjectionExpression:"reserved",
+            ProjectionExpression:"reservable, reserved",
             KeyConditionExpression: "#tb = :id",
             ExpressionAttributeNames:{
                 "#tb": "tabID"
@@ -33,10 +33,18 @@ var getTableElements = function(req, res, tableList) {
             }
         };
         docClient.query(param, function(err, data) {
-            callback(err, {"table": tabid, "reserved": data.Items[0].reserved});
+            if (err) throw err;
+            let reserved = [];
+            if (data.Items[0].reservable === true)
+                callback(err, {"table": tabid, "reserved": data.Items[0].reserved});
+            else {
+                callback(err, null);
+            }
         });
-    }, function(err, results) {
+    }, function(err, data) {
         if (err) throw err;
+        let results = [];
+        data.forEach(table => {if (table !== null) results.push(table)});
         return res.json(results);
     }); 
 }

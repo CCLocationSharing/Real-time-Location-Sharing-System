@@ -10,14 +10,6 @@ if [[ $tablelist != *"Libraries"* ]]; then
 		--provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
 fi
 
-if [[ $tablelist != *"LibraryAvailability"* ]]; then
-	echo "Creating \"LibraryAvailability\" table."
-	aws dynamodb create-table --table-name LibraryAvailability \
-		--attribute-definitions AttributeName=libID,AttributeType=S \
-		--key-schema AttributeName=libID,KeyType=HASH \
-		--provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
-fi
-
 if [[ $tablelist != *"Users"* ]]; then
 	echo "Creating \"Users\" table."
 	aws dynamodb create-table --table-name Users \
@@ -35,7 +27,6 @@ if [[ $tablelist != *"Tables"* ]]; then
 fi
 
 aws dynamodb batch-write-item --request-items file://seeds/libraries_seed.json
-aws dynamodb batch-write-item --request-items file://seeds/library_availability_seed.json
 aws dynamodb batch-write-item --request-items file://seeds/users_seed.json
 aws dynamodb batch-write-item --request-items file://seeds/tables_seed.json
 

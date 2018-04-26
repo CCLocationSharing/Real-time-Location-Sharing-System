@@ -3,37 +3,62 @@
 var dashboard = {};
 
 dashboard.init = function() {
-    var socket = io.connect();
-
-    let libTable = $("#library-status");
-    let libIDToRow = [];
-
-    let thead = "<thead><tr><th>Libraries</th><th>Status</th></tr></thead>";
-    libTable.append(thead);
-    libTable.append("<tbody>");
-
-    $.get("/libraryCapacity", function(result) {
-        for (let i = 0; i < result.length; i++) {
-            capList[i] = result[i].libCapacity;
-            let libID = result[i].libID, name = result[i].libName;
-            let cap = result[i].libCapacity;
-            let td1 = "<td id=" + libID + ">" + name + "</td>";
-            let td2 = "<td cap=" + cap + "></td>";
-            libTable.append("<tr>"+ td1 + td2 +"</tr>");
-            libIDToRow[result[i].libID] = i + 1;
+    let libraries = [], takenList = [], capList = [];
+    let libChart = new Chart($("#libChart"), {
+        type: 'bar',
+        data: {
+            labels: libraries,
+            datasets: [{
+                data: takenList,
+                backgroundColor: '#9ec2e2',
+                fill: true,
+                borderColor: '#9ec2e2',
+                borderWidth: 2,
+                pointBackgroundColor: '#9ec2e2'
+            }, {
+                data: capList,
+                fill: false,
+                borderColor: '#d6e3ef',
+                borderWidth: 1,
+                pointBackgroundColor: '#d6e3ef'
+            }]     
+        },
+        options: {
+            responsive: true,
+            tooltips: {
+                mode: 'index',
+                intersect: true
+            },
+            legend: {
+                display: false
+            }
         }
+    });
+    
+    $.get("/libraryCapacity", function(libs) {
+        let libTable = $("#library-status");
+        let thead = "<thead><tr><th>Libraries</th><th>Status</th></tr></thead>";
+        libTable.append(thead);
+        libTable.append("<tbody>");
 
-        $.get("/libraryStatus", function(result) {
-            for (let i = 0; i < result.length; i++) {
-                takenList[i] = result[i].taken;
-                let row = libIDToRow[result[i].libID];
-                let td = libTable.find("tr").eq(row).find("td").eq(1);
-                td.text(result[i].taken + "/" + td.attr("cap"));
+        for (let libID in libs) {
+            let td1 = "<td >" + libs[libID] + "</td>";
+            let td2 = "<td id=" + libID + "-taken></td>";
+            libTable.append("<tr>"+ td1 + td2 +"</tr>");
+            libraries.push(libs[libID])
+        }
+        libTable.append("</tbody>");
+
+        $.get("/libraryStatus", function(takens) {
+            for (let libID in libs) {
+                let text = takens[libID].taken + "/" + takens[libID].capacity;
+                $("#" + libID + "-taken").text(text);
+                takenList.push(takens[libID].taken);
+                capList.push(takens[libID].capacity);
             }
             libChart.update();
         });
         libChart.update();
-        libTable.append("</tbody>");
     });
 }
 
