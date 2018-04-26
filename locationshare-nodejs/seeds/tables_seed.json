@@ -5,8 +5,13 @@
 				"Item": {
 					"libID": {"S": "olin"},
 					"tabID": {"S": "olin study room1"},
-					"capacity": {"N": "4"},
-					"reservable": {"BOOL": true}
+					"tabCapacity": {"N": "4"},
+					"reservable": {"BOOL": true},
+					"reserved": {"L": [
+						{"N": "1524686400000"},
+						{"N": "1524693600000"}]
+					},
+					"occupied": {"BOOL": false}
 				}
 			}
 		},
@@ -15,8 +20,10 @@
 				"Item": {
 					"libID": {"S": "olin"},
 					"tabID": {"S": "olin study room2"},
-					"capacity": {"N": "8"},
-					"reservable": {"BOOL": true}
+					"tabCapacity": {"N": "8"},
+					"reservable": {"BOOL": true},
+					"reserved": {"L": []},
+					"occupied": {"BOOL": false}
 				}
 			}
 		},
@@ -25,8 +32,10 @@
 				"Item": {
 					"libID": {"S": "olin"},
 					"tabID": {"S": "olin study room3"},
-					"capacity": {"N": "2"},
-					"reservable": {"BOOL": true}
+					"tabCapacity": {"N": "2"},
+					"reservable": {"BOOL": true},
+					"reserved": {"L": []},
+					"occupied": {"BOOL": false}
 				}
 			}
 
@@ -36,8 +45,9 @@
 				"Item": {
 					"libID": {"S": "olin"},
 					"tabID": {"S": "olin 001"},
-					"capacity": {"N": "1"},
-					"reservable": {"BOOL": false}
+					"tabCapacity": {"N": "1"},
+					"reservable": {"BOOL": false},
+					"occupied": {"BOOL": false}
 				}
 			}
 
@@ -47,8 +57,9 @@
 				"Item": {
 					"libID": {"S": "olin"},
 					"tabID": {"S": "olin 002"},
-					"capacity": {"N": "1"},
-					"reservable": {"BOOL": false}
+					"tabCapacity": {"N": "1"},
+					"reservable": {"BOOL": false},
+					"occupied": {"BOOL": false}
 				}
 			}
 		},
@@ -57,8 +68,10 @@
 				"Item": {
 					"libID": {"S": "gates"},
 					"tabID": {"S": "G23 room1"},
-					"capacity": {"N": "5"},
-					"reservable": {"BOOL": true}
+					"tabCapacity": {"N": "5"},
+					"reservable": {"BOOL": true},
+					"reserved": {"L": []},
+					"occupied": {"BOOL": false}
 				}
 			}
 		},
@@ -67,8 +80,10 @@
 				"Item": {
 					"libID": {"S": "gates"},
 					"tabID": {"S": "G23 room2"},
-					"capacity": {"N": "5"},
-					"reservable": {"BOOL": true}
+					"tabCapacity": {"N": "5"},
+					"reservable": {"BOOL": true},
+					"reserved": {"L": []},
+					"occupied": {"BOOL": false}
 				}
 			}
 		},
@@ -77,8 +92,10 @@
 				"Item": {
 					"libID": {"S": "gates"},
 					"tabID": {"S": "G23 room3"},
-					"capacity": {"N": "2"},
-					"reservable": {"BOOL": true}
+					"tabCapacity": {"N": "2"},
+					"reservable": {"BOOL": true},
+					"reserved": {"L": []},
+					"occupied": {"BOOL": false}
 				}
 			}
 		},
@@ -87,8 +104,10 @@
 				"Item": {
 					"libID": {"S": "gates"},
 					"tabID": {"S": "G23 room4"},
-					"capacity": {"N": "4"},
-					"reservable": {"BOOL": true}
+					"tabCapacity": {"N": "4"},
+					"reservable": {"BOOL": true},
+					"reserved": {"L": []},
+					"occupied": {"BOOL": false}
 				}
 			}
 		},
@@ -97,8 +116,10 @@
 				"Item": {
 					"libID": {"S": "gates"},
 					"tabID": {"S": "G23 room5"},
-					"capacity": {"N": "3"},
-					"reservable": {"BOOL": true}
+					"tabCapacity": {"N": "3"},
+					"reservable": {"BOOL": true},
+					"reserved": {"L": []},
+					"occupied": {"BOOL": false}
 				}
 			}
 		},
@@ -107,12 +128,13 @@
 				"Item": {
 					"libID": {"S": "carpenter"},
 					"tabID": {"S": "CH 001"},
-					"capacity": {"N": "8"},
+					"tabCapacity": {"N": "8"},
 					"reservable": {"BOOL": true},
 					"reserved": {"L": [
 						{"N": "1524686400000"},
 						{"N": "1524693600000"}]
-					}
+					},
+					"occupied": {"BOOL": false}
 				}
 			}
 		},
@@ -121,11 +143,12 @@
 				"Item": {
 					"libID": {"S": "carpenter"},
 					"tabID": {"S": "CH 002"},
-					"capacity": {"N": "6"},
+					"tabCapacity": {"N": "6"},
 					"reservable": {"BOOL": true},
 					"reserved": {"L": [
 						{"N": "1524686400000"}]
-					}
+					},
+					"occupied": {"BOOL": false}
 				}
 			}
 		},
@@ -134,11 +157,12 @@
 				"Item": {
 					"libID": {"S": "carpenter"},
 					"tabID": {"S": "CH 003"},
-					"capacity": {"N": "10"},
+					"tabCapacity": {"N": "10"},
 					"reservable": {"BOOL": true},
 					"reserved": {"L": [
 						{"N": "1524686400000"}]
-					}
+					},
+					"occupied": {"BOOL": false}
 				}
 			}
 		},
@@ -147,8 +171,10 @@
 				"Item": {
 					"libID": {"S": "uris"},
 					"tabID": {"S": "uris 01"},
-					"capacity": {"N": "2"},
-					"reservable": {"BOOL": true}
+					"tabCapacity": {"N": "2"},
+					"reservable": {"BOOL": true},
+					"reserved": {"L": []},
+					"occupied": {"BOOL": false}
 				}
 			}
 		},
@@ -157,8 +183,10 @@
 				"Item": {
 					"libID": {"S": "uris"},
 					"tabID": {"S": "uris 02"},
-					"capacity": {"N": "4"},
-					"reservable": {"BOOL": true}
+					"tabCapacity": {"N": "4"},
+					"reservable": {"BOOL": true},
+					"reserved": {"L": []},
+					"occupied": {"BOOL": false}
 				}
 			}
 		},
@@ -167,8 +195,10 @@
 				"Item": {
 					"libID": {"S": "uris"},
 					"tabID": {"S": "uris 03"},
-					"capacity": {"N": "6"},
-					"reservable": {"BOOL": true}
+					"tabCapacity": {"N": "6"},
+					"reservable": {"BOOL": true},
+					"reserved": {"L": []},
+					"occupied": {"BOOL": false}
 				}
 			}
 		},
@@ -177,8 +207,10 @@
 				"Item": {
 					"libID": {"S": "uris"},
 					"tabID": {"S": "uris 04"},
-					"capacity": {"N": "3"},
-					"reservable": {"BOOL": true}
+					"tabCapacity": {"N": "3"},
+					"reservable": {"BOOL": true},
+					"reserved": {"L": []},
+					"occupied": {"BOOL": false}
 				}
 			}
 		},
@@ -187,8 +219,10 @@
 				"Item": {
 					"libID": {"S": "uris"},
 					"tabID": {"S": "uris ss01"},
-					"capacity": {"N": "10"},
-					"reservable": {"BOOL": true}
+					"tabCapacity": {"N": "10"},
+					"reservable": {"BOOL": true},
+					"reserved": {"L": []},
+					"occupied": {"BOOL": false}
 				}
 			}
 		},
@@ -197,8 +231,10 @@
 				"Item": {
 					"libID": {"S": "uris"},
 					"tabID": {"S": "uris ss02"},
-					"capacity": {"N": "12"},
-					"reservable": {"BOOL": true}
+					"tabCapacity": {"N": "12"},
+					"reservable": {"BOOL": true},
+					"reserved": {"L": []},
+					"occupied": {"BOOL": false}
 				}
 			}
 		}

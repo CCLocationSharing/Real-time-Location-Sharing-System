@@ -8,30 +8,51 @@ AWS.config.update({
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
-exports.getLibraryCapacity = function(req, res) {
-    var libQuery = {
-	    TableName: "Libraries",
-	    ProjectionExpression: "libID, libName, libCapacity",
+let libraries = {}, status = {};
+
+// Get libraries name
+var scanTable = {
+    TableName: "Libraries",
+    ProjectionExpression: "libID, libName",
+};
+
+docClient.scan(scanTable, function(err, data) {
+	if (err) throw err;
+
+	libraries = {};
+	data.Items.forEach(item => {
+		libraries[item.libID] = item.libName;
+	});
+});
+
+// Periodically update Status
+updateStatus();
+setInterval(updateStatus, 60000);
+
+function updateStatus() {
+	var scanTable = {
+	    TableName: "Tables",
+	    ProjectionExpression: "libID, tabCapacity, occupied",
 	};
 
-	docClient.scan(libQuery, function(err, libraries) {
+	docClient.scan(scanTable, function(err, taken) {
 		if (err) throw err;
-		res.json(libraries.Items);
+
+		status = {};
+		taken.Items.forEach(item => {
+			if (status[item.libID] === undefined)
+				status[item.libID] = {"capacity": 0, "taken": 0};
+			if (item.occupied === true) 
+				status[item.libID].taken += item.tabCapacity;
+			status[item.libID].capacity += item.tabCapacity;
+		});
 	});
+}
+
+exports.getLibraryCapacity = function(req, res) {
+    return res.send(libraries);
 }
 
 exports.getLibraryStatus = function(req, res) {
-    var libTakenQuery = {
-	    TableName: "LibraryAvailability",
-	    ProjectionExpression: "libID, taken",
-	};
-
-	docClient.scan(libTakenQuery, function(err, taken) {
-		if (err) throw err;
-		res.json(taken.Items);
-	});
+    return res.send(status);
 }
-
-/*exports.getFriendList = function(req, res) {
-
-}*/

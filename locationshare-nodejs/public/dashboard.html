@@ -56,39 +56,4 @@
         </div>
     </div>
 </div>
-<script src="scripts/Chart.min.js"></script>
-<script>
-    var takenList = [];
-    var capList = [];
-    var libChart = new Chart($("#libChart"), {
-        type: 'bar',
-        data: {
-            labels: ['Olin Library', 'Gates Hall', 'Uris Hall', 'Carpenter Hall'],
-            datasets: [{
-                data: takenList,
-                backgroundColor: '#9ec2e2',
-                fill: true,
-                borderColor: '#9ec2e2',
-                borderWidth: 2,
-                pointBackgroundColor: '#9ec2e2'
-            }, {
-                data: capList,
-                fill: false,
-                borderColor: '#d6e3ef',
-                borderWidth: 1,
-                pointBackgroundColor: '#d6e3ef'
-            }]     
-        },
-        options: {
-            responsive: true,
-            tooltips: {
-                mode: 'index',
-                intersect: true
-            },
-            legend: {
-                display: false
-            }
-        }
-    });
-</script>
 {% endblock %}

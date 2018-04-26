@@ -30,14 +30,6 @@ app.use(function(req, res, next) {
 var signin = require("./routes/signin");
 var dashboard = require("./routes/dashboard");
 var reserve = require("./routes/reserve");
-//var socketio = require("./routes/socketio");
-
-var server = require("http").Server(app);
-var io = require("socket.io")(server);
-
-io.sockets.on('connection', function(socket) {
-	
-});
 
 app.get("/", (req, res) => {res.render("index", {fixNav: true, home: "active"})});
 app.get("/about", (req, res) => {res.render("about", {about: "active"})});
@@ -48,15 +40,12 @@ app.get('/logout', signin.getLogout);
 app.post("/signup", signin.postNewUser);// Done
 app.post("/login", signin.postLogin); // Done
 
-//var moment = require('moment');
-
 app.get("/dashboard", function(req, res) {
 	if (req.session.user === undefined) return res.redirect("/");
-	res.render("dashboard.html", {styles: ["dashboard"], scripts: ["dashboard"], home : "active"});
+	res.render("dashboard.html", {styles: ["dashboard"], scripts: ["dashboard", "Chart.min"], home : "active"});
 });// Done
 app.get("/libraryCapacity", dashboard.getLibraryCapacity);
 app.get("/libraryStatus", dashboard.getLibraryStatus);
-//app.get("/friendList", dashboard.getFriendList);
 
 app.get("/reserve", function(req, res) {
 	if (req.session.user === undefined) {
@@ -73,7 +62,7 @@ app.get("/heat", (req, res) => {res.render("heat", {scripts: ["heat"], styles: [
 
 
 var port = process.env.PORT || 3000;
-
+var server = require("http").Server(app);
 server.listen(port, function () {
     console.log('Server running at http://127.0.0.1:' + port + '/');
 });
