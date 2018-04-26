@@ -56,3 +56,8 @@ exports.getLibraryCapacity = function(req, res) {
 exports.getLibraryStatus = function(req, res) {
     return res.send(status);
 }
+
+exports.getDashboard = function(req, res) {
+	if (req.session.user === undefined) return res.redirect("/");
+	res.render("dashboard.html", {styles: ["dashboard"], scripts: ["dashboard", "Chart.min"], home : "active"});
+}

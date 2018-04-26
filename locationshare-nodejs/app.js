@@ -30,36 +30,27 @@ app.use(function(req, res, next) {
 var signin = require("./routes/signin");
 var dashboard = require("./routes/dashboard");
 var reserve = require("./routes/reserve");
+var occupy = require("./routes/occupy");
 
 app.get("/", (req, res) => {res.render("index", {fixNav: true, home: "active"})});
 app.get("/about", (req, res) => {res.render("about", {about: "active"})});
+app.get("/heat", (req, res) => {res.render("heat", {scripts: ["heat"], styles: ["heat"], heat: "active"})});
+app.get("/signup", (req, res) => {res.render("signup", { scripts: ["signin"], styles: ["signin"] })});
+app.get("/login", (req, res) => {res.render("login", { scripts: ["login"], styles: ["signin"] })});
 
-app.get("/signup", (req, res) => {res.render("signup.html", { scripts: ["signin"], styles: ["signin"] })});
-app.get("/login", (req, res) => {res.render("login.html", { scripts: ["login"], styles: ["signin"] })});
 app.get('/logout', signin.getLogout);
-app.post("/signup", signin.postNewUser);// Done
-app.post("/login", signin.postLogin); // Done
+app.post("/signup", signin.postNewUser);
+app.post("/login", signin.postLogin);
 
-app.get("/dashboard", function(req, res) {
-	if (req.session.user === undefined) return res.redirect("/");
-	res.render("dashboard.html", {styles: ["dashboard"], scripts: ["dashboard", "Chart.min"], home : "active"});
-});// Done
+app.get("/dashboard", dashboard.getDashboard);
 app.get("/libraryCapacity", dashboard.getLibraryCapacity);
 app.get("/libraryStatus", dashboard.getLibraryStatus);
 
-app.get("/reserve", function(req, res) {
-	if (req.session.user === undefined) {
-        req.session.lastUrl = "/reserve";
-        return res.redirect("/login");
-    }
-	res.render("reserve.html", {styles: ["reserve"], scripts: ["reserve"], reserve : "active"});
-});
-
+app.get("/reserve", reserve.getReserve);
 app.get("/renderForPicker", reserve.getRender);
 app.post("/makeReservations", reserve.postReservation);
 
-app.get("/heat", (req, res) => {res.render("heat", {scripts: ["heat"], styles: ["heat"], heat: "active"})});
-
+app.post("/occupy", occupy.postOccupy);
 
 var port = process.env.PORT || 3000;
 var server = require("http").Server(app);
