@@ -33,10 +33,10 @@ var reserve = require("./routes/reserve");
 var occupy = require("./routes/occupy");
 var heat = require("./routes/heat");
 
-app.get("/", (req, res) => {res.render("index", {fixNav: true, home: "active"})});
+app.get("/", (req, res) => {res.render("index", {index: true, home: "active"})});
 app.get("/about", (req, res) => {res.render("about", {about: "active"})});
-app.get("/signup", (req, res) => {res.render("signup", { scripts: ["signin"], styles: ["signin"] })});
-app.get("/login", (req, res) => {res.render("login", { scripts: ["login"], styles: ["signin"] })});
+app.get("/signup", (req, res) => {res.render("signup", {styles: ["signin"] })});
+app.get("/login", (req, res) => {res.render("login", {styles: ["signin"] })});
 app.get("/occupy", (req, res) => {res.render("occupy")});
 
 app.get('/logout', signin.getLogout);
@@ -46,12 +46,14 @@ app.post("/login", signin.postLogin);
 app.get("/dashboard", dashboard.getDashboard);
 app.get("/libraryCapacity", dashboard.getLibraryCapacity);
 app.get("/libraryStatus", dashboard.getLibraryStatus);
+app.get("/getUserReservation", dashboard.getUserReservation);
+app.post("/cancelReservation", reserve.cancelReservation);
 
 app.get("/reserve", reserve.getReserve);
 app.get("/renderForPicker", reserve.getRender);
 app.post("/makeReservations", reserve.postReservation);
 
-app.get("/heat", (req, res) => {res.render("heat", {scripts: ["heat"], styles: ["heat"], heat: "active"})});
+app.get("/heat", (req, res) => {res.render("heat", {styles: ["heat"], heat: "active"})});
 app.get("/getHeatData", heat.getHeatData);
 
 app.post("/occupy", occupy.postOccupy);
@@ -61,3 +63,4 @@ var server = require("http").Server(app);
 server.listen(port, function () {
     console.log('Server running at http://127.0.0.1:' + port + '/');
 });
+

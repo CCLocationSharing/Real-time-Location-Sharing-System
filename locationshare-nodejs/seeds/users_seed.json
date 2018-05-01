@@ -8,7 +8,8 @@
             "friends": {"L": [
             	{"S": "yz2369"},
             	{"S": "xm99"}
-            ]}
+            ]},
+            "reservation": {"M": {}}
         }}},
         {"PutRequest": {"Item": {
             "username": {"S": "yz2369"},
@@ -17,7 +18,8 @@
             "isonline": {"BOOL": true},
             "friends": {"L": [
             	{"S": "Syugen"}
-            ]}
+            ]},
+            "reservation": {"M": {}}
         }}},
         {"PutRequest": {"Item": {
             "username": {"S": "xm99"},
@@ -26,7 +28,8 @@
             "isonline": {"BOOL": true},
             "friends": {"L": [
             	{"S": "Syugen"}
-            ]}
+            ]},
+            "reservation": {"M": {}}
         }}}
     ]
 }

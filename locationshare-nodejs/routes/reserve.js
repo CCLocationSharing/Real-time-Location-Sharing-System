@@ -7,6 +7,7 @@ AWS.config.update({
 });
 
 var docClient = new AWS.DynamoDB.DocumentClient();
+var dashboard = require("./dashboard");
 var moment = require('moment');
 var async = require('async');
 
@@ -53,29 +54,76 @@ exports.getRender = function(req, res) {
         return res.status(400).send("Missing libid");
     }
 
-    var tables = {
-        TableName: "Libraries",
-        ProjectionExpression:"tables",
-        KeyConditionExpression: "#lb = :id",
-        ExpressionAttributeNames:{
-            "#lb": "libID"
-        },
-        ExpressionAttributeValues: {
-            ":id": libid
-        }
-    }
-
-    docClient.query(tables, function(err, data) {
-        if(err) throw err;
-        
-        let tableList = data.Items[0].tables;
-        getTableElements(req, res, tableList);
+    dashboard.returnLibraries().forEach(lib => {
+        if (lib.libID === libid)
+            getTableElements(req, res, lib.tables);
     });
+}
+
+function tableParamReserve(req, starttime, endtime, table) {
+    let tableParam = {
+        TableName: "Tables",
+        Key: {"tabID": table},
+        ExpressionAttributeValues: {":user": req.session.user.username}
+    };  
+    if (starttime.hour() === endtime.hour()) {
+        tableParam.UpdateExpression = "set reserved.#key = :user";
+        tableParam.ExpressionAttributeNames = {"#key": starttime.valueOf()};
+        tableParam.ConditionExpression = "attribute_not_exists(reserved.#key)";
+    } else {
+        tableParam.UpdateExpression = "set reserved.#key1 = :user, reserved.#key2 = :user";
+        tableParam.ExpressionAttributeNames = {
+            "#key1": starttime.valueOf(),
+            "#key2": endtime.startOf("hour").valueOf()
+        };
+        tableParam.ConditionExpression = "attribute_not_exists(reserved.#key1) AND attribute_not_exists(reserved.#key2)";
+    }
+    return tableParam;
+}
+
+function userParamReserve(req, starttime, endtime, table) {
+    let userParam = {
+        TableName: "Users",
+        Key: {"username": req.session.user.username},
+        ExpressionAttributeValues: {":table": table}
+    };
+    if (starttime.hour() === endtime.hour()) {
+        userParam.UpdateExpression = "set reservation.#key = :table";
+        userParam.ExpressionAttributeNames = {"#key": starttime.valueOf()};
+        userParam.ConditionExpression = "attribute_not_exists(reservation.#key)";
+    } else {
+        userParam.UpdateExpression = "set reservation.#key1 = :table, reservation.#key2 = :table";
+        userParam.ExpressionAttributeNames = {
+            "#key1": starttime.valueOf(),
+            "#key2": endtime.startOf("hour").valueOf()
+        };
+        userParam.ConditionExpression = "attribute_not_exists(reservation.#key1) AND attribute_not_exists(reservation.#key2)";
+    }
+    return userParam;
+}
+
+function tableParamCancel(req, starttime, endtime, table) {
+    let tableParam = {
+        TableName: "Tables",
+        Key: {"tabID": table}
+    };  
+    if (starttime.hour() === endtime.hour()) {
+        tableParam.UpdateExpression = "remove reserved.#key";
+        tableParam.ExpressionAttributeNames = {"#key": starttime.valueOf()};
+    } else {
+        tableParam.UpdateExpression = "remove reserved.#key1, reserved.#key2";
+        tableParam.ExpressionAttributeNames = {
+            "#key1": starttime.valueOf(),
+            "#key2": endtime.startOf("hour").valueOf()
+        };
+    }
+    return tableParam;
 }
 
 exports.postReservation = function(req, res) {
     if (req.session.user === undefined) {
-        return res.status(401).send("Please log in first.");
+        req.session.lastUrl = "/reserve";
+        return res.redirect("/login");
     }
     let table = req.body.tabID;
     let starttime = moment(Number(req.body.startTime));
@@ -85,63 +133,34 @@ exports.postReservation = function(req, res) {
         starttime === undefined || endtime === undefined) {
         return res.status(400).send("You didn't select any time slot.");
     }
-
-    let reserve;
-    if (starttime.hour() === endtime.hour()) reserve = [starttime.valueOf()];
-    else reserve = [starttime.valueOf(), endtime.startOf("hour").valueOf()];
-    let param = {
-        TableName: "Tables",
-        Key: {"tabID": table},
-        UpdateExpression: "set #res = list_append(#res, :newres)",
-        ExpressionAttributeNames: {"#res": "reserved"},
-        ExpressionAttributeValues: {":newres": reserve}
-    };    
-        
-    docClient.update(param, function(err, data) {
-        if (err) throw err;
-        return res.send("Success");
-        /*
-            if(data.Count === 0) {
-                var reservation = {
-                    TableName: "Reservations",
-                    Item: {
-                        "tabID": table,
-                        "endTime": endtime,
-                        "startTime": starttime,
-                        "username": req.session.user.username,
-                        "producedTime": req.body.producedTime
-                    }
-                };
-
-                docClient.put(reservation, function(err, data) {
-                    if(err) {
-                        console.log("add item:", err);
-                    }else {
-                        console.log("Added item:", JSON.stringify(data, null, 2));
-                        let IDs = [];
-                        let h1 = moment(starttime).hour(), h2 = moment(endtime).hour();
-                        let tableStr = table.replace(/( )+/g,"\\-");
-                        
-                        if(h1 < 10) {
-                            IDs.push(tableStr+"\\+0"+h1);
-                        }else {
-                            IDs.push(tableStr+"\\+"+h1);
-                        }
-
-                        if(h1 < h2) {
-                            if(h2 < 10) {
-                                IDs.push(tableStr+"\\+0"+h2);
-                            }else {
-                                IDs.push(tableStr+"\\+"+h2);
-                            }
-                        }
-                        return res.json({"IDs": IDs});
-                    }
-                });
-            }else {
-                console.log("Fail", JSON.stringify(data, null, 2));
-            }*/
+ 
+    async.series([function(callback) {
+        docClient.update(tableParamReserve(req, starttime, endtime, table), function(err, data) {
+            if (err) {
+                if (err.name === "ConditionalCheckFailedException") {
+                    callback(1, null);
+                } else throw err;
+            } else {callback(null, data);}
+        });
+    }, function(callback) {
+        docClient.update(userParamReserve(req, starttime, endtime, table), function(err, data) {
+            if (err) {
+                if (err.name === "ConditionalCheckFailedException") {
+                    callback(2, null);
+                } else throw err;
+            } else callback(null, data);
+        });
+    }], function(err, results) {
+        if (err === 1) {
+            return res.send({status: 1});
+        } else if (err === 2) {
+            docClient.update(tableParamCancel(req, starttime, endtime, table), function(err, data) {
+                if (err) throw err;
+                return res.send({status: 2});
+            });
+        } else return res.send({status: 0});
     });
+
 }
 
 exports.getReserve = function(req, res) {
@@ -150,4 +169,39 @@ exports.getReserve = function(req, res) {
         return res.redirect("/login");
     }
     res.render("reserve.html", {styles: ["reserve"], scripts: ["reserve"], reserve : "active"});
+}
+
+exports.cancelReservation = function(req, res) {
+    if (req.session.user === undefined) {
+        req.session.lastUrl = "/reserve";
+        return res.redirect("/login");
+    }
+
+    async.parallel([function(callback) {
+        let param = {
+            TableName: "Tables",
+            Key: {"tabID": req.body.table},
+            UpdateExpression: "remove reserved.#key",
+            ExpressionAttributeNames: {"#key": req.body.time.valueOf()}
+        };
+
+        docClient.update(param, function(err, data) {
+            if (err) throw err;
+            callback(null, data);
+        });
+    }, function(callback) {
+        let param = {
+            TableName: "Users",
+            Key: {"username": req.session.user.username},
+            UpdateExpression: "remove reservation.#key",
+            ExpressionAttributeNames: {"#key": req.body.time.valueOf()}
+        };
+
+        docClient.update(param, function(err, data) {
+            if (err) throw err;
+            callback(null, data);
+        });
+    }], function(err, results) {
+        return res.send("Success");
+    });
 }

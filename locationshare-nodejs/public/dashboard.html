@@ -21,17 +21,7 @@
                     Your Reservation
                 </div>
 
-                <div class="panel-body">
-                    {% if orders.length === 0 %}
-                        You don't have any reservation!
-                    {% endif %}
-
-                    {% for order in orders %}
-                        <span class="list-group-item">
-                            {{order.date}}: {{order.course}}<br>
-                        </span>
-                {% endfor %}
-                </div>
+                <div class="panel-body" id="reservation"></div>
             </div>
         </div>
 
@@ -56,4 +46,7 @@
         </div>
     </div>
 </div>
+<script src="scripts/dashboard.js"></script>
+<script src="scripts/moment.min.js"></script>
+<script src="scripts/Chart.min.js"></script>
 {% endblock %}

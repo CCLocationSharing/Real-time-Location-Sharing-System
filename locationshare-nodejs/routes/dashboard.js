@@ -13,16 +13,13 @@ let libraries = {}, status = {}, occupied = new Set();
 // Get libraries name
 var scanTable = {
     TableName: "Libraries",
-    ProjectionExpression: "libID, libName",
+    ProjectionExpression: "libID, libName, tables",
 };
 
 docClient.scan(scanTable, function(err, data) {
 	if (err) throw err;
 
-	libraries = {};
-	data.Items.forEach(item => {
-		libraries[item.libID] = item.libName;
-	});
+	libraries = data.Items;
 });
 
 // Periodically update Status
@@ -32,7 +29,7 @@ setInterval(updateStatus, 10000);
 function updateStatus() {
 	var scanTable = {
 	    TableName: "Tables",
-	    ProjectionExpression: "libID, tabID, tabCapacity, occupied",
+	    ProjectionExpression: "libID, tabID, tabCapacity, occupied"
 	};
 
 	docClient.scan(scanTable, function(err, taken) {
@@ -53,7 +50,18 @@ function updateStatus() {
 	});
 }
 
+
+exports.returnOccupancy = function() {
+	return occupied;
+}
+
+exports.returnLibraries = function() {
+	return libraries;
+}
+
 exports.getLibraryCapacity = function(req, res) {
+	let result = {};
+	libraries.forEach(lib => result[lib.libID] = lib.libName);
     return res.send(libraries);
 }
 
@@ -61,11 +69,22 @@ exports.getLibraryStatus = function(req, res) {
     return res.send(status);
 }
 
-exports.returnOccupancy = function() {
-	return occupied;
-}
-
 exports.getDashboard = function(req, res) {
 	if (req.session.user === undefined) return res.redirect("/");
-	res.render("dashboard.html", {styles: ["dashboard"], scripts: ["dashboard", "Chart.min"], home : "active"});
+	res.render("dashboard.html", {styles: ["dashboard"], home : "active"});
+}
+
+exports.getUserReservation = function(req, res) {
+	if (req.session.user === undefined) return res.redirect("/login");
+
+	let param = {
+        TableName: "Users",
+        Key: {"username": req.session.user.username},
+        ProjectionExpression: "reservation"
+    }; 
+
+    docClient.get(param, function(err, data) {
+        if (err) throw err;
+        return res.send(data.Item.reservation);
+    });
 }

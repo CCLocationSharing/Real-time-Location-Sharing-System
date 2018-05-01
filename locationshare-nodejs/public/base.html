@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <head>
     <title>Study Go!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     {% for css in styles %}
     <link type="text/css" rel="stylesheet" href="css/{{ css }}.css" />
     {% endfor %}
@@ -24,8 +25,8 @@
 </head>
 
 <body id="page-top">
-    <nav id="mainNav" class="navbar navbar-default
-         {% if fixNav %} navbar-fixed-top {% endif %}">
+    <nav id="mainNav" class="navbar navbar-default" 
+        {% if index %} style="margin-bottom: 0px;" {% endif %}>
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand {{home}}" href="/">Home</a>
@@ -48,7 +49,6 @@
             </form>
             {% endif %}-->
             <ul class="nav navbar-nav navbar-right">
-                <!--li ><a href="dashboard">Order</a></li-->
                 {% if session.user %}
                 <li ><a href="profile?id={{session.user.username}}">Profile</a></li>
                 <li ><a href="logout">Log out</a></li>

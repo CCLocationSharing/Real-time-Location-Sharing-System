@@ -7,10 +7,7 @@
 					"tabID": {"S": "olin study room1"},
 					"tabCapacity": {"N": "4"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": [
-						{"N": "1524686400000"},
-						{"N": "1524693600000"}]
-					},
+					"reserved": {"M": {"1524686400000": {"S": "Syugen"}}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.4864817"},
 					"longitude": {"N": "42.4479089"}
@@ -24,7 +21,7 @@
 					"tabID": {"S": "olin study room2"},
 					"tabCapacity": {"N": "8"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": []},
+					"reserved": {"M": {"1524686400000": {"S": "Syugen"}}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.4864817"},
 					"longitude": {"N": "42.4479089"}
@@ -38,7 +35,7 @@
 					"tabID": {"S": "olin study room3"},
 					"tabCapacity": {"N": "2"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": []},
+					"reserved": {"M": {}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.4864817"},
 					"longitude": {"N": "42.4479089"}
@@ -53,6 +50,7 @@
 					"tabID": {"S": "olin 001"},
 					"tabCapacity": {"N": "1"},
 					"reservable": {"BOOL": false},
+					"reserved": {"M": {}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.4864817"},
 					"longitude": {"N": "42.4479089"}
@@ -68,6 +66,21 @@
 					"tabCapacity": {"N": "1"},
 					"reservable": {"BOOL": false},
 					"occupied": {"BOOL": false},
+					"reserved": {"M": {}},
+					"latitude": {"N": "-76.4864817"},
+					"longitude": {"N": "42.4479089"}
+				}
+			}
+		},
+		{
+			"PutRequest": {
+				"Item": {
+					"libID": {"S": "olin"},
+					"tabID": {"S": "olin 003"},
+					"tabCapacity": {"N": "1"},
+					"reservable": {"BOOL": false},
+					"occupied": {"BOOL": false},
+					"reserved": {"M": {}},
 					"latitude": {"N": "-76.4864817"},
 					"longitude": {"N": "42.4479089"}
 				}
@@ -80,7 +93,7 @@
 					"tabID": {"S": "G23 room1"},
 					"tabCapacity": {"N": "5"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": []},
+					"reserved": {"M": {}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.483003"},
 					"longitude": {"N": "42.4448804"}
@@ -94,7 +107,7 @@
 					"tabID": {"S": "G23 room2"},
 					"tabCapacity": {"N": "5"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": []},
+					"reserved": {"M": {}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.483003"},
 					"longitude": {"N": "42.4448804"}
@@ -108,7 +121,7 @@
 					"tabID": {"S": "G23 room3"},
 					"tabCapacity": {"N": "2"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": []},
+					"reserved": {"M": {}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.483003"},
 					"longitude": {"N": "42.4448804"}
@@ -122,7 +135,7 @@
 					"tabID": {"S": "G23 room4"},
 					"tabCapacity": {"N": "4"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": []},
+					"reserved": {"M": {}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.483003"},
 					"longitude": {"N": "42.4448804"}
@@ -136,7 +149,7 @@
 					"tabID": {"S": "G23 room5"},
 					"tabCapacity": {"N": "3"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": []},
+					"reserved": {"M": {}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.483003"},
 					"longitude": {"N": "42.4448804"}
@@ -150,10 +163,10 @@
 					"tabID": {"S": "CH 001"},
 					"tabCapacity": {"N": "8"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": [
-						{"N": "1524686400000"},
-						{"N": "1524693600000"}]
-					},
+					"reserved": {"M": {
+						"1524686400000": {"S": "Syugen"},
+						"1524693600000": {"S": "Syugen"}
+					}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.4863756"},
 					"longitude": {"N": "42.4447858"}
@@ -167,9 +180,9 @@
 					"tabID": {"S": "CH 002"},
 					"tabCapacity": {"N": "6"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": [
-						{"N": "1524686400000"}]
-					},
+					"reserved": {"M": {
+						"1524686400000": {"S": "Syugen"}
+					}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.4863756"},
 					"longitude": {"N": "42.4447858"}
@@ -183,9 +196,9 @@
 					"tabID": {"S": "CH 003"},
 					"tabCapacity": {"N": "10"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": [
-						{"N": "1524686400000"}]
-					},
+					"reserved": {"M": {
+						"1524686400000": {"S": "Syugen"}
+					}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.4863756"},
 					"longitude": {"N": "42.4447858"}
@@ -199,7 +212,7 @@
 					"tabID": {"S": "uris 01"},
 					"tabCapacity": {"N": "2"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": []},
+					"reserved": {"M": {}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.4874984"},
 					"longitude": {"N": "42.4477522"}
@@ -213,7 +226,7 @@
 					"tabID": {"S": "uris 02"},
 					"tabCapacity": {"N": "4"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": []},
+					"reserved": {"M": {}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.4874984"},
 					"longitude": {"N": "42.4477522"}
@@ -227,7 +240,7 @@
 					"tabID": {"S": "uris 03"},
 					"tabCapacity": {"N": "6"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": []},
+					"reserved": {"M": {}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.4874984"},
 					"longitude": {"N": "42.4477522"}
@@ -241,7 +254,7 @@
 					"tabID": {"S": "uris 04"},
 					"tabCapacity": {"N": "3"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": []},
+					"reserved": {"M": {}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.4874984"},
 					"longitude": {"N": "42.4477522"}
@@ -255,7 +268,7 @@
 					"tabID": {"S": "uris ss01"},
 					"tabCapacity": {"N": "10"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": []},
+					"reserved": {"M": {}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.4874984"},
 					"longitude": {"N": "42.4477522"}
@@ -269,7 +282,7 @@
 					"tabID": {"S": "uris ss02"},
 					"tabCapacity": {"N": "12"},
 					"reservable": {"BOOL": true},
-					"reserved": {"L": []},
+					"reserved": {"M": {}},
 					"occupied": {"BOOL": false},
 					"latitude": {"N": "-76.4874984"},
 					"longitude": {"N": "42.4477522"}

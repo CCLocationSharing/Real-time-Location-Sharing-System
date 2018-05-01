@@ -9,25 +9,27 @@ Note:
 		String password		attribute	NOT EMPTY
 		Bool   isonline		attribute
 		Array  friends		attribute
+		Map    reservation	attribute
 
 2.
 	Libraries
 		String libID		hashkey		NOT BLANK
 		String libName		attribute	NOT BLANK
 		Number libCapacity	attribute
-
-	LibraryAvailability
-		String libID		hashkey		NOT BLANK
-		Number taken		attribute
+		List   tables		attribute
 
 3.
 	Tables
 		String	libID 		hashkey		NOT BLANK
 		String	tabID		rangekey	NOT BLANK
-		Number	capacity 	attribute	
+		Number	tabCapacity	attribute	
 		Bool 	reservable 	attribute	
+		Map 	reserved 	attribute	
+		Bool 	occupied 	attribute	
+		Number	latitude	=== TO BE REMOVED ===
+		Number	longitude	=== TO BE REMOVED ===
 
-
+===== REMOVED =====
 4.
 	Reservations
 		String	tabID		hashkey 	NOT BLANK

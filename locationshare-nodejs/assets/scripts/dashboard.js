@@ -41,16 +41,17 @@ dashboard.init = function() {
         libTable.append(thead);
         libTable.append("<tbody>");
 
-        for (let libID in libs) {
-            let td1 = "<td >" + libs[libID] + "</td>";
-            let td2 = "<td id=" + libID + "-taken></td>";
+        for (let i = 0; i < libs.length; i++) {
+            let td1 = "<td >" + libs[i].libName + "</td>";
+            let td2 = "<td id=" + libs[i].libID + "-taken></td>";
             libTable.append("<tr>"+ td1 + td2 +"</tr>");
-            libraries.push(libs[libID])
+            libraries.push(libs[i].libName)
         }
         libTable.append("</tbody>");
 
         $.get("/libraryStatus", function(takens) {
-            for (let libID in libs) {
+            for (let i = 0; i < libs.length; i++) {
+                let libID = libs[i].libID;
                 let text = takens[libID].taken + "/" + takens[libID].capacity;
                 $("#" + libID + "-taken").text(text);
                 takenList.push(takens[libID].taken);
@@ -60,6 +61,38 @@ dashboard.init = function() {
         });
         libChart.update();
     });
+
+    $.get("/getUserReservation", function(result) {
+        let resdiv = $("#reservation");
+        if (result.length == 0) {
+            resdiv.append("You don't have any reservation.");
+        } else {
+            for (let t in result) {
+                let time = moment(Number(t)).format("M-D h a");
+                let id = t + "+" + result[t].replace(/( )+/g,"-");
+                let span = $("<span>").addClass("list-group-item").attr("id", id + "+span").
+                    text(time + ": " + result[t]).appendTo(resdiv);
+                let a = $("<a>").attr("id", id).
+                    attr("href", "#").css({float: "right"}).text("Cancel").
+                    click(cancelReservation).appendTo(span);
+            }
+        }
+    });
+}
+
+function cancelReservation(event) {
+    let idlist = event.target.id.split("+");
+    let time = moment(Number(idlist[0])).format("MM-DD-YYYY h a");
+    let table = idlist[1].replace(/(-)+/g,' ');
+    let text = "Are you sure to cancel you reservation on " + time + " at " + table + "?";
+    if (confirm(text)) {
+        let param = {time: idlist[0], table: idlist[1]}
+        let id = event.target.id.replace("+", "\\+");
+        $.post("/cancelReservation", param, function() {
+            $("#" + id).parent().remove();
+            alert("Success");
+        })
+    }
 }
 
 $(document).ready(function() {
