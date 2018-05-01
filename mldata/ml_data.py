@@ -3,7 +3,7 @@ from random import *
 with open('ccMlData.csv', 'w') as csvfile:
     filewriter = csv.writer(csvfile, delimiter=',',
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
-    filewriter.writerow(['libID', 'Distance', 'Quiet', 'Monitor'])
+    #filewriter.writerow(['libID', 'Distance', 'Quiet', 'Monitor'])
     for k in range(100):
         libId = randint(1, 4)
         dis = random()*randint(1, 4)
