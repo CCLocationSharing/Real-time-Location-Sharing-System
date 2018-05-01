@@ -9,4 +9,7 @@ with open('ccMlData.csv', 'w') as csvfile:
         varthree = random()
         varfour = random()
         result = 0.1 *varone + 0.2*vartwo+0.3*varthree+0.4*varfour
-        filewriter.writerow([result, varone, vartwo, varthree, varfour])
+        if(result>0.5):
+            filewriter.writerow(["YES", varone, vartwo, varthree, varfour])
+        else:
+            filewriter.writerow(["NO", varone, vartwo, varthree, varfour])
