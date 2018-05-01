@@ -16,7 +16,7 @@ with open('ccMlData.csv', 'w') as csvfile:
                 m = 1
             else:
                 m = 0
-            filewriter.writerow(['carpenter', dis, q, m])
+            #filewriter.writerow(['carpenter', dis, q, m])
         elif(libId==2):
             if(random()<0.7):
                 q = 1
@@ -26,7 +26,7 @@ with open('ccMlData.csv', 'w') as csvfile:
                 m = 1
             else:
                 m = 0
-            filewriter.writerow(['olin', dis, q, m])
+            #filewriter.writerow(['olin', dis, q, m])
         elif(libId==3):
             if(random()<0.6):
                 q = 1
@@ -36,7 +36,7 @@ with open('ccMlData.csv', 'w') as csvfile:
                 m = 1
             else:
                 m = 0
-            filewriter.writerow(['uris', dis, q, m])
+            #filewriter.writerow(['uris', dis, q, m])
         elif(libId==4):
             if(random()<0.35):
                 q = 1
@@ -46,4 +46,5 @@ with open('ccMlData.csv', 'w') as csvfile:
                 m = 1
             else:
                 m = 0
-            filewriter.writerow(['gates', dis, q, m])
+            #filewriter.writerow(['gates', dis, q, m])
+        filewriter.writerow([libId, dis, q, m])
