@@ -3,7 +3,7 @@ from random import *
 with open('ccMlData.csv', 'w') as csvfile:
     filewriter = csv.writer(csvfile, delimiter=',',
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
-    for k in range(100):
+    for k in range(50):
         varone = random()
         vartwo = random()
         varthree = random()
