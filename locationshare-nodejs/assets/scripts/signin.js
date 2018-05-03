@@ -12,7 +12,6 @@ signin.init = function() {
         }
 
         $.post("/signup", json_submit, function(result) {
-            console.log(result);
             let status = result.status;
            
             if (status === 3) $("#error-message").text("Password must be 6-20 characters long");

@@ -11,7 +11,7 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 var express = require('express');
 var app = express();
 var http = require("http").Server(app);
-var io = require("socket.io")(http);
+var async = require('async');
 var crypto = require("crypto");
 
 /**
@@ -39,43 +39,48 @@ var sha512 = function(password, salt){
 
 exports.postNewUser = function(req, res) {
     if (!req.body.password.match(/^\w{6,20}$/)) {
-        return res.send({status:3});
+        return res.json({status:3});
     } else if (req.body.password != req.body.confirmpassword){
-        return res.send({status:2});
+        return res.json({status:2});
     }
 
-    var user = {
-        TableName: "Users",
-        Key: {
-            "username":req.body.username
-        }
-    };
+    async.series([function(callback) {
+        var user = {
+            TableName: "Users",
+            Key: {
+                "username":req.body.username
+            }
+        };
 
-    docClient.get(user, function(err, user) {
-        if (err) throw err;
-        if (user.Item) res.json({status: 1});
-        else {
-            var salt = genRandomString(16);
-            var password = sha512(req.body.password, salt);
-            var newUser = {
-                TableName: "Users",
-                Item: {
-                    "username":req.body.username,
-                    "salt": salt,
-                    "password":password,
-                    "isonline":true, // currently no use
-                    "friends": [] // currently no use
-                }
-            };
+        docClient.get(user, function(err, user) {
+            if (err) throw err;
+            if (user.Item) callback(1, null);
+            else callback(null, null);
+        });
+    }, function(callback) {
+        var salt = genRandomString(16);
+        var password = sha512(req.body.password, salt);
+        var newUser = {
+            TableName: "Users",
+            Item: {
+                "username":req.body.username,
+                "salt": salt,
+                "password":password,
+                "isonline":true, // currently no use
+                "friends": [], // currently no use
+                "reservation": {}
+            }
+        };
 
-            docClient.put(newUser, function(err, data) {
-                if (err) throw err;
-                else{
-                    req.session.user = {username: newUser.Item.username, friends: newUser.Item.friends};
-                    res.json({status: 0, redirect: "dashboard"});
-                }
-            });
-        }
+        docClient.put(newUser, function(err, data) {
+            if (err) throw err;
+            callback(null, newUser);
+        });
+    }], function(err, results) {
+        if (err) return res.json({status: 1});
+        let newUser = results[1];
+        req.session.user = {username: newUser.Item.username, friends: newUser.Item.friends};
+        res.json({status: 0, redirect: "dashboard"});
     });
 };
 
