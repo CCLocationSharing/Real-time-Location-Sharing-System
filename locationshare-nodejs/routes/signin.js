@@ -100,20 +100,6 @@ exports.postLogin = function(req, res) {
         if (user.Item.password != sha512(req.body.password, salt)) 
             res.json({status: 2});
         else {
-            /*var updateUser = {
-                TableName: "Users",
-                Key: {
-                    "username":req.body.username
-                },
-                UpdateExpression: "set isonline=:isonline",
-                ExpressionAttributeValues:{
-                    ":isonline": true
-                }
-            };
-            docClient.update(updateUser, function(err, data) {
-                if (err) throw err;
-                */
-                io.emit("login", {username: user.Item.username});
                 req.session.user = {username: user.Item.username, friends: user.Item.friends};
                 if(req.session.lastUrl === undefined || req.session.lastUrl != "/reserve") {
                     res.json({status: 0, redirect: "dashboard"});
