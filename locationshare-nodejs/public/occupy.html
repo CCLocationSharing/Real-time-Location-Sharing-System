@@ -7,17 +7,19 @@
 </div>
 
 <script>
-  let i = 0;
-  setInterval(postOccupy, 100);
-  setInterval(clearLog, 1000);
+  let interval = 500;
+  setInterval(postOccupy, interval);
+  setInterval(clearLog, interval * 20);
 
   function postOccupy() {
     let param = {
       tabID: getRandomTable(),
       type: getRandomType()
     };
+    let start = Date.now();
     $.post("/occupy", param, function(result) {
-      $("#log").append(JSON.stringify(param) + "<br>");
+      let end = Date.now();
+      $("#log").append(JSON.stringify(param) + " " + (end - start) + "<br>");
     });
   }
 
