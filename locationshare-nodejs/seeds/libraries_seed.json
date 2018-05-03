@@ -32,7 +32,7 @@
                 {"S": "uris 03"},
                 {"S": "uris 04"},
                 {"S": "uris ss01"},
-                {"S": "uris ss01"}]
+                {"S": "uris ss02"}]
             }
         }}},
         {"PutRequest": {"Item": {

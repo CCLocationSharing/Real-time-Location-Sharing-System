@@ -122,8 +122,7 @@ function tableParamCancel(req, starttime, endtime, table) {
 
 exports.postReservation = function(req, res) {
     if (req.session.user === undefined) {
-        req.session.lastUrl = "/reserve";
-        return res.redirect("/login");
+        return res.send({status: -1});
     }
     let table = req.body.tabID;
     let starttime = moment(Number(req.body.startTime));

@@ -272,12 +272,14 @@ reserve.init = function () {
         reserveInfo["endTime"] = endTime.valueOf();
         reserveInfo["producedTime"] = moment().valueOf();
 
-        $.post("/makeReservations", reserveInfo, function(result) {
-            if (result.status === 1) {
+        $.post("/makeReservations", reserveInfo, function(result) {console.log(result)
+            if (result.status === -1) {
+                window.location.replace("/login");
+            } else if (result.status === 1) {
                 alert("Sorry, the time slot you selected has been taken. Please refresh the page.");
             } else if (result.status === 2) {
                 alert("Sorry, but you have booked table in another library at the same time slot.");
-            } else { // success
+            } else  if (result.status === 0) { // success
                 let table = formInfo[0].value.replace(/( )+/g, "-");
                 $("#" + table + "\\+" + startTime.hour()).attr('disabled', true);
                 $("#" + table + "\\+" + endTime.hour()).attr('disabled', true);
@@ -285,7 +287,7 @@ reserve.init = function () {
                 $("#table")[0].value = "";
                 $("#start")[0].value = "";
                 $("#end")[0].value = "";
-                alert("success");
+                alert("Success");
             }
         }).fail(function(err) {
             if (err.status === 400) {
