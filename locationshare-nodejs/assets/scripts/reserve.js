@@ -215,6 +215,10 @@ function show(date, lib) {
 reserve.init = function () {
     let defaultMoment = moment(), defaultDate = defaultMoment.format('MM-DD-YYYY'), defaultLibrary = "carpenter";
     
+    if(defaultMoment.hour() >= 22) {
+        defaultMoment.add(3, 'hour');
+        defaultDate = defaultMoment.format('MM-DD-YYYY');
+    }
     //default value for picker
     $('#datepicker')[0].value = defaultDate;
     $('#date')[0].value = defaultDate;
