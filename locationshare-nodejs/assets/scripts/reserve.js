@@ -23,7 +23,7 @@ function reRender(date, lib) {
             let table = item.table;
             let tableStr = table.replace(/( )+/g,'-');
             let reserved = [];
-            for (let time in item.reserved) {console.log()
+            for (let time in item.reserved) {//console.log()
                 let m = moment(Number(time));
                 if (m.dayOfYear() == today) {
                     reserved.push(m.hour());
@@ -224,11 +224,12 @@ reserve.init = function () {
     reRender(defaultMoment.format(), defaultLibrary);
 
     //pikaday plugin
-    let minDate = defaultMoment.startOf('date');
+    let minDate = defaultMoment.startOf('day');
     let maxDate = moment().add(6, 'day');
     var picker = new Pikaday({ 
         field: $('#datepicker')[0],
         trigger: $('#datepickerTrigger')[0],
+        format: 'MM-DD-YYYY',
         minDate: minDate,
         maxDate: maxDate,
         disableDayFn: function(date) {
@@ -239,8 +240,10 @@ reserve.init = function () {
             }
         },
         onSelect: function(item) {
-            let strs = picker.toString().split('-');
-            let dateStr = strs[1] + "-" + strs[2] + "-" + strs[0];
+            console.log(1);
+            //let strs = picker.toString().split('-');
+            //let dateStr = strs[1] + "-" + strs[2] + "-" + strs[0];
+            let dateStr = picker.toString();
             let moment = getDateString(dateStr), date = moment.format('MM-DD-YYYY');
             $('#datepicker')[0].value = date;
             $('#date')[0].value = date;
@@ -278,7 +281,7 @@ reserve.init = function () {
                 $("#table")[0].value = "";
                 $("#start")[0].value = "";
                 $("#end")[0].value = "";
-                alert(result.message);
+                alert("success");
             }
         }).fail(function(err) {
             if (err.status === 400) {

@@ -86,7 +86,7 @@ function cancelReservation(event) {
     let table = idlist[1].replace(/(-)+/g,' ');
     let text = "Are you sure to cancel you reservation on " + time + " at " + table + "?";
     if (confirm(text)) {
-        let param = {time: idlist[0], table: idlist[1]}
+        let param = {time: idlist[0], table: table}
         let id = event.target.id.replace("+", "\\+");
         $.post("/cancelReservation", param, function() {
             $("#" + id).parent().remove();
