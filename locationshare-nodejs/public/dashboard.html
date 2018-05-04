@@ -24,26 +24,6 @@
                 <div class="panel-body" id="reservation"></div>
             </div>
         </div>
-
-        <div class="col-sm-3 col-md-3 sidebar">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-user"></i>
-                    Friends List
-                </div>
-
-                <div class="panel-body" id="friend-list">
-                    {% for friend in session.user.friends %}
-                        <a href="/profile?id={{friend}}" class="list-group-item" id="{{friend}}">
-                        {{friend}}
-                            <span style="float: right; color: {% if friend.online %}green{% else %}red{% endif %}">
-                                ● {% if friend.online %}online{% else %}offline{% endif %}
-                            </span>
-                        </a>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 <script src="scripts/dashboard.js"></script>

@@ -2,14 +2,46 @@
 
 {% block body %}
 <div class="container">
-  <p>Note: this page is for testing purpose only. The real occupying behavior should be done by machine learning model automatically.</p>
-  <span id="log"></span>
+  <p>Note: this page is for testing purpose only.</p>
+  Set frequency (number of visit per second):
+  <input id="freq" type="number" />
+  <button id="startButton" onclick="start()">Start</button>
+  <button id="stopButton" onclick="stop()">Stop</button>
+  <button id="clearButton" onclick="clean()">Clear</button><br>
+  CSV data for analysis:<br>
+  <div style="overflow-x: scroll;">
+    <code id="data">(Disabled, edit HTML to enable)</code><br>
+  </div>
+  Average: <code id="ave"></code><br>
+  Log:<br>
+  <div style="overflow-y: scroll; height:500px;">
+    <span id="log">(Disabled, edit HTML to enable)</span>
+  </div>
+  
 </div>
 
 <script>
-  let interval = 500;
-  setInterval(postOccupy, interval);
-  setInterval(clearLog, interval * 20);
+  let worker, freq, ave = 0.0, n = 0;
+
+  function start() {
+    clearInterval(worker);
+    freq = 1000.0 / $("#freq").val();
+    $("#log").append("Frequency is: " + freq + "<br>");
+    worker = setInterval(postOccupy, freq);
+  }
+
+  function stop() {
+    clearInterval(worker);
+  }
+
+  function clean() {
+    clearInterval(worker);
+    ave = 0.0;
+    n = 0;
+    $("#log").empty();
+    $("#ave").empty();
+    $("#data").empty();
+  }
 
   function postOccupy() {
     let param = {
@@ -19,7 +51,12 @@
     let start = Date.now();
     $.post("/occupy", param, function(result) {
       let end = Date.now();
-      $("#log").append(JSON.stringify(param) + " " + (end - start) + "<br>");
+      if (n % 20 == 0) $("#log").empty();
+      //$("#log").append(JSON.stringify(param) + "<br>");
+      //$("#data").append((end - start) + ",");
+      ave = (ave * n + (end - start)) / (n + 1);
+      n += 1;
+      $("#ave").text(ave);
     });
   }
 
@@ -41,10 +78,6 @@
     } else {
       return "r";
     }
-  }
-
-  function clearLog() {
-    $("#log").text("");
   }
 </script>
 {% endblock %}

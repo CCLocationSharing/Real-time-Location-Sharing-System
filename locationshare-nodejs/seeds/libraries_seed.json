@@ -8,7 +8,9 @@
                 {"S": "CH 001"},
                 {"S": "CH 002"},
                 {"S": "CH 003"}]
-            }
+            },
+            "latitude": {"N": "-76.484129"},
+            "longitude": {"N": "42.444807"}
         }}},
         {"PutRequest": {"Item": {
             "libID": {"S": "olin"},
@@ -20,7 +22,9 @@
                 {"S": "olin study room3"},
                 {"S": "olin 001"},
                 {"S": "olin 002"}]
-            }
+            },
+            "latitude": {"N": "-76.484250"},
+            "longitude": {"N": "42.447881"}
         }}},
         {"PutRequest": {"Item": {
             "libID": {"S": "uris"},
@@ -33,7 +37,9 @@
                 {"S": "uris 04"},
                 {"S": "uris ss01"},
                 {"S": "uris ss02"}]
-            }
+            },
+            "latitude": {"N": "-76.485310"},
+            "longitude": {"N": "42.447699"}
         }}},
         {"PutRequest": {"Item": {
             "libID": {"S": "gates"},
@@ -45,7 +51,9 @@
                 {"S": "G23 room3"},
                 {"S": "G23 room4"},
                 {"S": "G23 room5"}]
-            }
+            },
+            "latitude": {"N": "-76.480999"},
+            "longitude": {"N": "42.444973"}
         }}}
     ]
 }

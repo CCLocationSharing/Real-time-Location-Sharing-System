@@ -44,7 +44,14 @@ function updateOccupancyDB(tabID, toOccupy) {
     });
 }
 
+let n = 0;
+setInterval(() => {
+    console.log("In last second, received " + n + " occupy requests.")
+    n = 0;
+}, 1000);
+
 exports.postOccupy = function(req, res) {
+    n += 1;
     if (req.body.tabID === undefined)
         return res.status(400).send("Table ID is not given.");
 

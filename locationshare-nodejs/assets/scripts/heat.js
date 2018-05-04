@@ -6,9 +6,23 @@ let occupiedCoord = [];
 
 heat.init = function() {
     $.get("/getHeatData", function(result) {
-        occupiedCoord = result;
+
+        occupiedCoord = [];
+        for (let libID in result.status) {
+            for (let i = 0; i < result.status[libID].taken; i++) {
+                let coord = result.coords[libID];
+                occupiedCoord.push({
+                    "longitude": coord.longitude + offset(),
+                    "latitude": coord.latitude + offset()
+                });
+            }
+        }
         initMap();
     });
+}
+
+function offset() {
+    return 0.0005 * (Math.random() - 0.5);
 }
 
 $(document).ready(function() {
@@ -17,8 +31,8 @@ $(document).ready(function() {
 
 function initMap() {
     let map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 15,
-        center: {lat: 42.4451543, lng: -76.4852264}
+        zoom: 16,
+        center: {lat: 42.447589, lng: -76.481522}
     });
 
     let heatmap = new google.maps.visualization.HeatmapLayer({

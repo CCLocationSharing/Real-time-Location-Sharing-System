@@ -9,12 +9,12 @@ AWS.config.update({
 var docClient = new AWS.DynamoDB.DocumentClient();
 var dashboard = require("./dashboard");
 
-let tableCoord = {}, occupiedCoord = [];
+let tableCoord = {};
 
 // Get tables' coordinates
 var scanTable = {
-    TableName: "Tables",
-    ProjectionExpression: "tabID, longitude, latitude",
+    TableName: "Libraries",
+    ProjectionExpression: "libID, longitude, latitude",
 };
 
 docClient.scan(scanTable, function(err, data) {
@@ -22,23 +22,14 @@ docClient.scan(scanTable, function(err, data) {
 
 	tableCoord = {}
 	data.Items.forEach(item => {
-		tableCoord[item.tabID] = {
+		tableCoord[item.libID] = {
 			"longitude": item.longitude,
 			"latitude": item.latitude
 		};
 	});
 });
 
-// Periodically update Status
-updateHeat();
-setInterval(updateHeat, 5000);
-
-function updateHeat() {
-	let occupied = dashboard.returnOccupancy();
-	occupiedCoord = [];
-	occupied.forEach(tabID => occupiedCoord.push(tableCoord[tabID]));
-}
-
 exports.getHeatData = function(req, res) {
-    return res.send(occupiedCoord);
+	let status = dashboard.returnStatus();
+    return res.send({coords: tableCoord, status: status});
 }

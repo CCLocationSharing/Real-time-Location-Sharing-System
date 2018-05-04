@@ -4,31 +4,18 @@
             "username": {"S": "Syugen"},
             "salt": {"S": "089033357ba03aa4"},
             "password": {"S": "aaa6c9b5631499c6202c516b3716ce38a8c24f20e01a1887d4540fff3b638bb1d62cd37ae93ba4e2b1ea8a5da535d96bd4dd70cadb8004bf3779feac6fc2e991"},
-            "isonline": {"BOOL": true},
-            "friends": {"L": [
-            	{"S": "yz2369"},
-            	{"S": "xm99"}
-            ]},
             "reservation": {"M": {}}
         }}},
         {"PutRequest": {"Item": {
             "username": {"S": "yz2369"},
             "salt": {"S": "c96e9f9c8719fa76"},
             "password": {"S": "e880ecc5f302ee40dddb7830787ef8dcf977687f453b2ea7684a3ab8bb0fd79375015ad4880f55d550f51f1537f717c56caf724b34ecc602c4d0d7c05d7be5c2"},
-            "isonline": {"BOOL": true},
-            "friends": {"L": [
-            	{"S": "Syugen"}
-            ]},
             "reservation": {"M": {}}
         }}},
         {"PutRequest": {"Item": {
             "username": {"S": "xm99"},
             "salt": {"S": "5ae868b32e9f0422"},
             "password": {"S": "c3f9aed23c41ac49a2cdc42658b769af9e68191e8d9e5bb437076e80e7aec570069e68b723571992af644bbabb3cef555d89a73bd0602c76e0ac74c2003093ff"},
-            "isonline": {"BOOL": true},
-            "friends": {"L": [
-            	{"S": "Syugen"}
-            ]},
             "reservation": {"M": {}}
         }}}
     ]
