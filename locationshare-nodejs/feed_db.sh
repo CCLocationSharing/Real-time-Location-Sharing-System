@@ -26,8 +26,16 @@ if [[ $tablelist != *"Tables"* ]]; then
 		--provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
 fi
 
-aws dynamodb batch-write-item --request-items file://seeds/libraries_seed.json
+for((i=0;i<=24;i++)); do
+	prefix=file://seeds/occu/tables_occu_seed
+	middle=$i
+	suffix=.json
+	filepath=$prefix$middle$suffix
+	echo $filepath
+	aws dynamodb batch-write-item --request-items $filepath
+done
+
+aws dynamodb batch-write-item --request-items file://seeds/libraries_updated_seed.json
 aws dynamodb batch-write-item --request-items file://seeds/users_seed.json
 aws dynamodb batch-write-item --request-items file://seeds/tables_seed.json
-
 echo "If you see ResourceNotFoundException, wait for 10 seconds and run this script again."
