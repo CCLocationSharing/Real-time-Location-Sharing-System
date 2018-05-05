@@ -3,8 +3,7 @@ from random import *
 import random as rd
 arts_majors = ['Africana Studies', 'American Studies',
 'Anthropology', 'Applied Economics and Management', 'Classics', 'Communication',
-'Development Sociology', 'Economics', 'Feminist, Gender & Sexuality Studies',
-'Fine Arts', 'French', 'History', 'Human Development', 'Linguistics', 'Music',
+'Development Sociology', 'Economics', 'Feminist', 'Fine Arts', 'French', 'History', 'Human Development', 'Linguistics', 'Music',
 'Philosophy', 'Religious Studies', 'Sociology', 'Urban and Regional Studies']
 science_majors = ['Animal Science', 'Biological Sciences', 'Environmental and Sustainability Sciences',
 'Food Science', 'Mathematics', 'Nutritional Sciences', 'Statistical Science', 'Science and Technology Studies']
