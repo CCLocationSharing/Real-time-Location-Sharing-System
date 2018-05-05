@@ -21,9 +21,9 @@ with open('mlDataCar.csv', 'w') as csvfile:
     for k in range(5000):
         isLib = randint(0, 1)
         if(isLib==1):
-            label = 'Y'
+            label = "\"Y\""
         else:
-            label = 'N'
+            label = "\"N\""
         temp = random()
         if(temp < 0.8 and isLib==1):
             major = rd.choice(majors)
