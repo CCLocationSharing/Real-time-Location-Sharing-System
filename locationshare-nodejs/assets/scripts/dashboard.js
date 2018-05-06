@@ -2,6 +2,56 @@
 
 var dashboard = {};
 
+function simulateBrushCardOut(itself) {
+    if(itself === undefined || itself === null) 
+        return;
+
+    let leaveInfo = {};
+    let idstr = $(itself).attr('id');
+    let tabID = idstr.substring(0, idstr.indexOf('-'));
+    leaveInfo["tabID"] = tabID;
+    leaveInfo["time"] = moment().valueOf();
+    $.post("simulateBrushCardOut", leaveInfo, function(result) {
+        if (result.status === 5) {
+            alert("Leaving table " + tabID + " failure");
+        }else if(result.status === 1) {
+            console.log("brushout:", tabID);
+            let buttonin = $(itself).prev();
+            $(itself).remove();
+            buttonin.show();
+            $("#library-status").find("button").each(function(){
+                $(this).attr("disabled", false);
+            });
+        }
+    });
+};
+
+function simulateBrushCardIn(libID) {
+    if (libID === undefined || libID === null)
+        return;
+
+    let occupyInfo = {};
+    occupyInfo["libID"] = libID;
+    occupyInfo["time"] = moment().valueOf();
+    $.post("/simulateBrushCardIn", occupyInfo, function(result) {
+        if (result.status === 3) {
+            alert("Library " + libID + " is full");
+        }else if (result.status === 5) {
+            alert("brush in failure");
+        }else if (result.status === 1) {
+            console.log("brush In", result.tabID);
+            let tabid = result.tabID;
+            let buttonname = "#" + libID + "-btnin";
+            $(buttonname).hide();
+            $("#library-status").find("button").each(function(){
+                $(this).attr("disabled", true);
+            });
+            let buttonout = $("<button>").attr("id", tabid + "-btnout").attr("onclick", "simulateBrushCardOut(this)").text("Leave");
+            $(buttonname).after(buttonout);
+        }
+    });
+};
+
 dashboard.init = function() {
     let libraries = [], takenList = [], capList = [];
     let libChart = new Chart($("#libChart"), {
@@ -37,21 +87,21 @@ dashboard.init = function() {
     
     $.get("/libraryCapacity", function(libs) {
         let libTable = $("#library-status");
-        let thead = "<thead><tr><th>Libraries</th><th>Status</th></tr></thead>";
+        let thead = "<thead><tr><th>Libraries</th><th>Status</th><th>Brush Card</th></tr></thead>";
         libTable.append(thead);
         libTable.append("<tbody>");
 
         for (let i = 0; i < libs.length; i++) {
             let td1 = "<td >" + libs[i].libName + "</td>";
             let td2 = "<td id=" + libs[i].libID + "-taken><span></span><span>" + "/" + libs[i].libCapacity + "</span></td>";
-            libTable.append("<tr>"+ td1 + td2 +"</tr>");
+            let td3 = "<td><button id=\"" + libs[i].libID + "-btnin\" onclick=\'simulateBrushCardIn(\"" + libs[i].libID + "\")\'>occupy</button></td>";
+            libTable.append("<tr>"+ td1 + td2 + td3 + "</tr>");
             libraries.push(libs[i].libName);
             capList.push(libs[i].libCapacity);
         }
         libTable.append("</tbody>");
 
         $.get("/libraryStatus", function(takens) {
-            console.log(takens);
             for (let i = 0; i < libs.length; i++) {
                 let libID = libs[i].libID;
                 let text = takens[libID].taken;

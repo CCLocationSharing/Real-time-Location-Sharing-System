@@ -32,6 +32,7 @@ var dashboard = require("./routes/dashboard");
 var reserve = require("./routes/reserve");
 var occupy = require("./routes/occupy");
 var heat = require("./routes/heat");
+var simulateoccupy = require("./routes/simulateoccupy")
 
 app.get("/", (req, res) => {res.render("index", {index: true, home: "active"})});
 app.get("/about", (req, res) => {res.render("about", {about: "active"})});
@@ -57,6 +58,9 @@ app.get("/heat", (req, res) => {res.render("heat", {styles: ["heat"], heat: "act
 app.get("/getHeatData", heat.getHeatData);
 
 app.post("/occupy", occupy.postOccupy);
+
+app.post("/simulateBrushCardIn", simulateoccupy.brushCardIn);
+app.post("/simulateBrushCardOut", simulateoccupy.brushCardOut);
 
 app.get("/die", () => a[0]);
 
