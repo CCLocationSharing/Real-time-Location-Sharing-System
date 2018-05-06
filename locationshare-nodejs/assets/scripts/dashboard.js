@@ -36,7 +36,6 @@ dashboard.init = function() {
     });
     
     $.get("/libraryCapacity", function(libs) {
-        console.log("result:", libs);
         let libTable = $("#library-status");
         let thead = "<thead><tr><th>Libraries</th><th>Status</th></tr></thead>";
         libTable.append(thead);
@@ -44,19 +43,21 @@ dashboard.init = function() {
 
         for (let i = 0; i < libs.length; i++) {
             let td1 = "<td >" + libs[i].libName + "</td>";
-            let td2 = "<td id=" + libs[i].libID + "-taken></td>";
+            let td2 = "<td id=" + libs[i].libID + "-taken><span></span><span>" + "/" + libs[i].libCapacity + "</span></td>";
             libTable.append("<tr>"+ td1 + td2 +"</tr>");
-            libraries.push(libs[i].libName)
+            libraries.push(libs[i].libName);
+            capList.push(libs[i].libCapacity);
         }
         libTable.append("</tbody>");
 
         $.get("/libraryStatus", function(takens) {
+            console.log(takens);
             for (let i = 0; i < libs.length; i++) {
                 let libID = libs[i].libID;
-                let text = takens[libID].taken + "/" + takens[libID].capacity;
-                $("#" + libID + "-taken").text(text);
+                let text = takens[libID].taken;
+                let p = $("#" + libID + "-taken").find("span")[0];
+                $(p).text(text);
                 takenList.push(takens[libID].taken);
-                capList.push(takens[libID].capacity);
             }
             libChart.update();
         });
@@ -72,9 +73,9 @@ dashboard.init = function() {
                 let time = moment(Number(t)).format("M-D h a");
                 let id = t + "+" + result[t].replace(/( )+/g,"-");
                 let span = $("<span>").addClass("list-group-item").attr("id", id + "+span").
-                    text(time + ": " + result[t]).appendTo(resdiv);
+                    html("<span style=\"float:left;\">" + time + ": " + result[t] + "</span>").appendTo(resdiv);
                 let a = $("<a>").attr("id", id).
-                    attr("href", "#").css({float: "right"}).text("Cancel").
+                    attr("href", "#").css({"float": "right"}).text("Cancel").
                     click(cancelReservation).appendTo(span);
             }
         }
