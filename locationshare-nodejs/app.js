@@ -52,6 +52,7 @@ app.post("/cancelReservation", reserve.cancelReservation);
 app.get("/reserve", reserve.getReserve);
 app.get("/renderForPicker", reserve.getRender);
 app.post("/makeReservations", reserve.postReservation);
+app.post("/makeFakeReservations", reserve.postFakeReservation);
 
 app.get("/heat", (req, res) => {res.render("heat", {styles: ["heat"], heat: "active"})});
 app.get("/getHeatData", heat.getHeatData);

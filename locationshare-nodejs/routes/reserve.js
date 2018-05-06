@@ -124,6 +124,26 @@ exports.postReservation = function(req, res) {
     if (req.session.user === undefined) {
         return res.send({status: -1});
     }
+    
+    reserve(req, res);
+}
+
+let n = 0;
+setInterval(() => {
+    if (n != 0) {
+        let now = moment();
+        console.log(now.format() + ": " + process.env.PORT + ": received " + n + " reserve requests.");
+        n = 0;
+    }
+}, 1000);
+
+exports.postFakeReservation = function(req, res) {
+    n += 1;
+    req.session.user = {username: "Syugen"};
+    reserve(req, res);
+}
+
+function reserve(req, res) {
     let table = req.body.tabID;
     let starttime = moment(Number(req.body.startTime));
     let endtime = moment(Number(req.body.endTime));
@@ -159,7 +179,6 @@ exports.postReservation = function(req, res) {
             });
         } else return res.send({status: 0});
     });
-
 }
 
 exports.getReserve = function(req, res) {

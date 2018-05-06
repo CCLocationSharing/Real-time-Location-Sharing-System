@@ -3,6 +3,8 @@
 {% block body %}
 <div class="container">
   <p>Note: this page is for testing purpose only.</p>
+  <input value="false" type="radio" name="wait" checked/>Do not wait for response
+  <input value="true" type="radio" name="wait" />Wait for and log response<br>
   Set frequency (number of visit per second):
   <input id="freq" type="number" />
   <button id="startButton" onclick="start()">Start</button>
@@ -10,12 +12,12 @@
   <button id="clearButton" onclick="clean()">Clear</button><br>
   CSV data for analysis:<br>
   <div style="overflow-x: scroll;">
-    <code id="data">(Disabled, edit HTML to enable)</code><br>
+    <code id="data"></code><br>
   </div>
   Average: <code id="ave"></code><br>
   Log:<br>
   <div style="overflow-y: scroll; height:500px;">
-    <span id="log">(Disabled, edit HTML to enable)</span>
+    <span id="log"></span>
   </div>
   
 </div>
@@ -27,7 +29,10 @@
     clearInterval(worker);
     freq = 1000.0 / $("#freq").val();
     $("#log").append("Frequency is: " + freq + "<br>");
-    worker = setInterval(postOccupy, freq);
+    if ($("input[name=wait]:checked").val() === "true")
+      worker = setInterval(postOccupy, freq);
+    else
+      worker = setInterval(postOccupyNoWait, freq);
   }
 
   function stop() {
@@ -52,14 +57,21 @@
     $.post("/occupy", param, function(result) {
       let end = Date.now();
       if (n % 20 == 0) $("#log").empty();
-      //$("#log").append(JSON.stringify(param) + "<br>");
-      //$("#data").append((end - start) + ",");
+      $("#log").append(JSON.stringify(param) + "<br>");
+      $("#data").append((end - start) + ",");
       ave = (ave * n + (end - start)) / (n + 1);
       n += 1;
       $("#ave").text(ave);
     });
   }
 
+  function postOccupyNoWait() {
+    let param = {
+      tabID: getRandomTable(),
+      type: getRandomType()
+    };
+    $.post("/occupy", param);
+  }
   function getRandomTable() {
     let list = ["CH 001", "CH 002", "CH 003", 
       "olin study room1", "olin study room2", "olin study room3",
