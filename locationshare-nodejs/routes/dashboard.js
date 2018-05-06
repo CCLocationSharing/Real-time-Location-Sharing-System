@@ -13,14 +13,20 @@ let libraries = {}, status = {};
 // Get libraries name
 var scanTable = {
     TableName: "Libraries",
-    ProjectionExpression: "libID, libName, tables",
+    ProjectionExpression: "libID, libName, libCapacity, tables",
 };
 
 docClient.scan(scanTable, function(err, data) {
 	if (err) throw err;
 
 	libraries = data.Items;
+	data.Items.forEach(item => {
+		status[item.libID] = {"capacity": item.libCapacity, "taken": 0};
+		console.log(status[item.libID]);
+	});
 });
+
+
 
 // Periodically update Status
 updateStatus();
@@ -29,19 +35,17 @@ setInterval(updateStatus, 10000);
 function updateStatus() {
 	var scanTable = {
 	    TableName: "Tables",
-	    ProjectionExpression: "libID, tabID, tabCapacity, occupied"
+	    ProjectionExpression: "libID, tabID, reservable, occupied"
 	};
 
 	docClient.scan(scanTable, function(err, taken) {
 		if (err) throw err;
-
 		status = {};
 		taken.Items.forEach(item => {
-			if (status[item.libID] === undefined)
-				status[item.libID] = {"capacity": 0, "taken": 0};
-			if (item.occupied === true) 
-				status[item.libID].taken += item.tabCapacity;
-			status[item.libID].capacity += item.tabCapacity;
+			if (item.reservable === false) {
+				if (item.occupied === true) 
+					status[item.libID].taken += 1;
+			}
 		});
 	});
 }
