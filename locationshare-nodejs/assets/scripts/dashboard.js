@@ -36,6 +36,7 @@ dashboard.init = function() {
     });
     
     $.get("/libraryCapacity", function(libs) {
+        console.log("result:", libs);
         let libTable = $("#library-status");
         let thead = "<thead><tr><th>Libraries</th><th>Status</th></tr></thead>";
         libTable.append(thead);

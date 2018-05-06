@@ -66,9 +66,8 @@ exports.postNewUser = function(req, res) {
                 "username":req.body.username,
                 "salt": salt,
                 "password":password,
-                "isonline":true, // currently no use
-                "friends": [], // currently no use
-                "reservation": {}
+                "reservation": {},
+                "occupation": {}
             }
         };
 
