@@ -58,9 +58,10 @@ app.get("/getHeatData", heat.getHeatData);
 
 app.post("/occupy", occupy.postOccupy);
 
+app.get("/die", () => a[0]);
+
 var port = process.env.PORT || 3000;
 var server = require("http").Server(app);
 server.listen(port, function () {
     console.log('Server running at http://127.0.0.1:' + port + '/');
 });
-

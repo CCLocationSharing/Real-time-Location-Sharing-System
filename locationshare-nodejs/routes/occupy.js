@@ -5,6 +5,7 @@ AWS.config.update({
     region: "us-west-2",
     endpoint: "https://dynamodb.us-west-2.amazonaws.com"
 });
+var moment = require('moment');
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
@@ -46,14 +47,19 @@ function updateOccupancyDB(tabID, toOccupy) {
 
 let n = 0;
 setInterval(() => {
-    console.log("In last second, received " + n + " occupy requests.")
-    n = 0;
+    if (n != 0) {
+        let now = moment();
+        console.log(now.format() + ": " + process.env.PORT + ": received " + n + " occupy requests.");
+        n = 0;
+    }
 }, 1000);
 
 exports.postOccupy = function(req, res) {
     n += 1;
-    if (req.body.tabID === undefined)
-        return res.status(400).send("Table ID is not given.");
+    if (req.body.tabID === undefined) {
+        modifyList.push({"tabID": "CH 002", "type": "o"});
+        return res.send("Success");
+    }
 
     modifyList.push({"tabID": req.body.tabID, "type": req.body.type});
     return res.send("Success");

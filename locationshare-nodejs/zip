@@ -1,1 +1,1 @@
-zip -r cs5412.zip app.js routes public assets package.json .ebextensions
+zip -r cs5412.zip cluster.js app.js routes public assets package.json .ebextensions
