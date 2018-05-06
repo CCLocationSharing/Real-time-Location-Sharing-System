@@ -8,7 +8,8 @@ AWS.config.update({
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
-let libraries = {}, status = {};
+let libraries = {}
+let status = {"carpenter": {"taken": 0}, "olin": {"taken": 0}, "uris": {"taken": 0}, "gates": {"taken": 0}, "mann": {"taken": 0}, "law": {"taken": 0}};
 
 // Get libraries name
 var scanTable = {
@@ -20,10 +21,6 @@ docClient.scan(scanTable, function(err, data) {
 	if (err) throw err;
 
 	libraries = data.Items;
-	data.Items.forEach(item => {
-		status[item.libID] = {"capacity": item.libCapacity, "taken": 0};
-		console.log(status[item.libID]);
-	});
 });
 
 
@@ -40,11 +37,9 @@ function updateStatus() {
 
 	docClient.scan(scanTable, function(err, taken) {
 		if (err) throw err;
-		status = {};
 		taken.Items.forEach(item => {
-			if (item.reservable === false) {
-				if (item.occupied === true) 
-					status[item.libID].taken += 1;
+			if (!item.reservable && item.occupied) {
+				status[item.libID].taken += 1;
 			}
 		});
 	});

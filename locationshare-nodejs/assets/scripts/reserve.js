@@ -272,7 +272,7 @@ reserve.init = function () {
         reserveInfo["endTime"] = endTime.valueOf();
         reserveInfo["producedTime"] = moment().valueOf();
 
-        $.post("/makeReservations", reserveInfo, function(result) {console.log(result)
+        $.post("/makeReservations", reserveInfo, function(result) {
             if (result.status === -1) {
                 window.location.replace("/login");
             } else if (result.status === 1) {

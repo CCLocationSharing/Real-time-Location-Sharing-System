@@ -2,6 +2,56 @@
 
 var dashboard = {};
 
+function simulateBrushCardOut(itself) {
+    if(itself === undefined || itself === null) 
+        return;
+
+    let leaveInfo = {};
+    let idstr = $(itself).attr('id');
+    let tabID = idstr.substring(0, idstr.indexOf('-'));
+    leaveInfo["tabID"] = tabID;
+    leaveInfo["time"] = moment().valueOf();
+    $.post("simulateBrushCardOut", leaveInfo, function(result) {
+        if (result.status === 5) {
+            alert("Leaving table " + tabID + " failure");
+        }else if(result.status === 1) {
+            console.log("brushout:", tabID);
+            let buttonin = $(itself).prev();
+            $(itself).remove();
+            buttonin.show();
+            $("#library-status").find("button").each(function(){
+                $(this).attr("disabled", false);
+            });
+        }
+    });
+};
+
+function simulateBrushCardIn(libID) {
+    if (libID === undefined || libID === null)
+        return;
+
+    let occupyInfo = {};
+    occupyInfo["libID"] = libID;
+    occupyInfo["time"] = moment().valueOf();
+    $.post("/simulateBrushCardIn", occupyInfo, function(result) {
+        if (result.status === 3) {
+            alert("Library " + libID + " is full");
+        }else if (result.status === 5) {
+            alert("brush in failure");
+        }else if (result.status === 1) {
+            console.log("brush In", result.tabID);
+            let tabid = result.tabID;
+            let buttonname = "#" + libID + "-btnin";
+            $(buttonname).hide();
+            $("#library-status").find("button").each(function(){
+                $(this).attr("disabled", true);
+            });
+            let buttonout = $("<button>").attr("id", tabid + "-btnout").attr("onclick", "simulateBrushCardOut(this)").text("Leave");
+            $(buttonname).after(buttonout);
+        }
+    });
+};
+
 dashboard.init = function() {
     let libraries = [], takenList = [], capList = [];
     let libChart = new Chart($("#libChart"), {
@@ -36,27 +86,28 @@ dashboard.init = function() {
     });
     
     $.get("/libraryCapacity", function(libs) {
-        console.log("result:", libs);
         let libTable = $("#library-status");
-        let thead = "<thead><tr><th>Libraries</th><th>Status</th></tr></thead>";
+        let thead = "<thead><tr><th>Libraries</th><th>Status</th><th>Brush Card</th></tr></thead>";
         libTable.append(thead);
         libTable.append("<tbody>");
 
         for (let i = 0; i < libs.length; i++) {
             let td1 = "<td >" + libs[i].libName + "</td>";
-            let td2 = "<td id=" + libs[i].libID + "-taken></td>";
-            libTable.append("<tr>"+ td1 + td2 +"</tr>");
-            libraries.push(libs[i].libName)
+            let td2 = "<td id=" + libs[i].libID + "-taken><span></span><span>" + "/" + libs[i].libCapacity + "</span></td>";
+            let td3 = "<td><button id=\"" + libs[i].libID + "-btnin\" onclick=\'simulateBrushCardIn(\"" + libs[i].libID + "\")\'>occupy</button></td>";
+            libTable.append("<tr>"+ td1 + td2 + td3 + "</tr>");
+            libraries.push(libs[i].libName);
+            capList.push(libs[i].libCapacity);
         }
         libTable.append("</tbody>");
 
         $.get("/libraryStatus", function(takens) {
             for (let i = 0; i < libs.length; i++) {
                 let libID = libs[i].libID;
-                let text = takens[libID].taken + "/" + takens[libID].capacity;
-                $("#" + libID + "-taken").text(text);
+                let text = takens[libID].taken;
+                let p = $("#" + libID + "-taken").find("span")[0];
+                $(p).text(text);
                 takenList.push(takens[libID].taken);
-                capList.push(takens[libID].capacity);
             }
             libChart.update();
         });
@@ -72,9 +123,9 @@ dashboard.init = function() {
                 let time = moment(Number(t)).format("M-D h a");
                 let id = t + "+" + result[t].replace(/( )+/g,"-");
                 let span = $("<span>").addClass("list-group-item").attr("id", id + "+span").
-                    text(time + ": " + result[t]).appendTo(resdiv);
+                    html("<span style=\"float:left;\">" + time + ": " + result[t] + "</span>").appendTo(resdiv);
                 let a = $("<a>").attr("id", id).
-                    attr("href", "#").css({float: "right"}).text("Cancel").
+                    attr("href", "#").css({"float": "right"}).text("Cancel").
                     click(cancelReservation).appendTo(span);
             }
         }
