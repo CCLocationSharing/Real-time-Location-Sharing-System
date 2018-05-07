@@ -1,0 +1,11 @@
+{
+  "name": "mlconnect",
+  "description": "The group project",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "array-to-csv": "^1.0.1",
+    "aws-sdk": "^2.231.1",
+    "btoa": "^1.2.1"
+  }
+}
