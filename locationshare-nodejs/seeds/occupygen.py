@@ -76,7 +76,7 @@ for i in range(capacities['mann']):
 
 
 #law library gen
-p6 = [{"S": "Claudy Casual Reading Room"}, {"S": "Interview Room B20-A"}, {"S": "Interview Room B20-B"}, {"S": "Squash Court"}, {"S": "Study Room 471"}, {"S": "Study Room 473"}]
+p6 = [{"S": "Claudy Casual Reading Room"}, {"S": "Interview Room B20A"}, {"S": "Interview Room B20B"}, {"S": "Squash Court"}, {"S": "Study Room 471"}, {"S": "Study Room 473"}]
 row = {"PutRequest": {"Item": { "libID": {"S": "law"}, "libName": {"S": "Law Library"}, "libCapacity": {"N": str(capacities['law'])}, "tables": {"L": p6}, "latitude": {"N": "-76.485772"}, "longitude": {"N": "42.443855"}}}}
 libraries.append(row)
 #law tables gen
