@@ -72,15 +72,17 @@
     };
     $.post("/occupy", param);
   }
+
   function getRandomTable() {
-    let list = ["CH 001", "CH 002", "CH 003", 
-      "olin study room1", "olin study room2", "olin study room3",
-      "olin 001", "olin 002", "olin 003",
-      "G23 room1", "G23 room2", "G23 room3", "G23 room4", "G23 room5",
-      "uris 01", "uris 02", "uris 03", "uris 04",
-      "uris ss01", "uris ss02"];
-    let random = Math.floor(Math.random() * list.length);
-    return list[random];
+    let libList = ["CH", "OL", "UL", "GATES", "MANN", "LAW"];
+    let lib = libList[Math.floor(Math.random() * libList.length)];
+    if (lib == "CH") tab = Math.floor(Math.random() * 56);
+    else if (lib == "OL") tab = Math.floor(Math.random() * 200);
+    else if (lib == "UL") tab = Math.floor(Math.random() * 125);
+    else if (lib == "GATES") tab = Math.floor(Math.random() * 20);
+    else if (lib == "MANN") tab = Math.floor(Math.random() * 60);
+    else if (lib == "LAW") tab = Math.floor(Math.random() * 35);
+    return lib+tab;
   }
 
   function getRandomType() {

@@ -2,47 +2,44 @@
 
 var dashboard = {};
 
-function simulateSwipeCardOut(itself) {
-    if(itself === undefined || itself === null) 
-        return;
-
-    let leaveInfo = {}, tabID = $(itself).attr('id').substring(0, $(itself).attr('id').indexOf('-'));
+function simulateSwipeCardOut(libID, tabID) {
+    let leaveInfo = {};
     leaveInfo["tabID"] = tabID;
     $.post("/simulateSwipeCardOut", leaveInfo, function(result) {
-        if (result.status === 5) {
+        if (result.status === -1) {
+            window.location.replace("/login");
+        }else if (result.status === 5) {
             alert("Leaving table " + tabID + " failure");
         }else if(result.status === 1) {
-            console.log("swipeout:", tabID);
-            let buttonin = $(itself).prev();
-            $(itself).remove();
-            buttonin.show();
-            $("#library-status").find("button").each(function(){
-                $(this).attr("disabled", false);
-            });
+            $("#occupyButton").show();
+            $("#leaveButton").hide();
+            $("input[type=radio]").attr("disabled", false);
+            $("input[value="+libID+"]").next().remove();
         }
     });
 };
 
-function simulateSwipeCardIn(libID) {
-    if (libID === undefined || libID === null)
+function simulateSwipeCardIn() {
+    let checked = $("input:checked");
+    if (checked.length != 1) {
+        alert("Invalid selection.");
         return;
-
-    let occupyInfo = {};
+    }
+    let occupyInfo = {}, libID = checked.attr("value");
     occupyInfo["libID"] = libID;
     $.post("/simulateSwipeCardIn", occupyInfo, function(result) {
-        if (result.status === 3) {
-            alert("Library " + libID + " is full");
+        if (result.status === -1) {
+            window.location.replace("/login");
+        }else if (result.status === 3) {
+            alert("Library " + libID + " is full.");
         }else if (result.status === 5) {
-            alert("swipe in failure");
+            alert("Swipe in failed.");
         }else if (result.status === 1) {
-            console.log("swipein:", result.tabID);
-            let tabid = result.tabID, buttonname = "#" + libID + "-btnin";
-            $(buttonname).hide();
-            $("#library-status").find("button").each(function(){
-                $(this).attr("disabled", true);
-            });
-            let buttonout = $("<button>").attr("id", tabid + "-btnout").attr("onclick", "simulateSwipeCardOut(this)").text("Leave");
-            $(buttonname).after(buttonout);
+            let tabID = result.tabID;
+            $("#occupyButton").hide();
+            $("input[type=radio]").attr("disabled", true);
+            $("input[value="+libID+"]").after($("<span>").text(" Occupied"));
+            $("#leaveButton").show().attr("onclick", "simulateSwipeCardOut(\""+libID+"\",\""+tabID+"\")");
         }
     });
 };
@@ -81,36 +78,35 @@ dashboard.init = function() {
     });
     
     $.get("/libraryCapacity", function(result) {
-        let libs = result["libraries"], occupation = result["occupation"];
+        let libs = result["libraries"], occupied = result["occupation"];
         let libTable = $("#library-status");
         let ths = "<th>Libraries</th><th>Status</th><th>Swipe Card</th>";
         let thead = $("<thead>").append($("<tr>").append(ths));
         let tbody = $("<tbody>");
+        libTable.append(thead).append(tbody);
         
         for (let i = 0; i < libs.length; i++) {
             let td1 = $("<td>").text(libs[i].libName);
             let td2 = $("<td>").attr("id", libs[i].libID + "-taken").append($("<span>")).append("/").append($("<span>").text(libs[i].libCapacity));
-            let td3 = $("<td>").append($("<input>").attr("type", "radio").attr("id", libs[i].libID + "-btnin").attr("name", "occupyRadio"));
+            let td3 = $("<td>").append($("<input>").attr("type", "radio").attr("value", libs[i].libID).attr("name", "occupyRadio"));
             tbody.append($("<tr>").append(td1).append(td2).append(td3));
             libraries.push(libs[i].libName);
             capList.push(libs[i].libCapacity);
         }
 
-        if (occupation.libID != undefined) {
-            $("#library-status").find("input :radio").each(function(){
-                $(this).attr("disabled", true);
-            });
-            let leaveButton = $("<button>").attr("id", "occupyButton").text("Occupy");
-            tbody.append($("<td>")).append($("<td>")).append($("<td>").append(leaveButton));
+        let leaveButton = $("<button>").attr("id", "leaveButton").text("Leave");
+        let occupyButton = $("<button>").attr("id", "occupyButton").text("Occupy");
+        occupyButton.attr("onclick", "simulateSwipeCardIn()");
+        if (occupied.libID != undefined) {
+            $("input[type=radio]").attr("disabled", true);
+            $("input[value="+occupied.libID+"]").attr("checked", true).after($("<span>").text(" Occupied"));
+            leaveButton.attr("onclick", "simulateSwipeCardOut(\""+occupied.libID+"\",\""+occupied.tabID+"\")");
+            tbody.append($("<td>")).append($("<td>")).append($("<td>").append(occupyButton.hide()).append(leaveButton));
         } else {
-            let occupyButton = $("<button>").attr("id", "occupyButton").text("Occupy");
-            tbody.append($("<td>")).append($("<td>")).append($("<td>").append(occupyButton));
+            tbody.append($("<td>")).append($("<td>")).append($("<td>").append(occupyButton).append(leaveButton.hide()));
         }
 
-        libTable.append(thead).append(tbody);
-
         
-
         $.get("/libraryStatus", function(takens) {
             for (let i = 0; i < libs.length; i++) {
                 let libID = libs[i].libID;
