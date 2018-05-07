@@ -11,7 +11,7 @@ row = {"PutRequest": {"Item": { "libID": {"S": "carpenter"}, "libName": {"S": "C
 libraries.append(row)
 #carpenter tables gen
 for i in range(capacities['carpenter']):
-	item = {"libID": {"S": "carpenter"}, "tabID": {}, "reservable": {"BOOL": False}, "occupied": {"BOOL": False}, "occupation": {"M": {}}}
+	item = {"libID": {"S": "carpenter"}, "tabID": {}, "reservable": {"BOOL": False}, "occupied": {"BOOL": False}}
 	tabidStr = "CH" + str(i)
 	item['tabID'] = {"S": tabidStr}
 	packed = {"PutRequest": {"Item": item}}
@@ -25,7 +25,7 @@ row = {"PutRequest": {"Item": { "libID": {"S": "olin"}, "libName": {"S": "Olin L
 libraries.append(row)
 #olin tables gen
 for i in range(capacities['olin']):
-	item = {"libID": {"S": "olin"}, "tabID": {}, "reservable": {"BOOL": False}, "occupied": {"BOOL": False}, "occupation": {"M": {}}}
+	item = {"libID": {"S": "olin"}, "tabID": {}, "reservable": {"BOOL": False}, "occupied": {"BOOL": False}}
 	tabidStr = "OL" + str(i)
 	item['tabID'] = {"S": tabidStr}
 	packed = {"PutRequest": {"Item": item}}
@@ -39,7 +39,7 @@ row = {"PutRequest": {"Item": { "libID": {"S": "uris"}, "libName": {"S": "Uris L
 libraries.append(row)
 #uris tables gen
 for i in range(capacities['uris']):
-	item = {"libID": {"S": "uris"}, "tabID": {}, "reservable": {"BOOL": False}, "occupied": {"BOOL": False}, "occupation": {"M": {}}}
+	item = {"libID": {"S": "uris"}, "tabID": {}, "reservable": {"BOOL": False}, "occupied": {"BOOL": False}}
 	tabidStr = "UL" + str(i)
 	item['tabID'] = {"S": tabidStr}
 	packed = {"PutRequest": {"Item": item}}
@@ -53,7 +53,7 @@ row = {"PutRequest": {"Item": { "libID": {"S": "gates"}, "libName": {"S": "Gates
 libraries.append(row)
 #gates tables gen
 for i in range(capacities['gates']):
-	item = {"libID": {"S": "gates"}, "tabID": {}, "reservable": {"BOOL": False}, "occupied": {"BOOL": False}, "occupation": {"M": {}}}
+	item = {"libID": {"S": "gates"}, "tabID": {}, "reservable": {"BOOL": False}, "occupied": {"BOOL": False}}
 	tabidStr = "GATES" + str(i)
 	item['tabID'] = {"S": tabidStr}
 	packed = {"PutRequest": {"Item": item}}
@@ -67,7 +67,7 @@ row = {"PutRequest": {"Item": { "libID": {"S": "mann"}, "libName": {"S": "Mann L
 libraries.append(row)
 #mann tables gen
 for i in range(capacities['mann']):
-	item = {"libID": {"S": "mann"}, "tabID": {}, "reservable": {"BOOL": False}, "occupied": {"BOOL": False}, "occupation": {"M": {}}}
+	item = {"libID": {"S": "mann"}, "tabID": {}, "reservable": {"BOOL": False}, "occupied": {"BOOL": False}}
 	tabidStr = "MANN" + str(i)
 	item['tabID'] = {"S": tabidStr}
 	packed = {"PutRequest": {"Item": item}}
@@ -81,7 +81,7 @@ row = {"PutRequest": {"Item": { "libID": {"S": "law"}, "libName": {"S": "Law Lib
 libraries.append(row)
 #law tables gen
 for i in range(capacities['law']):
-	item = {"libID": {"S": "law"}, "tabID": {}, "reservable": {"BOOL": False}, "occupied": {"BOOL": False}, "occupation": {"M": {}}}
+	item = {"libID": {"S": "law"}, "tabID": {}, "reservable": {"BOOL": False}, "occupied": {"BOOL": False}}
 	tabidStr = "LAW" + str(i)
 	item['tabID'] = {"S": tabidStr}
 	packed = {"PutRequest": {"Item": item}}
