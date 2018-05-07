@@ -244,9 +244,6 @@ reserve.init = function () {
             }
         },
         onSelect: function(item) {
-            console.log(1);
-            //let strs = picker.toString().split('-');
-            //let dateStr = strs[1] + "-" + strs[2] + "-" + strs[0];
             let dateStr = picker.toString();
             let moment = getDateString(dateStr), date = moment.format('MM-DD-YYYY');
             $('#datepicker')[0].value = date;

@@ -3,16 +3,19 @@
 var dashboard = {};
 
 function simulateSwipeCardOut(itself) {
-    if(itself === undefined || itself === null) 
+    if(itself === undefined) 
         return;
 
     let leaveInfo = {}, tabID = $(itself).attr('id').substring(0, $(itself).attr('id').indexOf('-'));
     leaveInfo["tabID"] = tabID;
     $.post("/simulateSwipeCardOut", leaveInfo, function(result) {
-        if (result.status === 5) {
+        if (result.status === -1) {
+            window.location.replace("/login");
+        }else if (result.status === 5) {
             alert("Leaving table " + tabID + " failure");
         }else if(result.status === 1) {
             console.log("swipeout:", tabID);
+
             let buttonin = $(itself).prev();
             $(itself).remove();
             buttonin.show();
@@ -24,25 +27,27 @@ function simulateSwipeCardOut(itself) {
 };
 
 function simulateSwipeCardIn(libID) {
-    if (libID === undefined || libID === null)
+    if (libID === undefined)
         return;
 
     let occupyInfo = {};
     occupyInfo["libID"] = libID;
     $.post("/simulateSwipeCardIn", occupyInfo, function(result) {
-        if (result.status === 3) {
+        if (result.status === -1) {
+            window.location.replace("/login");
+        }else if (result.status === 3) {
             alert("Library " + libID + " is full");
         }else if (result.status === 5) {
             alert("swipe in failure");
         }else if (result.status === 1) {
             console.log("swipein:", result.tabID);
-            let tabid = result.tabID, buttonname = "#" + libID + "-btnin";
-            $(buttonname).hide();
+
+            let tabID = result.tabID;
+            let buttonin = $("#" + libID + "-btnin"), buttonout = $("<button>").attr("id", tabid + "-btnout").attr("onclick", "simulateSwipeCardOut(this)").text("Leave");
+            $(buttonin).hide().after(buttonout);
             $("#library-status").find("button").each(function(){
                 $(this).attr("disabled", true);
             });
-            let buttonout = $("<button>").attr("id", tabid + "-btnout").attr("onclick", "simulateSwipeCardOut(this)").text("Leave");
-            $(buttonname).after(buttonout);
         }
     });
 };
@@ -98,7 +103,6 @@ dashboard.init = function() {
 
         libTable.append(thead).append(tbody);
 
-        console.log(occupation);
         if (occupation.libID != undefined) {
             $("#library-status").find("button").each(function(){
                 $(this).attr("disabled", true);

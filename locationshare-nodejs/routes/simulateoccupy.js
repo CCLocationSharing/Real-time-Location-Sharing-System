@@ -1,7 +1,5 @@
 'use strict'
 
-var moment = require('moment');
-var async = require('async');
 var AWS = require("aws-sdk");
 AWS.config.update({
     region: "us-west-2",
