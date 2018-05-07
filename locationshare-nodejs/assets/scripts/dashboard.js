@@ -38,7 +38,7 @@ function simulateSwipeCardIn() {
             let tabID = result.tabID;
             $("#occupyButton").hide();
             $("input[type=radio]").attr("disabled", true);
-            $("input[value="+libID+"]").after($("<span>").text(" Occupied"));
+            $("input[value="+libID+"]").after($("<span>").text(" Occupied " + tabID));
             $("#leaveButton").show().attr("onclick", "simulateSwipeCardOut(\""+libID+"\",\""+tabID+"\")");
         }
     });
@@ -80,7 +80,7 @@ dashboard.init = function() {
     $.get("/libraryCapacity", function(result) {
         let libs = result["libraries"], occupied = result["occupation"];
         let libTable = $("#library-status");
-        let ths = "<th>Libraries</th><th>Status</th><th>Swipe Card</th>";
+        let ths = "<th>Libraries</th><th>Status</th><th>Swipe Card (Simulation)</th>";
         let thead = $("<thead>").append($("<tr>").append(ths));
         let tbody = $("<tbody>");
         libTable.append(thead).append(tbody);
@@ -99,7 +99,7 @@ dashboard.init = function() {
         occupyButton.attr("onclick", "simulateSwipeCardIn()");
         if (occupied.libID != undefined) {
             $("input[type=radio]").attr("disabled", true);
-            $("input[value="+occupied.libID+"]").attr("checked", true).after($("<span>").text(" Occupied"));
+            $("input[value="+occupied.libID+"]").attr("checked", true).after($("<span>").text(" Occupied" + occupied.tabID));
             leaveButton.attr("onclick", "simulateSwipeCardOut(\""+occupied.libID+"\",\""+occupied.tabID+"\")");
             tbody.append($("<td>")).append($("<td>")).append($("<td>").append(occupyButton.hide()).append(leaveButton));
         } else {
