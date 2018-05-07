@@ -78,7 +78,7 @@ exports.postNewUser = function(req, res) {
     }], function(err, results) {
         if (err) return res.json({status: 1});
         let newUser = results[1];
-        req.session.user = {username: newUser.Item.username, friends: newUser.Item.friends};
+        req.session.user = {username: newUser.Item.username, occupation: newUser.Item.occupation};
         res.json({status: 0, redirect: "dashboard"});
     });
 };
