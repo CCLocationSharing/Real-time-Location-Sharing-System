@@ -99,7 +99,7 @@ exports.postLogin = function(req, res) {
         if (user.Item.password != sha512(req.body.password, salt)) 
             res.json({status: 2});
         else {
-                req.session.user = {username: user.Item.username, friends: user.Item.friends};
+                req.session.user = {username: user.Item.username, occupation: user.Item.occupation};
                 if(req.session.lastUrl === undefined || req.session.lastUrl != "/reserve") {
                     res.json({status: 0, redirect: "dashboard"});
                 }else{

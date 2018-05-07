@@ -60,8 +60,8 @@ app.get("/getHeatData", heat.getHeatData);
 
 app.post("/occupy", occupy.postOccupy);
 
-app.post("/simulateBrushCardIn", simulateoccupy.brushCardIn);
-app.post("/simulateBrushCardOut", simulateoccupy.brushCardOut);
+app.post("/simulateSwipeCardIn", simulateoccupy.swipeCardIn);
+app.post("/simulateSwipeCardOut", simulateoccupy.swipeCardOut);
 
 app.get("/die", () => a[0]);
 

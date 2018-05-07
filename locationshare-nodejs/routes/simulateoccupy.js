@@ -12,17 +12,7 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 var capacities = {"carpenter": 56, "olin": 200, "uris":125, "gates":20, "mann":60, "law": 35};
 var namePrefixes = {"carpenter": "CH", "olin": "OL", "uris":"UL", "gates":"GATES", "mann":"MANN", "law": "LAW"};
 
-function shuffle(array) {
-	for(let i = array.length; i > 0; i--) {
-		let j = Math.floor(Math.random() * i);
-		let temp = array[j];
-		array[j] = array[i-1];
-		array[i-1] = temp;
-	}
-	return array;
-};
-
-function implementOccupy(tables, index, user, time, res) {
+function implementOccupy(tables, index, user, res, libid) {
 	let param = {
         TableName: "Tables",
         Key: {"tabID": tables[index]},
@@ -36,22 +26,24 @@ function implementOccupy(tables, index, user, time, res) {
         	if (index + 1 >= tables.length) {
         		return res.send({status: 3});
         	}else {
-        		implementOccupy(tables, index + 1, user, time, res);
+        		implementOccupy(tables, index + 1, user, res, libid);
         	}
         }else{
-        	let occupation = {
-        		TableName: "Tables",
-        		Key: {"tabID": tables[index]},
+        	let updateOccupationAtUsers = {
+        		TableName: "Users",
+        		Key: {"username": user},
         		UpdateExpression: "set #occupation = :map",
         		ExpressionAttributeNames: {"#occupation": "occupation"},
-        		ExpressionAttributeValues: {":map": {"username": user, "startTime": time}}
+        		ExpressionAttributeValues: {":map": {"libID": libid, "tabID": tables[index]}}
         	}
-        	docClient.update(occupation, function(err, data) {
+
+        	docClient.update(updateOccupationAtUsers, function(err, data) {
         		if (err) {
-        			//brush in failed
+        			//failed
         			return res.send({status: 5});
         		}else {
-        			//brush in succeed
+        			//succeed
+                    res.locals.session.user.occupation = {"libID": libid, "tabID": tables[index]};
         			return res.send({status: 1, tabID: tables[index]});
         		}
         	});
@@ -59,17 +51,17 @@ function implementOccupy(tables, index, user, time, res) {
     });
 }
 
-exports.brushCardIn = function (req, res) {
+exports.swipeCardIn = function (req, res) {
 	if (req.session.user === undefined) {
         return res.send({status: -1});
     }
 
-    if (req.body.time === undefined || req.body.libID === undefined) {
+    if (req.body.libID === undefined) {
     	return res.status(400).send("parameters missing");
     }
 
 	let user = req.session.user.username;
-	let time = req.body.time, libid = req.body.libID;
+    let libid = req.body.libID;
 	let capacity = capacities[libid], nameprefix = namePrefixes[libid];
 	let alltables = [];
 
@@ -77,37 +69,46 @@ exports.brushCardIn = function (req, res) {
 		alltables.push(nameprefix + i);
 	}
 
-	alltables = shuffle(alltables);
-	implementOccupy(alltables, 0, user, time, res);
-}
+	implementOccupy(alltables, 0, user, res, libid);
+};
 
-exports.brushCardOut = function (req, res) {
+exports.swipeCardOut = function (req, res) {
 	if (req.session.user === undefined) {
         return res.send({status: -1});
     }
 
-    if (req.body.time === undefined || req.body.tabID === undefined) {
+    if (req.body.tabID === undefined) {
     	return res.status(400).send("parameters missing");
     }
 
     let user = req.session.user.username;
-	let time = req.body.time, tabid = req.body.tabID;
-
+    let tabid = req.body.tabID;
 	let release = {
         TableName: "Tables",
         Key: {"tabID": tabid},
-        UpdateExpression: "set #occupied = :a, occupation.#key = :b",
-        ConditionExpression:"occupation.#user = :c",
-        ExpressionAttributeNames: {"#occupied": "occupied", "#key": "endTime", "#user": "username"},
-        ExpressionAttributeValues: {":a": false, ":b": time, ":c": user}
+        UpdateExpression: "set #occupied = :a",
+        ExpressionAttributeNames: {"#occupied": "occupied"},
+        ExpressionAttributeValues: {":a": false}
     };
     docClient.update(release, function(err, data) {
         if (err) {
-        	//brush out failed
         	return res.send({status: 5});
         }else {
-        	//brush in succeed
-        	return res.send({status: 1});
+        	let updateOccupationAtUsers = {
+                TableName: "Users",
+                Key: {"username": user},
+                UpdateExpression: "set #occupation = :map",
+                ExpressionAttributeNames: {"#occupation": "occupation"},
+                ExpressionAttributeValues: {":map": {}}
+            }
+            docClient.update(updateOccupationAtUsers, function(err, data) {
+                if (err) {
+                    throw err;
+                }else {
+                    res.locals.session.user.occupation = {};
+                    return res.send({status: 1});
+                }
+            });
         }
     });
 }

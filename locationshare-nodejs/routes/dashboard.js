@@ -57,7 +57,7 @@ exports.returnLibraries = function() {
 exports.getLibraryCapacity = function(req, res) {
 	let result = {};
 	libraries.forEach(lib => result[lib.libID] = lib.libName);
-    return res.send(libraries);
+    return res.send({"libraries": libraries, "occupation": req.session.user.occupation});
 }
 
 exports.getLibraryStatus = function(req, res) {
@@ -66,7 +66,7 @@ exports.getLibraryStatus = function(req, res) {
 
 exports.getDashboard = function(req, res) {
 	if (req.session.user === undefined) return res.redirect("/");
-	res.render("dashboard.html", {styles: ["dashboard"], home : "active"});
+	res.render("dashboard.html", {styles: ["dashboard"], home : "active", occupation: req.session.user.occupation});
 }
 
 exports.getUserReservation = function(req, res) {
