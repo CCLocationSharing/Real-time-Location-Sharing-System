@@ -26,8 +26,8 @@ docClient.scan(scanTable, function(err, data) {
 
 
 // Periodically update Status
-//updateStatus();
-//setInterval(updateStatus, 10000);
+updateStatus();
+setInterval(updateStatus, 10000);
 
 function updateStatus() {
 	var scanTable = {

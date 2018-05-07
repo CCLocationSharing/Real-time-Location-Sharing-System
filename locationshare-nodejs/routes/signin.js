@@ -14,6 +14,48 @@ var http = require("http").Server(app);
 var async = require('async');
 var crypto = require("crypto");
 
+let majorIDMap = {
+    "101": "Africana Studies",
+    "102": "American Studies",
+    "103": "Anthropology",
+    "104": "Applied Economics and Management",
+    "105": "Classics",
+    "106": "Communication",
+    "107": "Development Sociology",
+    "108": "Economics",
+    "109": "Feminist",
+    "110": "Fine Arts",
+    "111": "French",
+    "112": "History",
+    "113": "Human Development",
+    "114": "Linguistics",
+    "115": "Music",
+    "116": "Philosophy",
+    "117": "Religious Studies",
+    "118": "Sociology",
+    "119": "Urban and Regional Studies",
+    "201": "Animal Science",
+    "202": "Biological Sciences",
+    "203": "Environmental and Sustainability Sciences",
+    "204": "Food Science",
+    "205": "Mathematics",
+    "206": "Nutritional Sciences",
+    "207": "Statistical Science",
+    "208": "Science and Technology Studies",
+    "301": "Accounting",
+    "302": "Policy Analysis and Management",
+    "303": "Hotel Administration",
+    "401": "Biological Engineering",
+    "402": "Biomedical Engineering",
+    "403": "Chemical Engineering",
+    "404": "Computer Science",
+    "405": "Environmental Engineering",
+    "406": "Independent Major—Engineering",
+    "407": "Operations Research and Engineering",
+    "408": "Mechanical Engineering",
+    "409": "Electrical and Computer Engineering"
+}
+
 /**
  * generates random string of characters i.e salt
  * @function
@@ -40,8 +82,10 @@ var sha512 = function(password, salt){
 exports.postNewUser = function(req, res) {
     if (!req.body.password.match(/^\w{6,20}$/)) {
         return res.json({status:3});
-    } else if (req.body.password != req.body.confirmpassword){
+    } else if (req.body.password != req.body.confirmpassword) {
         return res.json({status:2});
+    } else if (req.body.major == 0 || majorIDMap[req.body.major] === undefined) {
+        return res.json({status:4});
     }
 
     async.series([function(callback) {
@@ -65,8 +109,9 @@ exports.postNewUser = function(req, res) {
             Item: {
                 "username":req.body.username,
                 "salt": salt,
-                "password":password,
+                "password": password,
                 "reservation": {},
+                "major": majorIDMap[req.body.major],
                 "occupation": {}
             }
         };

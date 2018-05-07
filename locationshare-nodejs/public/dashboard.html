@@ -13,8 +13,22 @@
             <canvas id="libChart" width="900" height="380" >    
             </canvas>
         </main>
-        <div class="col-sm-1 col-md-1"></div>
-        <div class="col-sm-3 col-md-3 sidebar">
+        <div class="col-sm-4 col-md-4 sidebar">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-tasks fa"></i>
+                    Suggestion
+                </div>
+
+                <div class="panel-body" id="suggestion">
+                    Based on your major, location, visiting history, and each libraries current availability, we can help you decide which library to go.<br>
+                    <span id="suggestionLocation">Please allow us to access your current location after you click the button below.</span><br>
+                    <button id="suggestionButton">Give me suggestion!</button><br>
+                    <span id="suggestionResult"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 col-md-4 sidebar">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-tasks fa"></i>

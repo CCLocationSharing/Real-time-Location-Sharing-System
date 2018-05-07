@@ -115,21 +115,58 @@ dashboard.init = function() {
     });
 
     $.get("/getUserReservation", function(result) {
-        let resdiv = $("#reservation");
-        if (result.length == 0) {
-            resdiv.append("You don't have any reservation.");
-        } else {
-            for (let t in result) {
-                let time = moment(Number(t)).format("M-D h a");
-                let id = t + "+" + result[t].replace(/( )+/g,"-");
-                let span = $("<span>").addClass("list-group-item").attr("id", id + "+span").
-                    html("<span style=\"float:left;\">" + time + ": " + result[t] + "</span>").appendTo(resdiv);
-                let a = $("<a>").attr("id", id).
-                    attr("href", "#").css({"float": "right"}).text("Cancel").
-                    click(cancelReservation).appendTo(span);
-            }
+        let resdiv = $("#reservation"), empty = true;
+        for (let t in result) {
+            empty = false;
+            let time = moment(Number(t)).format("M-D h a");
+            let id = t + "+" + result[t].replace(/( )+/g,"-");
+            let span = $("<span>").addClass("list-group-item").attr("id", id + "+span").
+                html("<span style=\"float:left;\">" + time + ": " + result[t] + "</span>").appendTo(resdiv);
+            let a = $("<a>").attr("id", id).
+                attr("href", "#").css({"float": "right"}).text("Cancel").
+                click(cancelReservation).appendTo(span);
         }
+        if (empty) resdiv.append("You don't have any reservations.");
     });
+
+    if (!navigator.geolocation)
+        $("#suggestionLocation").text("Unfortunately, geolocation is not supported by your browser. We will only use other feature to give you suggestions.");
+    $("#suggestionButton").on("click", function(event) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                predict(position);
+            }, function(error) {
+                if (error.code == error.PERMISSION_DENIED)
+                    $("#suggestionLocation").text("You blocked us from accessing your geolocation. We will only use other feature to give you suggestions.");
+                predict(null);
+            });
+        } else predict(null);
+    });
+}
+
+let loading;
+function predict() {
+    // predict
+    $("#suggestionResult").text("Loading");
+    loading = setInterval(addDot, 200);
+    setTimeout(stopLoading, 5000);
+}
+
+let nDot = 0;
+
+function addDot() {
+    if (nDot < 6) {
+        $("#suggestionResult").append(".");
+        nDot += 1;
+    } else {
+        $("#suggestionResult").text("Loading");
+        nDot = 0;
+    }
+}
+
+function stopLoading() {
+    clearInterval(loading);
+    $("#suggestionResult").text("We suggest you go home.");
 }
 
 function cancelReservation(event) {
@@ -142,6 +179,8 @@ function cancelReservation(event) {
         let id = event.target.id.replace("+", "\\+");
         $.post("/cancelReservation", param, function() {
             $("#" + id).parent().remove();
+            let resdiv = $("#reservation");
+            if (resdiv.children().length == 0) resdiv.append("You don't have any reservations.");
             alert("Success");
         })
     }
