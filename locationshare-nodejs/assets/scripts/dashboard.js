@@ -90,22 +90,26 @@ dashboard.init = function() {
         for (let i = 0; i < libs.length; i++) {
             let td1 = $("<td>").text(libs[i].libName);
             let td2 = $("<td>").attr("id", libs[i].libID + "-taken").append($("<span>")).append("/").append($("<span>").text(libs[i].libCapacity));
-            let td3 = $("<td>").append($("<button>").attr("id", libs[i].libID + "-btnin").attr("onclick", 'simulateSwipeCardIn(\"' + libs[i].libID + '\")').text("occupy"));
+            let td3 = $("<td>").append($("<input>").attr("type", "radio").attr("id", libs[i].libID + "-btnin").attr("name", "occupyRadio"));
             tbody.append($("<tr>").append(td1).append(td2).append(td3));
             libraries.push(libs[i].libName);
             capList.push(libs[i].libCapacity);
         }
 
-        libTable.append(thead).append(tbody);
-
-        console.log(occupation);
         if (occupation.libID != undefined) {
-            $("#library-status").find("button").each(function(){
+            $("#library-status").find("input :radio").each(function(){
                 $(this).attr("disabled", true);
             });
-            let btn = $("<button>").attr("id", occupation.tabID + "-btnout").attr("onclick", "simulateSwipeCardOut(this)").text("Leave");
-            $("#" + occupation.libID + "-btnin").hide().after(btn);
+            let leaveButton = $("<button>").attr("id", "occupyButton").text("Occupy");
+            tbody.append($("<td>")).append($("<td>")).append($("<td>").append(leaveButton));
+        } else {
+            let occupyButton = $("<button>").attr("id", "occupyButton").text("Occupy");
+            tbody.append($("<td>")).append($("<td>")).append($("<td>").append(occupyButton));
         }
+
+        libTable.append(thead).append(tbody);
+
+        
 
         $.get("/libraryStatus", function(takens) {
             for (let i = 0; i < libs.length; i++) {
