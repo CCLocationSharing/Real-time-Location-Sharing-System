@@ -6,7 +6,7 @@ function simulateSwipeCardOut(itself) {
     if(itself === undefined || itself === null) 
         return;
 
-    let leaveInfo = {}, tabID = idstr.substring(0, $(itself).attr('id').indexOf('-'));
+    let leaveInfo = {}, tabID = $(itself).attr('id').substring(0, $(itself).attr('id').indexOf('-'));
     leaveInfo["tabID"] = tabID;
     $.post("/simulateSwipeCardOut", leaveInfo, function(result) {
         if (result.status === 5) {
