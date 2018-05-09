@@ -132,14 +132,14 @@
 		}}},
 		{"PutRequest": {"Item": {
 			"libID": {"S": "law"},
-			"tabID": {"S": "Interview Room B20-A"},
+			"tabID": {"S": "Interview Room B20A"},
 			"tabCapacity": {"N": "1"},
 			"reservable": {"BOOL": true},
 			"reserved": {"M": {}}
 		}}},
 		{"PutRequest": {"Item": {
 			"libID": {"S": "law"},
-			"tabID": {"S": "Interview Room B20-B"},
+			"tabID": {"S": "Interview Room B20B"},
 			"tabCapacity": {"N": "1"},
 			"reservable": {"BOOL": true},
 			"reserved": {"M": {}}
