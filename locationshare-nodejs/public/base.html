@@ -37,7 +37,7 @@
             </div>
             <ul class="nav navbar-nav navbar-right">
                 {% if session.user %}
-                <li ><a href="profile?id={{session.user.username}}">Profile</a></li>
+                <li ><a style="text-transform: none;">Welcome,&nbsp;&nbsp;{{session.user.username}}</a></li>
                 <li ><a href="logout">Log out</a></li>
                 {% else %}
                 <li ><a href="signup">Sign up</a></li>
