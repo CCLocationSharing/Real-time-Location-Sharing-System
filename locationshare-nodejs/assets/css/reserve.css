@@ -24,7 +24,7 @@ button[type=submit].btn {
  }
 
 #reserve-form .form-control {
-    cursor: none;
+    cursor: default;
     border: none;
     box-shadow: none;
 }
