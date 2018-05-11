@@ -17,7 +17,7 @@ Note:
 		String	libName		attribute
 		Number	libCapacity	attribute
 		List	tables		attribute
-		Number	longtitude	attribute
+		Number	longitude	attribute
 		Number	latitude	attribute
 
 3.
