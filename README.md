@@ -4,7 +4,7 @@ Study Go !
 #### Our solution stack is Node.js + DynamoDB + AWS Elastic Beanstalk + AWS SageMaker.
 
 
-## How to run for the first time
+## How to run
 * Install all dependencies using 'npm' command.
   
   npm install 
