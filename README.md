@@ -1,6 +1,6 @@
 Study Go !
 ========
-#### It's a real-time study space allocation system for Cloud Computing project. 
+#### It's a real-time study space allocation system for Cloud Computing project. The project aims to give the users an easier time to find the best library to study. Students are able to occupy and reserve tables in the libraries based on real-time information about the library availabilities and machine learning recommendation feature. Using the AWS cloud services, this system is scalable and fault-tolerant with fast response time. The project takes form of a web app where students can go online, sign up, and take multiple interactions for booking tables at the library.
 #### Our solution stack is Node.js + DynamoDB + AWS Elastic Beanstalk + AWS SageMaker.
 
 
