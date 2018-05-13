@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <main role="main" class="col-sm-8 col-md-8 pt-3 px-4">
+            <h2>Study Space Status</h2>
+            <div class="table-responsive">
+                <table id="library-status" class="table table-hover">
+                </table>
+            </div>
+            <h2></h2>
+            <canvas id="libChart" width="900" height="380" >    
+            </canvas>
+        </main>
+        <div class="col-sm-4 col-md-4 sidebar">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-tasks fa"></i>
+                    Suggestion
+                </div>
+
+                <div class="panel-body" id="suggestion">
+                    Based on your major, location, visiting history, and each libraries current availability, we can help you decide which library to go.<br>
+                    <span id="suggestionLocation">Please allow us to access your current location after you click the button below.</span><br>
+                    <button id="suggestionButton">Give me suggestion!</button><br>
+                    <span id="suggestionResult"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 col-md-4 sidebar">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-tasks fa"></i>
+                    Your Reservation
+                </div>
+
+                <div class="panel-body" id="reservation"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="scripts/dashboard.js"></script>
+<script src="scripts/moment.min.js"></script>
+<script src="scripts/Chart.min.js"></script>
+{% endblock %}

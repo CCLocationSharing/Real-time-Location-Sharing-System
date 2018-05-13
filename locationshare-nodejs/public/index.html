@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block body %}
+    {% if session.user %}
+    <script>window.location = "dashboard";</script>
+    {% endif %}
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
+                <h1 id="homeHeading">Study Go!<br></h1>
+                <h3>WE DO THE BEST!</h3>
+                <hr>
+                <p>Designed for helping Cornell University students to study.</p>
+                <a href="signup" class="btn btn-primary btn-xl page-scroll">Click here to Sign Up</a>
+                <a href="login" class="btn btn-primary btn-xl page-scroll">Click here to Log in</a>
+            </div>
+        </div>
+    </header>
+
+{% endblock %}

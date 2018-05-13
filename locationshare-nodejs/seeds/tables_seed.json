@@ -1,0 +1,169 @@
+{
+	"Tables": [
+		{"PutRequest": {"Item": {
+			"libID": {"S": "carpenter"},
+			"tabID": {"S": "103C"},
+			"tabCapacity": {"N": "10"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {
+				"1524693600000": {"S": "Syugen"}
+			}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "carpenter"},
+			"tabID": {"S": "103D"},
+			"tabCapacity": {"N": "10"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {
+				"1524686400000": {"S": "Syugen"}
+			}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "carpenter"},
+			"tabID": {"S": "109"},
+			"tabCapacity": {"N": "4"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "carpenter"},
+			"tabID": {"S": "110"},
+			"tabCapacity": {"N": "7"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "olin"},
+			"tabID": {"S": "302"},
+			"tabCapacity": {"N": "8"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "olin"},
+			"tabID": {"S": "402"},
+			"tabCapacity": {"N": "8"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "olin"},
+			"tabID": {"S": "404"},
+			"tabCapacity": {"N": "8"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "uris"},
+			"tabID": {"S": "4B02"},
+			"tabCapacity": {"N": "6"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "uris"},
+			"tabID": {"S": "4B03"},
+			"tabCapacity": {"N": "6"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "uris"},
+			"tabID": {"S": "4B04"},
+			"tabCapacity": {"N": "6"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "gates"},
+			"tabID": {"S": "G23 room1"},
+			"tabCapacity": {"N": "4"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "gates"},
+			"tabID": {"S": "G23 room2"},
+			"tabCapacity": {"N": "5"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "gates"},
+			"tabID": {"S": "G23 room3"},
+			"tabCapacity": {"N": "5"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "gates"},
+			"tabID": {"S": "G23 room4"},
+			"tabCapacity": {"N": "5"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "gates"},
+			"tabID": {"S": "G23 room5"},
+			"tabCapacity": {"N": "3"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "mann"},
+			"tabID": {"S": "Station 1"},
+			"tabCapacity": {"N": "4"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "mann"},
+			"tabID": {"S": "Station 2"},
+			"tabCapacity": {"N": "4"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "law"},
+			"tabID": {"S": "Claudy Casual Reading Room"},
+			"tabCapacity": {"N": "17"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "law"},
+			"tabID": {"S": "Interview Room B20A"},
+			"tabCapacity": {"N": "1"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "law"},
+			"tabID": {"S": "Interview Room B20B"},
+			"tabCapacity": {"N": "1"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "law"},
+			"tabID": {"S": "Squash Court"},
+			"tabCapacity": {"N": "4"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "law"},
+			"tabID": {"S": "Study Room 471"},
+			"tabCapacity": {"N": "4"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}},
+		{"PutRequest": {"Item": {
+			"libID": {"S": "law"},
+			"tabID": {"S": "Study Room 473"},
+			"tabCapacity": {"N": "1"},
+			"reservable": {"BOOL": true},
+			"reserved": {"M": {}}
+		}}}
+	]
+}

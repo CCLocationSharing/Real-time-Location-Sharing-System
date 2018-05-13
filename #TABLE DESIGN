@@ -1,35 +1,32 @@
 #TABLE DESIGN
 
+Note:
+	Run ./feed_db.sh to feed the AWS DynamoDB. Running the script will add
+	seeds to your own DB with your AWS credential.
 1.
-	USR
-		String userId	hashkey		NOT BLANK
-		String userName attribute 	
-		String password	attribute	NOT EMPTY
+	Users
+		String	username		hashkey
+		String	password		attribute
+		String	salt			attribute
+		Map		reservation		attribute
+		Map		occupation		attribute	init	{};	{libID:	,	tabID:	}
 
 2.
-	LIB
-		String libId	hashkey		NOT BLANK
-		String libName	attribute	NOT BLANK
+	Libraries
+		String	libID		hashkey
+		String	libName		attribute
+		Number	libCapacity	attribute
+		List	tables		attribute
+		Number	longitude	attribute
+		Number	latitude	attribute
 
 3.
-	TAB
-		String libId 	hashkey		NOT BLANK
-		String tabId	rangekey	NOT BLANK
-		int size	attribute	
+	Tables
+		String	tabID		hashkey
+		String	libID		attribute
+		Number	tabCapacity	attribute	
+		Bool 	reservable 	attribute	
+		Map 	reserved 	attribute
+		Bool 	occupied 	attribute	
 
-4.
-	RESERVATION
-		String tabId		hashkey 	NOT BLANK
-		long startTime		rangekey	NOT NULL
-		long endTime		attribute
-		String userId		attribute	NOT BLANK
-		String producedTime	attribute
-5.
-	OBSERVATION
-		String tabId		hashkey 	NOT BLANK
-		long startTime		rangekey	NOT NULL
-		boolean isExpired	attribute	NOT NULL
-		long endTime		attribute
-		String userId		attribute	NOT BLANK
-		String producedTime	attribute
 

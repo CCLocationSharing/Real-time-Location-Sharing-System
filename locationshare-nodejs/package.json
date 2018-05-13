@@ -1,0 +1,20 @@
+{
+  "name": "LocationSharing",
+  "description": "The group project",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "async": "^2.6.0",
+    "aws": "0.0.3-2",
+    "aws-sdk": "^2.222.1",
+    "body-parser": "^1.18.2",
+    "chart.js": "^2.7.2",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "moment": "^2.22.0",
+    "nunjucks": "^3.1.2",
+    "pikaday": "^1.7.0",
+    "underscore": "^1.9.0",
+    "xmlhttprequest": "latest"
+  }
+}

@@ -1,0 +1,81 @@
+{
+    "Libraries": [
+        {"PutRequest": {"Item": {
+            "libID": {"S": "carpenter"},
+            "libName": {"S": "Carpenter Hall"},
+            "libCapacity": {"N": "56"},
+            "tables": {"L": [
+                {"S": "103C"},
+                {"S": "103D"},
+                {"S": "109"},
+                {"S": "110"}]
+            },
+            "latitude": {"N": "-76.484129"},
+            "longitude": {"N": "42.444807"}
+        }}},
+        {"PutRequest": {"Item": {
+            "libID": {"S": "olin"},
+            "libName": {"S": "Olin Library"},
+            "libCapacity": {"N": "200"},
+            "tables": {"L": [
+                {"S": "olin 302"},
+                {"S": "olin 402"},
+                {"S": "olin 404"}]
+            },
+            "latitude": {"N": "-76.484250"},
+            "longitude": {"N": "42.447881"}
+        }}},
+        {"PutRequest": {"Item": {
+            "libID": {"S": "uris"},
+            "libName": {"S": "Uris Library"},
+            "libCapacity": {"N": "125"},
+            "tables": {"L": [
+                {"S": "uris 4B02"},
+                {"S": "uris 4B03"},
+                {"S": "uris 4B04"}]
+            },
+            "latitude": {"N": "-76.485310"},
+            "longitude": {"N": "42.447699"}
+        }}},
+        {"PutRequest": {"Item": {
+            "libID": {"S": "gates"},
+            "libName": {"S": "Gates Hall"},
+            "libCapacity": {"N": "20"},
+            "tables": {"L": [
+                {"S": "G23 room1"},
+                {"S": "G23 room2"},
+                {"S": "G23 room3"},
+                {"S": "G23 room4"},
+                {"S": "G23 room5"}]
+            },
+            "latitude": {"N": "-76.480999"},
+            "longitude": {"N": "42.444973"}
+        }}},
+        {"PutRequest": {"Item": {
+            "libID": {"S": "mann"},
+            "libName": {"S": "Mann Library"},
+            "libCapacity": {"N": "60"},
+            "tables": {"L": [
+                {"S": "Station 1"},
+                {"S": "Station 2"}]
+            },
+            "latitude": {"N": "-76.476414"},
+            "longitude": {"N": "42.448757"}
+        }}},
+        {"PutRequest": {"Item": {
+            "libID": {"S": "law"},
+            "libName": {"S": "Law Library"},
+            "libCapacity": {"N": "35"},
+            "tables": {"L": [
+                {"S": "Claudy Casual Reading Room"},
+                {"S": "Interview Room B20-A"},
+                {"S": "Interview Room B20-B"},
+                {"S": "Squash Court"},
+                {"S": "Study Room 471"},
+                {"S": "Study Room 473"}]
+            },
+            "latitude": {"N": "-76.485772"},
+            "longitude": {"N": "42.443855"}
+        }}}
+    ]
+}

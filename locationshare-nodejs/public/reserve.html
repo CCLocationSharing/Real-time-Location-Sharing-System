@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container-fluid">
+	<div class="row">
+		<div id="sidebar-div" class="col-sm-2 col-md-2 bd-sidebar">
+			<div class="row">
+				<nav class="collapse bd-links" id="bd-docs-nav">
+					<div class="bd-toc-item active">
+						<h3 style="color: transparent;">Libraries</h3>
+					</div>
+				</nav>
+			</div>
+			<div id="sidebar" class="row">
+				<nav class="collapse bd-links" id="bd-docs-nav">
+					<div class="bd-toc-item active">
+						<ul class="nav bd-sidenav">
+							<li class="active bd-sidenav-active">
+								<a href="javascript:void(0)" onclick="show(null, 'carpenter')">Carpenter Hall</a>
+							</li>
+							<li class="active bd-sidenav-active">
+								<a href="javascript:void(0)" onclick="show(null, 'olin')">Olin Library</a>
+							</li>
+							<li class="active bd-sidenav-active">
+								<a href="javascript:void(0)" onclick="show(null, 'uris')">Uris Library</a>
+							</li>
+							<li class="active bd-sidenav-active">
+								<a href="javascript:void(0)" onclick="show(null, 'gates')">Gates Hall</a>
+							</li>
+							<li class="active bd-sidenav-active">
+								<a href="javascript:void(0)" onclick="show(null, 'mann')">Mann Library</a>
+							</li>
+							<li class="active bd-sidenav-active">
+								<a href="javascript:void(0)" onclick="show(null, 'law')">Law Library</a>
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+		</div>
+		<div class="col-sm-8 col-md-8" style="margin-left: 5%; margin-top: 3%;">
+			<div class="row">
+				<div class="col-sm-6 col-md-6">
+					<h3>Date for Reservation</h3>
+				</div>
+				<div class="col-sm-2 col-md-2"></div>
+				<div class="col-sm-4 col-md-4">
+					<div class="form-group" style="margin-top: 20px">
+						<div class='input-group date'>
+							<input id="datepicker" disabled type="text" class="form-control" />
+                    		<span id="datepickerTrigger" class="input-group-addon">
+                        		<span class="glyphicon glyphicon-calendar"></span>
+                    		</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row reservation-table-row">
+				<div class="col-sm-12 col-md-12">
+					<div class="table-responsive">
+						<table id="reserve_table" class="table">
+							<thead>
+								<tr>
+									<th scope="col"></th>
+									<th scope="col">8am</th>
+									<th scope="col">9am</th>
+									<th scope="col">10am</th>
+									<th scope="col">11am</th>
+									<th scope="col">12pm</th>
+									<th scope="col">1pm</th>
+									<th scope="col">2pm</th>
+									<th scope="col">3pm</th>
+									<th scope="col">4pm</th>
+									<th scope="col">5pm</th>
+									<th scope="col">6pm</th>
+									<th scope="col">7pm</th>
+									<th scope="col">8pm</th>
+									<th scope="col">9pm</th>
+									<th scope="col">10pm</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+					<!--div>
+						<span class="badge badge-light">not available</span>
+						<span class="badge badge-danger">occupied</span>
+						<span class="badge badge-success">empty room</span>
+					</div-->
+				</div>
+			</div>
+			<div class="row reservation-form-row">
+				<div class="col-sm-12 col-md-12">
+				<form id="reserve-form"">
+					<div class="form-row">
+						<div class="form-group col-sm-6 col-md-6">
+							<label for="table">Study Space</label>
+							<input readonly type="text" class="form-control" id="table" name="table">
+						</div>
+						<div class="form-group col-sm-1 col-md-1"></div>
+						<div class="form-group col-sm-4 col-md-4">
+							<label for="date">Reservation on</label>
+							<input readonly type="text" class="form-control" id="date" name="date">
+						</div>
+						<div class="form-group col-sm-1 col-md-1"></div>
+					</div>
+					<div class="form-row align-items-center">
+						<div class="form-group col-sm-3 col-md-3">
+							<label for="start">From</label>
+							<input readonly type="text" class="form-control" id="start" name="start">
+						</div>
+						<div class="form-group col-sm-3 col-md-3">
+							<label for="end">To</label>
+							<input readonly type="text" class="form-control" id="end" name="end">
+						</div>
+						<div class="form-group col-sm-1 col-md-1"></div>
+						<div class="form-group col-sm-4 col-md-4">
+							<div class="row">
+								<div class="col-sm-4 col-md-4">
+									<button type="submit" class="btn btn-primary mb-2">Submit</button>
+								</div>
+								<div class="col-sm-1 col-md-1">
+								<div class="col-sm-7 col-md-7">
+									<label id="error-message" style="white-space: nowrap; margin-top: 25px;"></label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-sm-1 col-md-1"></div>
+					</div>
+					<input type="hidden" id="library" name="library">
+				</form>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-1 col-md-1"></div>	
+	</div>
+</div>
+<script src="scripts/moment.min.js"></script>
+<script src="scripts/pikaday.js"></script>
+{% endblock %}

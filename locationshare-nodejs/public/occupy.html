@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container">
+  <p>Note: this page is for testing purpose only.</p>
+  <input value="false" type="radio" name="wait" checked/>Do not wait for response
+  <input value="true" type="radio" name="wait" />Wait for and log response<br>
+  Set frequency (number of visit per second):
+  <input id="freq" type="number" />
+  <button id="startButton" onclick="start()">Start</button>
+  <button id="stopButton" onclick="stop()">Stop</button>
+  <button id="clearButton" onclick="clean()">Clear</button><br>
+  CSV data for analysis:<br>
+  <div style="overflow-x: scroll;">
+    <code id="data"></code><br>
+  </div>
+  Average: <code id="ave"></code><br>
+  Log:<br>
+  <div style="overflow-y: scroll; height:500px;">
+    <span id="log"></span>
+  </div>
+  
+</div>
+
+<script>
+  let worker, freq, ave = 0.0, n = 0;
+
+  function start() {
+    clearInterval(worker);
+    freq = 1000.0 / $("#freq").val();
+    $("#log").append("Frequency is: " + freq + "<br>");
+    if ($("input[name=wait]:checked").val() === "true")
+      worker = setInterval(postOccupy, freq);
+    else
+      worker = setInterval(postOccupyNoWait, freq);
+  }
+
+  function stop() {
+    clearInterval(worker);
+  }
+
+  function clean() {
+    clearInterval(worker);
+    ave = 0.0;
+    n = 0;
+    $("#log").empty();
+    $("#ave").empty();
+    $("#data").empty();
+  }
+
+  function postOccupy() {
+    let param = {
+      tabID: getRandomTable(),
+      type: getRandomType()
+    };
+    let start = Date.now();
+    $.post("/occupy", param, function(result) {
+      let end = Date.now();
+      if (n % 20 == 0) $("#log").empty();
+      $("#log").append(JSON.stringify(param) + "<br>");
+      $("#data").append((end - start) + ",");
+      ave = (ave * n + (end - start)) / (n + 1);
+      n += 1;
+      $("#ave").text(ave);
+    });
+  }
+
+  function postOccupyNoWait() {
+    let param = {
+      tabID: getRandomTable(),
+      type: getRandomType()
+    };
+    $.post("/occupy", param);
+  }
+
+  function getRandomTable() {
+    let libList = ["CH", "OL", "UL", "GATES", "MANN", "LAW"];
+    let lib = libList[Math.floor(Math.random() * libList.length)];
+    if (lib == "CH") tab = Math.floor(Math.random() * 56);
+    else if (lib == "OL") tab = Math.floor(Math.random() * 200);
+    else if (lib == "UL") tab = Math.floor(Math.random() * 125);
+    else if (lib == "GATES") tab = Math.floor(Math.random() * 20);
+    else if (lib == "MANN") tab = Math.floor(Math.random() * 60);
+    else if (lib == "LAW") tab = Math.floor(Math.random() * 35);
+    return lib+tab;
+  }
+
+  function getRandomType() {
+    let random = Math.floor(Math.random() * 2);
+    if (random == 1) {
+      return "o";
+    } else {
+      return "r";
+    }
+  }
+</script>
+{% endblock %}
