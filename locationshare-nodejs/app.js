@@ -3,8 +3,10 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var moment = require('moment');
 
 // ========== SETTINGS ==========
+var port = process.env.PORT || 3000;
 app.set('view engine', 'html');
 app.set('views', __dirname);
 app.use(bodyParser.json());
@@ -24,6 +26,12 @@ app.use(session({ secret: 'What is this', resave: false, saveUninitialized: fals
 app.use(function(req, res, next) {
     res.locals.session = req.session;
     next();
+});
+
+//========== LOG ==========
+app.use(function (req, res, next) {
+    console.log(moment().format() + ": " + port + ": " + req.method + " " + req.originalUrl);
+    next()
 });
 
 //========== MAIN ==========
@@ -65,7 +73,6 @@ app.post("/simulateSwipeCardOut", simulateoccupy.swipeCardOut);
 
 app.get("/die", () => a[0]);
 
-var port = process.env.PORT || 3000;
 var server = require("http").Server(app);
 server.listen(port, function () {
     console.log('Server running at http://127.0.0.1:' + port + '/');

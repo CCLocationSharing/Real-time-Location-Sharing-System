@@ -48,8 +48,8 @@ function updateOccupancyDB(tabID, toOccupy) {
 let n = 0;
 setInterval(() => {
     if (n != 0) {
-        let now = moment();
-        console.log(now.format() + ": " + process.env.PORT + ": received " + n + " occupy requests.");
+        console.log(moment().format() + ": " + (process.env.PORT || 3000) + 
+            ": POST /occupy: " + n + " requests in the last second.");
         n = 0;
     }
 }, 1000);
@@ -57,8 +57,7 @@ setInterval(() => {
 exports.postOccupy = function(req, res) {
     n += 1;
     if (req.body.tabID === undefined) {
-        modifyList.push({"tabID": "CH 002", "type": "o"});
-        return res.send("Success");
+        return res.send("Failed");// should set status as 403 but aws will be unhappy
     }
 
     modifyList.push({"tabID": req.body.tabID, "type": req.body.type});

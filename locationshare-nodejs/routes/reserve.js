@@ -120,7 +120,22 @@ function tableParamCancel(req, starttime, endtime, table) {
     return tableParam;
 }
 
+let reserveCount = 0, cancelCount = 0;
+setInterval(() => {
+    if (reserveCount != 0) {
+        console.log(moment().format() + ": " + (process.env.PORT || 3000) + 
+            ": POST /reserve: " + reserveCount + " requests in the last second.");
+        reserveCount = 0;
+    }
+    if (cancelCount != 0) {
+        console.log(moment().format() + ": " + (process.env.PORT || 3000) + 
+            ": POST /cancel: " + cancelCount + " requests in the last second.");
+        cancelCount = 0;
+    }
+}, 1000);
+
 exports.postReservation = function(req, res) {
+    reserveCount += 1;
     if (req.session.user === undefined) {
         return res.send({status: -1});
     }
@@ -128,17 +143,8 @@ exports.postReservation = function(req, res) {
     reserve(req, res);
 }
 
-let n = 0;
-setInterval(() => {
-    if (n != 0) {
-        let now = moment();
-        console.log(now.format() + ": " + process.env.PORT + ": received " + n + " reserve requests.");
-        n = 0;
-    }
-}, 1000);
-
 exports.postFakeReservation = function(req, res) {
-    n += 1;
+    reserveCount += 1;
     req.session.user = {username: "Syugen"};
     reserve(req, res);
 }
@@ -190,6 +196,7 @@ exports.getReserve = function(req, res) {
 }
 
 exports.cancelReservation = function(req, res) {
+    cancelCount += 1;
     if (req.session.user === undefined) {
         req.session.lastUrl = "/reserve";
         return res.redirect("/login");
