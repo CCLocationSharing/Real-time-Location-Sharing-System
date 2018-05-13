@@ -20,21 +20,25 @@ with open('mlDataGates.csv', 'w') as csvfile:
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
     for k in range(5000):
         isLib = randint(0, 1)
+        history_precent = random()
+        current_ava = random()
         if(isLib==1):
             label = "\"Y\""
+            distance = random()
+            if(history_precent<0.5):
+                history_precent = history_precent + 0.5
+            if(current_ava>0.8):
+                current_ava = current_ava - 0.8
         else:
             label = "\"N\""
+            distance = random()*randint(0, 2)
+            if(history_precent>0.5):
+                history_precent = history_precent - 0.5
+
         temp = random()
         if(temp < 0.9 and isLib==1):
             major = rd.choice(majors)
         else:
             major = rd.choice(all_majors)
-        distance = random()*randint(0, 2)
-        history_precent = random()
-        if(history_precent<0.5):
-            history_precent = random()
-        current_ava = random()
-        if(current_ava<0.5):
-            current_ava = random()
 
         filewriter.writerow([label, major, distance, history_precent, current_ava])

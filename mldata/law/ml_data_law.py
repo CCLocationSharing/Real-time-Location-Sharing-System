@@ -12,10 +12,10 @@ engineering_majors = ['Biological Engineering', 'Biomedical Engineering', 'Chemi
 'Computer Science', 'Environmental Engineering', 'Independent Major—Engineering', 'Operations Research and Engineering',
 'Mechanical Engineering', 'Electrical and Computer Engineering']
 
-majors = arts_majors
-all_majors = majors+business_majors+science_majors+engineering_majors
+majors = ['Economics', 'Development Sociology', 'Sociology', 'Urban and Regional Studies', 'Human Development']
+all_majors = arts_majors+science_majors+business_majors+engineering_majors
 
-with open('mlDataOlin.csv', 'w') as csvfile:
+with open('mlDataLaw.csv', 'w') as csvfile:
     filewriter = csv.writer(csvfile, delimiter=',',
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
     for k in range(5000):
@@ -36,7 +36,7 @@ with open('mlDataOlin.csv', 'w') as csvfile:
                 history_precent = history_precent - 0.5
 
         temp = random()
-        if(temp < 0.5 and isLib==1):
+        if(temp < 0.7 and isLib==1):
             major = rd.choice(majors)
         else:
             major = rd.choice(all_majors)
