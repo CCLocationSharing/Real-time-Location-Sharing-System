@@ -1,19 +1,8 @@
 {% extends "base.html" %}
 
 {% block body %}
-<div class="container-fluid">
-    <div class="row">
-        <main role="main" class="col-sm-12 col-md-12 pt-3 px-4">
-            <h2>Heat Map</h2>
-            <div class="table-responsive">
-                <table id="library-status" class="table table-hover">
-                </table>
-            </div>
-            <h2></h2>
-            <div id="map"></div>
-        </main>
-    </div>
-</div>
+<div id="map"></div>
+
 <script src="scripts/heat.js"></script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxK0o8YSV9fxKtKgaQODXkJ73hhas0pok&libraries=visualization"></script>

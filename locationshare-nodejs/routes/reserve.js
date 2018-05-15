@@ -1,5 +1,9 @@
 'use strict';
 
+var dashboard = require("./dashboard");
+var moment = require('moment');
+var async = require('async');
+
 var AWS = require("aws-sdk");
 AWS.config.update({
     region: "us-west-2",
@@ -7,9 +11,6 @@ AWS.config.update({
 });
 
 var docClient = new AWS.DynamoDB.DocumentClient();
-var dashboard = require("./dashboard");
-var moment = require('moment');
-var async = require('async');
 
 /**
  * get results in json for render

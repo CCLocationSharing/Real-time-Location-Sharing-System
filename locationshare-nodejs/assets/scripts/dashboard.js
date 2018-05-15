@@ -36,6 +36,7 @@ function simulateSwipeCardIn() {
             alert("Swipe in failed.");
         }else if (result.status === 1) {
             let tabID = result.tabID;
+            $.cookie("occupyHistory", $.cookie("occupyHistory") + "," + libID);
             $("#occupyButton").hide();
             $("input[type=radio]").attr("disabled", true);
             $("input[value="+libID+"]").after($("<span>").text(" Occupied " + tabID));
@@ -139,6 +140,7 @@ dashboard.init = function() {
         $("#suggestionLocation").text("Unfortunately, geolocation is not supported by your browser. We will only use other feature to give you suggestions.");
     $("#suggestionButton").on("click", function(event) {
         if (navigator.geolocation) {
+            $("#suggestionResult").text("Accessing your geolocation...");
             navigator.geolocation.getCurrentPosition(function(position) {
                 predict(position);
             }, function(error) {
@@ -151,11 +153,22 @@ dashboard.init = function() {
 }
 
 let loading;
-function predict() {
-    // predict
+function predict(position) {
     $("#suggestionResult").text("Loading");
     loading = setInterval(addDot, 200);
-    setTimeout(stopLoading, 5000);
+
+    let param = (position == undefined) ? {} : {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude
+    };
+    param.history = $.cookie("occupyHistory");console.log(param)
+    $.post("/predict", param, function(data) {
+        clearInterval(loading);
+        data.sort();
+        let suggestion = "Suggestions: " + 
+            data[0][1] + " (#1) " + data[1][1] + " (#2)";
+        $("#suggestionResult").text(suggestion);
+    });
 }
 
 let nDot = 0;
@@ -168,11 +181,6 @@ function addDot() {
         $("#suggestionResult").text("Loading");
         nDot = 0;
     }
-}
-
-function stopLoading() {
-    clearInterval(loading);
-    $("#suggestionResult").text("We suggest you go home.");
 }
 
 function cancelReservation(event) {

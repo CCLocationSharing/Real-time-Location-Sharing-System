@@ -1,5 +1,8 @@
 'use strict';
 
+var async = require('async');
+var crypto = require("crypto");
+
 var AWS = require("aws-sdk");
 AWS.config.update({
     region: "us-west-2",
@@ -7,12 +10,6 @@ AWS.config.update({
 });
 
 var docClient = new AWS.DynamoDB.DocumentClient();
-
-var express = require('express');
-var app = express();
-var http = require("http").Server(app);
-var async = require('async');
-var crypto = require("crypto");
 
 let majorIDMap = {
     "101": "Africana Studies",
@@ -123,7 +120,11 @@ exports.postNewUser = function(req, res) {
     }], function(err, results) {
         if (err) return res.json({status: 1});
         let newUser = results[1];
-        req.session.user = {username: newUser.Item.username, occupation: newUser.Item.occupation};
+        req.session.user = {
+            username: newUser.Item.username, 
+            occupation: newUser.Item.occupation, 
+            major: newUser.Item.major
+        };
         res.json({status: 0, redirect: "dashboard"});
     });
 };
@@ -144,13 +145,16 @@ exports.postLogin = function(req, res) {
         if (user.Item.password != sha512(req.body.password, salt)) 
             res.json({status: 2});
         else {
-                req.session.user = {username: user.Item.username, occupation: user.Item.occupation};
-                if(req.session.lastUrl === undefined || req.session.lastUrl != "/reserve") {
-                    res.json({status: 0, redirect: "dashboard"});
-                }else{
-                    res.json({status: 0, redirect: "reserve"});
-                }
-            //});
+            req.session.user = {
+                username: user.Item.username, 
+                occupation: user.Item.occupation, 
+                major: user.Item.major
+            };
+            if (req.session.lastUrl === undefined || req.session.lastUrl != "/reserve") {
+                res.json({status: 0, redirect: "dashboard"});
+            } else {
+                res.json({status: 0, redirect: "reserve"});
+            }
         }
     });
 };
@@ -158,21 +162,6 @@ exports.postLogin = function(req, res) {
 exports.getLogout = function(req, res) {
     if (req.session.user === undefined) return res.redirect("/");
 
-    /*
-    var user = {
-        TableName: "Users",
-        Key: {
-            "username":req.body.username
-        }
-    };
-    docClient.get(user, function(err, user) {
-        if (err) throw err;
-
-        user.online = false;
-        user.save(function(err, data) {
-            if (err) throw err;
-        });
-    });*/
     req.session.destroy();
     res.redirect('/');
 }

@@ -37,6 +37,7 @@ app.use(function (req, res, next) {
 //========== MAIN ==========
 var signin = require("./routes/signin");
 var dashboard = require("./routes/dashboard");
+var ml = require("./routes/ml");
 var reserve = require("./routes/reserve");
 var occupy = require("./routes/occupy");
 var heat = require("./routes/heat");
@@ -57,6 +58,7 @@ app.get("/libraryCapacity", dashboard.getLibraryCapacity);
 app.get("/libraryStatus", dashboard.getLibraryStatus);
 app.get("/getUserReservation", dashboard.getUserReservation);
 app.post("/cancelReservation", reserve.cancelReservation);
+app.post("/predict", ml.predict);
 
 app.get("/reserve", reserve.getReserve);
 app.get("/renderForPicker", reserve.getRender);

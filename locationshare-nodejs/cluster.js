@@ -18,7 +18,7 @@ if (cluster.isMaster) {
  */
 function fork() {
 
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 1; i++) {
         var envClone = _.clone(process.env);
         envClone.PORT = parseInt(process.env.PORT)+i;
         

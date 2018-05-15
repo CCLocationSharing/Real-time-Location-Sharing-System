@@ -12,8 +12,8 @@ heat.init = function() {
             for (let i = 0; i < result.status[libID].taken; i++) {
                 let coord = result.coords[libID];
                 occupiedCoord.push({
-                    "longitude": coord.longitude + offset(),
-                    "latitude": coord.latitude + offset()
+                    "latitude": coord.latitude + offset(),
+                    "longitude": coord.longitude + offset()
                 });
             }
         }
@@ -77,7 +77,7 @@ function initMap() {
         let latlngList = [];
         occupiedCoord.forEach(coor => {
             latlngList.push(new google.maps.LatLng(
-                coor.longitude, coor.latitude));
+                coor.latitude, coor.longitude));
         });
         return latlngList;
     }

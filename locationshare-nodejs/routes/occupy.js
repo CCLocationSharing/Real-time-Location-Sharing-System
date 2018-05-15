@@ -1,11 +1,12 @@
 'use strict';
 
+var moment = require('moment');
+
 var AWS = require("aws-sdk");
 AWS.config.update({
     region: "us-west-2",
     endpoint: "https://dynamodb.us-west-2.amazonaws.com"
 });
-var moment = require('moment');
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
