@@ -13,8 +13,9 @@ To run this application on your localhost, you need the following preparation.
 * Install all dependencies using 'npm' command.
   
   ```
-  cd locationshare-nodejs
-  npm install```
+  cd locationshare-nodejs
+  npm install
+  ```
  
 * Get an aws access key and configure your credentials.
 
@@ -30,6 +31,22 @@ To run this application on your localhost, you need the following preparation.
   ```node app.js```
   
 * Now the server is running on 'localhost:3000', you can use 'CTRL+C' command to stop.
+## Machine Learning
+### Generating Data
+Go to "mldata" folder to generate data
+* In each library folder, run following command to generate data for traing
+  ```
+  python <traing file name>
+  ```
+### Training Data and Deploy Data
+In "trainingFile" folder, create a bucket in AWS S3 and use the traing code to train data and deploy model in AWS SageMaker. 
+
+### Sample Code For Incoke Endpoint
+In "mlconnectSample", run following command to see sample connection with AWS SageMaker endpoint
+```
+node app.js
+  ```
+
 ## Preview
 ### Index page
 ![alt index](locationshare-nodejs/assets/img/preview_index.png "Index page")
