@@ -100,7 +100,7 @@ dashboard.init = function() {
         occupyButton.attr("onclick", "simulateSwipeCardIn()");
         if (occupied.libID != undefined) {
             $("input[type=radio]").attr("disabled", true);
-            $("input[value="+occupied.libID+"]").attr("checked", true).after($("<span>").text(" Occupied" + occupied.tabID));
+            $("input[value="+occupied.libID+"]").attr("checked", true).after($("<span>").text(" Occupied " + occupied.tabID));
             leaveButton.attr("onclick", "simulateSwipeCardOut(\""+occupied.libID+"\",\""+occupied.tabID+"\")");
             tbody.append($("<td>")).append($("<td>")).append($("<td>").append(occupyButton.hide()).append(leaveButton));
         } else {
