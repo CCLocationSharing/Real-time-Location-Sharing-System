@@ -12,7 +12,9 @@ To run this application on your localhost, you need the following preparation.
 ### Installing and setting up
 * Install all dependencies using 'npm' command.
   
-  ```npm install```
+  ```
+  cd locationshare-nodejs
+  npm install```
  
 * Get an aws access key and configure your credentials.
 
